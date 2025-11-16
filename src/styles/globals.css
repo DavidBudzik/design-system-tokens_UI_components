@@ -1,0 +1,591 @@
+/* Generated CSS Variables - Dynamic Mode Switching Architecture */
+/* Auto-generated from Figma variable collections */
+/* Usage: Set data-theme attribute on container element to switch modes */
+
+/* ========================================= */
+/* FALLBACK VALUES (:root) */
+/* These are default values when no theme is active */
+/* Theme-specific selectors below will override these */
+/* ========================================= */
+
+:root {
+  --cta-cta-default: rgb(224, 54, 0);
+  --cta-cta-hover: rgb(250, 77, 26);
+  --cta-cta-active: rgb(194, 46, 0);
+  --cta-cta-disabled: rgb(255, 212, 194);
+  --primary-primary-default: rgb(36, 36, 36);
+  --primary-primary-hover: rgb(97, 97, 97);
+  --primary-primary-active: rgb(71, 71, 71);
+  --primary-primary-disabled: rgb(189, 189, 189);
+  --secondary-secondary-default: rgb(237, 237, 237);
+  --secondary-secondary-hover: rgb(222, 222, 222);
+  --secondary-secondary-active: rgb(230, 230, 230);
+  --secondary-secondary-disabled: rgb(245, 245, 245);
+  --danger-danger-default: rgb(224, 54, 54);
+  --danger-danger-hover: rgb(255, 92, 92);
+  --danger-danger-active: rgb(171, 36, 36);
+  --danger-danger-disabled: rgb(247, 176, 176);
+  --success-success-default: rgb(28, 209, 102);
+  --success-success-hover: rgb(71, 227, 140);
+  --success-success-active: rgb(18, 153, 74);
+  --success-success-disabled: rgb(166, 245, 204);
+  --warning-warning-default: rgb(255, 181, 41);
+  --warning-warning-hover: rgb(255, 214, 92);
+  --warning-warning-active: rgb(184, 125, 20);
+  --warning-warning-disabled: rgb(255, 240, 191);
+  --surface-surface-default: rgb(255, 255, 255);
+  --surface-surface-light: rgb(250, 250, 250);
+  --surface-surface-muted: rgb(245, 245, 245);
+  --surface-surface-subtle: rgb(240, 240, 240);
+  --surface-surface-elevated: rgb(224, 224, 224);
+  --surface-surface-input-default: rgb(247, 247, 247);
+  --surface-surface-input-hover: rgb(232, 232, 232);
+  --surface-surface-input-active: rgb(240, 240, 240);
+  --surface-surface-input-disabled: rgb(240, 240, 240);
+  --background-background-default: rgb(255, 255, 255);
+  --background-background-inverted: rgb(23, 23, 23);
+  --border-border-default: rgb(224, 224, 224);
+  --border-border-hover: rgb(184, 184, 184);
+  --border-border-active: rgb(133, 133, 133);
+  --border-border-disabled: rgb(201, 201, 201);
+  --border-border-error: rgb(224, 54, 54);
+  --text-text-primary: rgb(23, 23, 23);
+  --text-text-inverted: rgb(255, 255, 255);
+  --text-text-on-dark: rgb(255, 255, 255);
+  --text-text-muted: rgb(89, 89, 89);
+  --text-text-subtle: rgb(161, 161, 161);
+  --text-text-disabled: rgb(201, 201, 201);
+  --icons-icon-default: rgb(79, 79, 79);
+  --icons-icon-disabled: rgb(189, 189, 189);
+  --icons-icon-on-dark: rgb(252, 252, 252);
+  --icons-icon-on-bright: rgb(252, 252, 252);
+  --icons-icon-subtle: rgb(189, 189, 189);
+  --link-link-default: rgb(48, 143, 237);
+  --link-link-hover: rgb(82, 158, 252);
+  --link-link-active: rgb(38, 125, 224);
+  --link-link-visited: rgb(28, 92, 158);
+  --spacing-spacing-1: 2px;
+  --spacing-spacing-0: 0;
+  --spacing-spacing-2: 4px;
+  --spacing-spacing-3: 8px;
+  --spacing-spacing-4: 12px;
+  --spacing-spacing-5: 16px;
+  --spacing-spacing-6: 20px;
+  --spacing-spacing-7: 24px;
+  --spacing-spacing-8: 28px;
+  --spacing-spacing-9: 32px;
+  --spacing-spacing-10: 40px;
+  --radius-radius-none: 0;
+  --radius-radius-xs: 2px;
+  --radius-radius-sm: 4px;
+  --radius-radius-md: 8px;
+  --radius-radius-lg: 16px;
+  --radius-radius-xl: 24px;
+  --radius-radius-2xl: 32px;
+  --radius-radius-full: 9999px;
+  --border-border-none: 0;
+  --border-border-thin: 1px;
+  --border-border-base: 1.5px;
+  --border-border-md: 2px;
+  --border-border-lg: 3px;
+  --border-border-xl: 4px;
+  --strong-01: rgb(255, 163, 84);
+  --strong-02: rgb(255, 217, 138);
+  --strong-03: rgb(112, 235, 171);
+  --strong-04: rgb(105, 204, 255);
+  --strong-05: rgb(212, 179, 247);
+  --strong-06: rgb(255, 148, 196);
+  --strong-07: rgb(255, 135, 135);
+  --strong-08: rgb(184, 166, 247);
+  --strong-09: rgb(79, 224, 201);
+  --strong-10: rgb(255, 138, 181);
+  --strong-11: rgb(189, 171, 163);
+  --strong-12: rgb(179, 199, 166);
+  --strong-13: rgb(230, 245, 125);
+  --strong-14: rgb(69, 224, 245);
+  --strong-15: rgb(255, 156, 115);
+  --strong-16: rgb(255, 240, 97);
+  --strong-17: rgb(115, 232, 138);
+  --strong-18: rgb(74, 184, 247);
+  --strong-19: rgb(224, 82, 145);
+  --subtle-01: rgb(255, 237, 219);
+  --subtle-02: rgb(255, 245, 222);
+  --strong-20: rgb(232, 181, 255);
+  --subtle-03: rgb(224, 250, 237);
+  --subtle-04: rgb(224, 245, 255);
+  --subtle-05: rgb(245, 240, 255);
+  --subtle-06: rgb(255, 237, 245);
+  --subtle-07: rgb(255, 235, 235);
+  --subtle-08: rgb(242, 237, 255);
+  --subtle-09: rgb(230, 250, 247);
+  --subtle-10: rgb(255, 240, 245);
+  --subtle-11: rgb(245, 242, 242);
+  --subtle-12: rgb(242, 245, 242);
+  --subtle-13: rgb(250, 252, 235);
+  --subtle-14: rgb(230, 250, 255);
+  --subtle-15: rgb(255, 242, 235);
+  --subtle-16: rgb(255, 255, 237);
+  --subtle-17: rgb(232, 250, 240);
+  --subtle-18: rgb(230, 245, 255);
+  --subtle-19: rgb(252, 237, 242);
+  --subtle-20: rgb(250, 242, 255);
+  --dark-06: rgb(196, 69, 128);
+  --dark-04: rgb(0, 102, 156);
+  --dark-02: rgb(168, 107, 0);
+  --dark-05: rgb(87, 61, 150);
+  --show-thread: 1;
+}
+
+/* ========================================= */
+/* ATOMIC VARIABLES (Base Layer) */
+/* Theme-specific values that override :root */
+/* ========================================= */
+
+/* Collection: color_palette_tokens */
+[data-color_palette_tokens="Light-Mode"] {
+  --cta-cta-default: rgb(224, 54, 0);
+  --cta-cta-hover: rgb(250, 77, 26);
+  --cta-cta-active: rgb(194, 46, 0);
+  --cta-cta-disabled: rgb(255, 212, 194);
+  --primary-primary-default: rgb(36, 36, 36);
+  --primary-primary-hover: rgb(97, 97, 97);
+  --primary-primary-active: rgb(71, 71, 71);
+  --primary-primary-disabled: rgb(189, 189, 189);
+  --secondary-secondary-default: rgb(237, 237, 237);
+  --secondary-secondary-hover: rgb(222, 222, 222);
+  --secondary-secondary-active: rgb(230, 230, 230);
+  --secondary-secondary-disabled: rgb(245, 245, 245);
+  --danger-danger-default: rgb(224, 54, 54);
+  --danger-danger-hover: rgb(255, 92, 92);
+  --danger-danger-active: rgb(171, 36, 36);
+  --danger-danger-disabled: rgb(247, 176, 176);
+  --success-success-default: rgb(28, 209, 102);
+  --success-success-hover: rgb(71, 227, 140);
+  --success-success-active: rgb(18, 153, 74);
+  --success-success-disabled: rgb(166, 245, 204);
+  --warning-warning-default: rgb(255, 181, 41);
+  --warning-warning-hover: rgb(255, 214, 92);
+  --warning-warning-active: rgb(184, 125, 20);
+  --warning-warning-disabled: rgb(255, 240, 191);
+  --surface-surface-default: rgb(255, 255, 255);
+  --surface-surface-light: rgb(250, 250, 250);
+  --surface-surface-muted: rgb(245, 245, 245);
+  --surface-surface-subtle: rgb(240, 240, 240);
+  --surface-surface-elevated: rgb(224, 224, 224);
+  --surface-surface-input-default: rgb(247, 247, 247);
+  --surface-surface-input-hover: rgb(232, 232, 232);
+  --surface-surface-input-active: rgb(240, 240, 240);
+  --surface-surface-input-disabled: rgb(240, 240, 240);
+  --background-background-default: rgb(255, 255, 255);
+  --background-background-inverted: rgb(23, 23, 23);
+  --border-border-default: rgb(224, 224, 224);
+  --border-border-hover: rgb(184, 184, 184);
+  --border-border-active: rgb(133, 133, 133);
+  --border-border-disabled: rgb(201, 201, 201);
+  --border-border-error: rgb(224, 54, 54);
+  --text-text-primary: rgb(23, 23, 23);
+  --text-text-inverted: rgb(255, 255, 255);
+  --text-text-on-dark: rgb(255, 255, 255);
+  --text-text-muted: rgb(89, 89, 89);
+  --text-text-subtle: rgb(161, 161, 161);
+  --text-text-disabled: rgb(201, 201, 201);
+  --icons-icon-default: rgb(79, 79, 79);
+  --icons-icon-disabled: rgb(189, 189, 189);
+  --icons-icon-on-dark: rgb(252, 252, 252);
+  --icons-icon-on-bright: rgb(252, 252, 252);
+  --icons-icon-subtle: rgb(189, 189, 189);
+  --link-link-default: rgb(48, 143, 237);
+  --link-link-hover: rgb(82, 158, 252);
+  --link-link-active: rgb(38, 125, 224);
+  --link-link-visited: rgb(28, 92, 158);
+}
+
+[data-color_palette_tokens="Dark-Mode"] {
+  --cta-cta-default: rgb(224, 54, 0);
+  --cta-cta-hover: rgb(250, 77, 26);
+  --cta-cta-active: rgb(194, 46, 0);
+  --cta-cta-disabled: rgb(255, 212, 194);
+  --primary-primary-default: rgb(97, 97, 97);
+  --primary-primary-hover: rgb(71, 71, 71);
+  --primary-primary-active: rgb(36, 36, 36);
+  --primary-primary-disabled: rgb(189, 189, 189);
+  --secondary-secondary-default: rgb(237, 237, 237);
+  --secondary-secondary-hover: rgb(222, 222, 222);
+  --secondary-secondary-active: rgb(230, 230, 230);
+  --secondary-secondary-disabled: rgb(245, 245, 245);
+  --danger-danger-default: rgb(224, 54, 54);
+  --danger-danger-hover: rgb(255, 92, 92);
+  --danger-danger-active: rgb(171, 36, 36);
+  --danger-danger-disabled: rgb(247, 176, 176);
+  --success-success-default: rgb(28, 209, 102);
+  --success-success-hover: rgb(71, 227, 140);
+  --success-success-active: rgb(18, 153, 74);
+  --success-success-disabled: rgb(166, 245, 204);
+  --warning-warning-default: rgb(255, 181, 41);
+  --warning-warning-hover: rgb(255, 214, 92);
+  --warning-warning-active: rgb(184, 125, 20);
+  --warning-warning-disabled: rgb(255, 240, 191);
+  --surface-surface-default: rgb(0, 0, 0);
+  --surface-surface-light: rgb(250, 250, 250);
+  --surface-surface-muted: rgb(23, 23, 23);
+  --surface-surface-subtle: rgb(38, 38, 38);
+  --surface-surface-elevated: rgb(41, 41, 41);
+  --surface-surface-input-default: rgb(36, 36, 36);
+  --surface-surface-input-hover: rgb(31, 31, 31);
+  --surface-surface-input-active: rgb(36, 36, 36);
+  --surface-surface-input-disabled: rgb(31, 31, 31);
+  --background-background-default: rgb(23, 23, 23);
+  --background-background-inverted: rgb(255, 255, 255);
+  --border-border-default: rgb(46, 46, 46);
+  --border-border-hover: rgb(133, 133, 133);
+  --border-border-active: rgb(184, 184, 184);
+  --border-border-disabled: rgb(201, 201, 201);
+  --border-border-error: rgb(224, 54, 54);
+  --text-text-primary: rgb(255, 255, 255);
+  --text-text-inverted: rgb(23, 23, 23);
+  --text-text-on-dark: rgb(255, 255, 255);
+  --text-text-muted: rgb(89, 89, 89);
+  --text-text-subtle: rgb(161, 161, 161);
+  --text-text-disabled: rgb(102, 102, 102);
+  --icons-icon-default: rgb(255, 255, 255);
+  --icons-icon-disabled: rgb(255, 255, 255);
+  --icons-icon-on-dark: rgb(255, 255, 255);
+  --icons-icon-on-bright: rgb(79, 79, 79);
+  --icons-icon-subtle: rgb(189, 189, 189);
+  --link-link-default: rgb(135, 207, 250);
+  --link-link-hover: rgb(166, 204, 245);
+  --link-link-active: rgb(107, 163, 219);
+  --link-link-visited: rgb(77, 122, 158);
+}
+
+/* Collection: design_system_tokens */
+[data-design_system_tokens="Default"] {
+  --spacing-spacing-1: 2px;
+  --spacing-spacing-0: 0;
+  --spacing-spacing-2: 4px;
+  --spacing-spacing-3: 8px;
+  --spacing-spacing-4: 12px;
+  --spacing-spacing-5: 16px;
+  --spacing-spacing-6: 20px;
+  --spacing-spacing-7: 24px;
+  --spacing-spacing-8: 28px;
+  --spacing-spacing-9: 32px;
+  --spacing-spacing-10: 40px;
+  --radius-radius-none: 0;
+  --radius-radius-xs: 2px;
+  --radius-radius-sm: 4px;
+  --radius-radius-md: 8px;
+  --radius-radius-lg: 16px;
+  --radius-radius-xl: 24px;
+  --radius-radius-2xl: 32px;
+  --radius-radius-full: 9999px;
+  --border-border-none: 0;
+  --border-border-thin: 1px;
+  --border-border-base: 1.5px;
+  --border-border-md: 2px;
+  --border-border-lg: 3px;
+  --border-border-xl: 4px;
+}
+
+/* Collection: complementary */
+[data-complementary="Light"] {
+  --strong-01: rgb(255, 163, 84);
+  --strong-02: rgb(255, 217, 138);
+  --strong-03: rgb(112, 235, 171);
+  --strong-04: rgb(105, 204, 255);
+  --strong-05: rgb(212, 179, 247);
+  --strong-06: rgb(255, 148, 196);
+  --strong-07: rgb(255, 135, 135);
+  --strong-08: rgb(184, 166, 247);
+  --strong-09: rgb(79, 224, 201);
+  --strong-10: rgb(255, 138, 181);
+  --strong-11: rgb(189, 171, 163);
+  --strong-12: rgb(179, 199, 166);
+  --strong-13: rgb(230, 245, 125);
+  --strong-14: rgb(69, 224, 245);
+  --strong-15: rgb(255, 156, 115);
+  --strong-16: rgb(255, 240, 97);
+  --strong-17: rgb(115, 232, 138);
+  --strong-18: rgb(74, 184, 247);
+  --strong-19: rgb(224, 82, 145);
+  --subtle-01: rgb(255, 237, 219);
+  --subtle-02: rgb(255, 245, 222);
+  --strong-20: rgb(232, 181, 255);
+  --subtle-03: rgb(224, 250, 237);
+  --subtle-04: rgb(224, 245, 255);
+  --subtle-05: rgb(245, 240, 255);
+  --subtle-06: rgb(255, 237, 245);
+  --subtle-07: rgb(255, 235, 235);
+  --subtle-08: rgb(242, 237, 255);
+  --subtle-09: rgb(230, 250, 247);
+  --subtle-10: rgb(255, 240, 245);
+  --subtle-11: rgb(245, 242, 242);
+  --subtle-12: rgb(242, 245, 242);
+  --subtle-13: rgb(250, 252, 235);
+  --subtle-14: rgb(230, 250, 255);
+  --subtle-15: rgb(255, 242, 235);
+  --subtle-16: rgb(255, 255, 237);
+  --subtle-17: rgb(232, 250, 240);
+  --subtle-18: rgb(230, 245, 255);
+  --subtle-19: rgb(252, 237, 242);
+  --subtle-20: rgb(250, 242, 255);
+  --dark-06: rgb(196, 69, 128);
+  --dark-04: rgb(0, 102, 156);
+  --dark-02: rgb(168, 107, 0);
+  --dark-05: rgb(87, 61, 150);
+}
+
+/* Collection: prototype */
+[data-prototype="Mode-1"] {
+  --show-thread: 1;
+}
+
+/* ========================================= */
+/* USAGE EXAMPLES */
+/* ========================================= */
+
+/*
+DYNAMIC MODE SWITCHING:
+
+<!-- color_palette_tokens Collection -->
+<div data-color_palette_tokens="Light-Mode">Content in Light Mode mode</div>
+<div data-color_palette_tokens="Dark-Mode">Content in Dark Mode mode</div>
+
+<!-- design_system_tokens Collection -->
+<div data-design_system_tokens="Default">Content in Default mode</div>
+
+<!-- complementary Collection -->
+<div data-complementary="Light">Content in Light mode</div>
+
+<!-- prototype Collection -->
+<div data-prototype="Mode-1">Content in Mode 1 mode</div>
+
+MULTI-MODE SWITCHING:
+<div data-theme="light" data-size="large" data-prominence="primary">
+  Content with multiple mode attributes
+</div>
+
+VARIABLE USAGE IN CSS:
+.my-component {
+  color: var(--cta-cta-default);
+  color: var(--cta-cta-hover);
+  color: var(--cta-cta-active);
+}
+*/
+
+/* CSS Custom Property Validation */
+@supports (color: var(--test)) {
+  /* Modern browsers with CSS custom property support */
+  .css-variables-supported {
+    display: block;
+  }
+}
+
+@supports not (color: var(--test)) {
+  /* Fallback for older browsers */
+  .css-variables-not-supported {
+    display: block;
+  }
+  .css-variables-supported {
+    display: none;
+  }
+}
+
+/* ========================================= */
+/* TAILWIND & SHADCN COMPATIBILITY LAYER */
+/* ========================================= */
+
+@custom-variant dark (&:is(.dark *));
+
+/* Base Tailwind color mappings for shadcn components */
+:root {
+  --background: #ffffff;
+  --foreground: rgb(23, 23, 23);
+  --card: #ffffff;
+  --card-foreground: rgb(23, 23, 23);
+  --popover: #ffffff;
+  --popover-foreground: rgb(23, 23, 23);
+  --primary: rgb(36, 36, 36);
+  --primary-foreground: #ffffff;
+  --secondary: rgb(237, 237, 237);
+  --secondary-foreground: rgb(23, 23, 23);
+  --muted: rgb(245, 245, 245);
+  --muted-foreground: rgb(89, 89, 89);
+  --accent: rgb(240, 240, 240);
+  --accent-foreground: rgb(23, 23, 23);
+  --destructive: rgb(224, 54, 54);
+  --destructive-foreground: #ffffff;
+  --border: rgb(224, 224, 224);
+  --input: transparent;
+  --input-background: rgb(247, 247, 247);
+  --switch-background: rgb(201, 201, 201);
+  --ring: rgb(133, 133, 133);
+  --radius: 0px;
+  --chart-1: rgb(255, 163, 84);
+  --chart-2: rgb(105, 204, 255);
+  --chart-3: rgb(112, 235, 171);
+  --chart-4: rgb(212, 179, 247);
+  --chart-5: rgb(255, 148, 196);
+  --sidebar: rgb(250, 250, 250);
+  --sidebar-foreground: rgb(23, 23, 23);
+  --sidebar-primary: rgb(36, 36, 36);
+  --sidebar-primary-foreground: rgb(250, 250, 250);
+  --sidebar-accent: rgb(240, 240, 240);
+  --sidebar-accent-foreground: rgb(46, 46, 46);
+  --sidebar-border: rgb(224, 224, 224);
+  --sidebar-ring: rgb(133, 133, 133);
+  --cta: rgb(224, 54, 0);
+  --cta-foreground: #ffffff;
+  --text-on-bright: #ffffff;
+}
+
+.dark {
+  --background: rgb(23, 23, 23);
+  --foreground: rgb(255, 255, 255);
+  --card: rgb(23, 23, 23);
+  --card-foreground: rgb(255, 255, 255);
+  --popover: rgb(23, 23, 23);
+  --popover-foreground: rgb(255, 255, 255);
+  --primary: rgb(255, 255, 255);
+  --primary-foreground: rgb(46, 46, 46);
+  --secondary: rgb(36, 36, 36);
+  --secondary-foreground: rgb(255, 255, 255);
+  --muted: rgb(36, 36, 36);
+  --muted-foreground: rgb(161, 161, 161);
+  --accent: rgb(36, 36, 36);
+  --accent-foreground: rgb(255, 255, 255);
+  --destructive: rgb(224, 54, 54);
+  --destructive-foreground: rgb(247, 176, 176);
+  --border: rgb(46, 46, 46);
+  --input: rgb(36, 36, 36);
+  --ring: rgb(89, 89, 89);
+  --chart-1: rgb(255, 163, 84);
+  --chart-2: rgb(135, 207, 250);
+  --chart-3: rgb(112, 235, 171);
+  --chart-4: rgb(212, 179, 247);
+  --chart-5: rgb(255, 148, 196);
+  --sidebar: rgb(46, 46, 46);
+  --sidebar-foreground: rgb(255, 255, 255);
+  --sidebar-primary: rgb(255, 163, 84);
+  --sidebar-primary-foreground: rgb(255, 255, 255);
+  --sidebar-accent: rgb(36, 36, 36);
+  --sidebar-accent-foreground: rgb(255, 255, 255);
+  --sidebar-border: rgb(36, 36, 36);
+  --sidebar-ring: rgb(89, 89, 89);
+  --cta: rgb(250, 77, 26);
+  --cta-foreground: rgb(23, 23, 23);
+  --text-on-bright: rgb(23, 23, 23);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-cta: var(--cta);
+  --color-cta-foreground: var(--cta-foreground);
+  --color-text-on-bright: var(--text-on-bright);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-size: var(--text-2xl);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    h2 {
+      font-size: var(--text-xl);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    h3 {
+      font-size: var(--text-lg);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    h4 {
+      font-size: var(--text-base);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    p {
+      font-size: var(--text-base);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    label {
+      font-size: var(--text-base);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    button {
+      font-size: var(--text-base);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    input {
+      font-size: var(--text-base);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+  }
+}
+
+html {
+  font-size: 16px;
+}

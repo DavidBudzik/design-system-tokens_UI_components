@@ -1,0 +1,555 @@
+export interface Token {
+  name: string;
+  hex: string;
+  rgb: string;
+  darkHex?: string;
+  darkRgb?: string;
+}
+
+export interface Section {
+  title: string;
+  description: string;
+  tokens: Token[];
+}
+
+export const designSystemData: { sections: Section[] } = {
+  sections: [
+    {
+      title: "Call-to-Action (CTA)",
+      description: "Primary action colors with interactive states.",
+      tokens: [
+        { 
+          name: "--cta-cta-default", 
+          hex: "#E03600", 
+          rgb: "rgb(224, 54, 0)",
+          darkHex: "#FF5C1A",
+          darkRgb: "rgb(255, 92, 26)"
+        },
+        { 
+          name: "--cta-cta-hover", 
+          hex: "#FA4D1A", 
+          rgb: "rgb(250, 77, 26)",
+          darkHex: "#FF7038",
+          darkRgb: "rgb(255, 112, 56)"
+        },
+        { 
+          name: "--cta-cta-active", 
+          hex: "#C22E00", 
+          rgb: "rgb(194, 46, 0)",
+          darkHex: "#E04000",
+          darkRgb: "rgb(224, 64, 0)"
+        },
+        { 
+          name: "--cta-cta-disabled", 
+          hex: "#FFD4C2", 
+          rgb: "rgb(255, 212, 194)",
+          darkHex: "#4D2417",
+          darkRgb: "rgb(77, 36, 23)"
+        },
+      ]
+    },
+    {
+      title: "Primary",
+      description: "Core primary colors for main interface elements.",
+      tokens: [
+        { 
+          name: "--primary-primary-default", 
+          hex: "#242424", 
+          rgb: "rgb(36, 36, 36)",
+          darkHex: "#E0E0E0",
+          darkRgb: "rgb(224, 224, 224)"
+        },
+        { 
+          name: "--primary-primary-hover", 
+          hex: "#616161", 
+          rgb: "rgb(97, 97, 97)",
+          darkHex: "#B8B8B8",
+          darkRgb: "rgb(184, 184, 184)"
+        },
+        { 
+          name: "--primary-primary-active", 
+          hex: "#474747", 
+          rgb: "rgb(71, 71, 71)",
+          darkHex: "#CCCCCC",
+          darkRgb: "rgb(204, 204, 204)"
+        },
+        { 
+          name: "--primary-primary-disabled", 
+          hex: "#BDBDBD", 
+          rgb: "rgb(189, 189, 189)",
+          darkHex: "#525252",
+          darkRgb: "rgb(82, 82, 82)"
+        },
+      ]
+    },
+    {
+      title: "Secondary",
+      description: "Secondary action and surface colors.",
+      tokens: [
+        { 
+          name: "--secondary-secondary-default", 
+          hex: "#EDEDED", 
+          rgb: "rgb(237, 237, 237)",
+          darkHex: "#333333",
+          darkRgb: "rgb(51, 51, 51)"
+        },
+        { 
+          name: "--secondary-secondary-hover", 
+          hex: "#DEDEDE", 
+          rgb: "rgb(222, 222, 222)",
+          darkHex: "#404040",
+          darkRgb: "rgb(64, 64, 64)"
+        },
+        { 
+          name: "--secondary-secondary-active", 
+          hex: "#E6E6E6", 
+          rgb: "rgb(230, 230, 230)",
+          darkHex: "#383838",
+          darkRgb: "rgb(56, 56, 56)"
+        },
+        { 
+          name: "--secondary-secondary-disabled", 
+          hex: "#F5F5F5", 
+          rgb: "rgb(245, 245, 245)",
+          darkHex: "#2B2B2B",
+          darkRgb: "rgb(43, 43, 43)"
+        },
+      ]
+    },
+    {
+      title: "Danger",
+      description: "Error and destructive action colors.",
+      tokens: [
+        { 
+          name: "--danger-danger-default", 
+          hex: "#E03636", 
+          rgb: "rgb(224, 54, 54)",
+          darkHex: "#FF5C5C",
+          darkRgb: "rgb(255, 92, 92)"
+        },
+        { 
+          name: "--danger-danger-hover", 
+          hex: "#FF5C5C", 
+          rgb: "rgb(255, 92, 92)",
+          darkHex: "#FF7070",
+          darkRgb: "rgb(255, 112, 112)"
+        },
+        { 
+          name: "--danger-danger-active", 
+          hex: "#AB2424", 
+          rgb: "rgb(171, 36, 36)",
+          darkHex: "#E04040",
+          darkRgb: "rgb(224, 64, 64)"
+        },
+        { 
+          name: "--danger-danger-disabled", 
+          hex: "#F7B0B0", 
+          rgb: "rgb(247, 176, 176)",
+          darkHex: "#4D1F1F",
+          darkRgb: "rgb(77, 31, 31)"
+        },
+      ]
+    },
+    {
+      title: "Success",
+      description: "Success and positive feedback colors.",
+      tokens: [
+        { 
+          name: "--success-success-default", 
+          hex: "#1CD166", 
+          rgb: "rgb(28, 209, 102)",
+          darkHex: "#47E38C",
+          darkRgb: "rgb(71, 227, 140)"
+        },
+        { 
+          name: "--success-success-hover", 
+          hex: "#47E38C", 
+          rgb: "rgb(71, 227, 140)",
+          darkHex: "#5FE89E",
+          darkRgb: "rgb(95, 232, 158)"
+        },
+        { 
+          name: "--success-success-active", 
+          hex: "#12994A", 
+          rgb: "rgb(18, 153, 74)",
+          darkHex: "#30CC70",
+          darkRgb: "rgb(48, 204, 112)"
+        },
+        { 
+          name: "--success-success-disabled", 
+          hex: "#A6F5CC", 
+          rgb: "rgb(166, 245, 204)",
+          darkHex: "#1F4D30",
+          darkRgb: "rgb(31, 77, 48)"
+        },
+      ]
+    },
+    {
+      title: "Warning",
+      description: "Warning and cautionary colors.",
+      tokens: [
+        { 
+          name: "--warning-warning-default", 
+          hex: "#FFB529", 
+          rgb: "rgb(255, 181, 41)",
+          darkHex: "#FFD65C",
+          darkRgb: "rgb(255, 214, 92)"
+        },
+        { 
+          name: "--warning-warning-hover", 
+          hex: "#FFD65C", 
+          rgb: "rgb(255, 214, 92)",
+          darkHex: "#FFE070",
+          darkRgb: "rgb(255, 224, 112)"
+        },
+        { 
+          name: "--warning-warning-active", 
+          hex: "#B87D14", 
+          rgb: "rgb(184, 125, 20)",
+          darkHex: "#E6A020",
+          darkRgb: "rgb(230, 160, 32)"
+        },
+        { 
+          name: "--warning-warning-disabled", 
+          hex: "#FFF0BF", 
+          rgb: "rgb(255, 240, 191)",
+          darkHex: "#4D3D1A",
+          darkRgb: "rgb(77, 61, 26)"
+        },
+      ]
+    },
+    {
+      title: "Link",
+      description: "Hyperlink and navigation colors.",
+      tokens: [
+        { 
+          name: "--link-link-default", 
+          hex: "#308FED", 
+          rgb: "rgb(48, 143, 237)",
+          darkHex: "#529EFC",
+          darkRgb: "rgb(82, 158, 252)"
+        },
+        { 
+          name: "--link-link-hover", 
+          hex: "#529EFC", 
+          rgb: "rgb(82, 158, 252)",
+          darkHex: "#70B0FF",
+          darkRgb: "rgb(112, 176, 255)"
+        },
+        { 
+          name: "--link-link-active", 
+          hex: "#267DE0", 
+          rgb: "rgb(38, 125, 224)",
+          darkHex: "#408FED",
+          darkRgb: "rgb(64, 143, 237)"
+        },
+        { 
+          name: "--link-link-visited", 
+          hex: "#1C5C9E", 
+          rgb: "rgb(28, 92, 158)",
+          darkHex: "#4080CC",
+          darkRgb: "rgb(64, 128, 204)"
+        },
+      ]
+    },
+    {
+      title: "Surface",
+      description: "Surface and container background colors.",
+      tokens: [
+        { 
+          name: "--surface-surface-default", 
+          hex: "#FFFFFF", 
+          rgb: "rgb(255, 255, 255)",
+          darkHex: "#1A1A1A",
+          darkRgb: "rgb(26, 26, 26)"
+        },
+        { 
+          name: "--surface-surface-light", 
+          hex: "#FAFAFA", 
+          rgb: "rgb(250, 250, 250)",
+          darkHex: "#212121",
+          darkRgb: "rgb(33, 33, 33)"
+        },
+        { 
+          name: "--surface-surface-muted", 
+          hex: "#F5F5F5", 
+          rgb: "rgb(245, 245, 245)",
+          darkHex: "#282828",
+          darkRgb: "rgb(40, 40, 40)"
+        },
+        { 
+          name: "--surface-surface-subtle", 
+          hex: "#F0F0F0", 
+          rgb: "rgb(240, 240, 240)",
+          darkHex: "#2E2E2E",
+          darkRgb: "rgb(46, 46, 46)"
+        },
+        { 
+          name: "--surface-surface-elevated", 
+          hex: "#E0E0E0", 
+          rgb: "rgb(224, 224, 224)",
+          darkHex: "#383838",
+          darkRgb: "rgb(56, 56, 56)"
+        },
+      ]
+    },
+    {
+      title: "Surface - Input",
+      description: "Input field surface colors with states.",
+      tokens: [
+        { 
+          name: "--surface-surface-input-default", 
+          hex: "#F7F7F7", 
+          rgb: "rgb(247, 247, 247)",
+          darkHex: "#262626",
+          darkRgb: "rgb(38, 38, 38)"
+        },
+        { 
+          name: "--surface-surface-input-hover", 
+          hex: "#E8E8E8", 
+          rgb: "rgb(232, 232, 232)",
+          darkHex: "#333333",
+          darkRgb: "rgb(51, 51, 51)"
+        },
+        { 
+          name: "--surface-surface-input-active", 
+          hex: "#F0F0F0", 
+          rgb: "rgb(240, 240, 240)",
+          darkHex: "#2E2E2E",
+          darkRgb: "rgb(46, 46, 46)"
+        },
+        { 
+          name: "--surface-surface-input-disabled", 
+          hex: "#F0F0F0", 
+          rgb: "rgb(240, 240, 240)",
+          darkHex: "#2E2E2E",
+          darkRgb: "rgb(46, 46, 46)"
+        },
+      ]
+    },
+    {
+      title: "Background",
+      description: "Page and container backgrounds.",
+      tokens: [
+        { 
+          name: "--background-background-default", 
+          hex: "#FFFFFF", 
+          rgb: "rgb(255, 255, 255)",
+          darkHex: "#121212",
+          darkRgb: "rgb(18, 18, 18)"
+        },
+        { 
+          name: "--background-background-inverted", 
+          hex: "#171717", 
+          rgb: "rgb(23, 23, 23)",
+          darkHex: "#E8E8E8",
+          darkRgb: "rgb(232, 232, 232)"
+        },
+      ]
+    },
+    {
+      title: "Border",
+      description: "Border colors with interactive states.",
+      tokens: [
+        { 
+          name: "--border-border-default", 
+          hex: "#E0E0E0", 
+          rgb: "rgb(224, 224, 224)",
+          darkHex: "#404040",
+          darkRgb: "rgb(64, 64, 64)"
+        },
+        { 
+          name: "--border-border-hover", 
+          hex: "#B8B8B8", 
+          rgb: "rgb(184, 184, 184)",
+          darkHex: "#5C5C5C",
+          darkRgb: "rgb(92, 92, 92)"
+        },
+        { 
+          name: "--border-border-active", 
+          hex: "#858585", 
+          rgb: "rgb(133, 133, 133)",
+          darkHex: "#787878",
+          darkRgb: "rgb(120, 120, 120)"
+        },
+        { 
+          name: "--border-border-disabled", 
+          hex: "#C9C9C9", 
+          rgb: "rgb(201, 201, 201)",
+          darkHex: "#4A4A4A",
+          darkRgb: "rgb(74, 74, 74)"
+        },
+        { 
+          name: "--border-border-error", 
+          hex: "#E03636", 
+          rgb: "rgb(224, 54, 54)",
+          darkHex: "#FF5C5C",
+          darkRgb: "rgb(255, 92, 92)"
+        },
+      ]
+    },
+    {
+      title: "Text",
+      description: "Text colors for various contexts.",
+      tokens: [
+        { 
+          name: "--text-text-primary", 
+          hex: "#171717", 
+          rgb: "rgb(23, 23, 23)",
+          darkHex: "#F0F0F0",
+          darkRgb: "rgb(240, 240, 240)"
+        },
+        { 
+          name: "--text-text-inverted", 
+          hex: "#FFFFFF", 
+          rgb: "rgb(255, 255, 255)",
+          darkHex: "#171717",
+          darkRgb: "rgb(23, 23, 23)"
+        },
+        { 
+          name: "--text-text-on-dark", 
+          hex: "#FFFFFF", 
+          rgb: "rgb(255, 255, 255)",
+          darkHex: "#FFFFFF",
+          darkRgb: "rgb(255, 255, 255)"
+        },
+        { 
+          name: "--text-text-muted", 
+          hex: "#595959", 
+          rgb: "rgb(89, 89, 89)",
+          darkHex: "#B8B8B8",
+          darkRgb: "rgb(184, 184, 184)"
+        },
+        { 
+          name: "--text-text-subtle", 
+          hex: "#A1A1A1", 
+          rgb: "rgb(161, 161, 161)",
+          darkHex: "#787878",
+          darkRgb: "rgb(120, 120, 120)"
+        },
+        { 
+          name: "--text-text-disabled", 
+          hex: "#C9C9C9", 
+          rgb: "rgb(201, 201, 201)",
+          darkHex: "#525252",
+          darkRgb: "rgb(82, 82, 82)"
+        },
+      ]
+    },
+    {
+      title: "Icons",
+      description: "Icon colors for different backgrounds.",
+      tokens: [
+        { 
+          name: "--icons-icon-default", 
+          hex: "#4F4F4F", 
+          rgb: "rgb(79, 79, 79)",
+          darkHex: "#CCCCCC",
+          darkRgb: "rgb(204, 204, 204)"
+        },
+        { 
+          name: "--icons-icon-disabled", 
+          hex: "#BDBDBD", 
+          rgb: "rgb(189, 189, 189)",
+          darkHex: "#5C5C5C",
+          darkRgb: "rgb(92, 92, 92)"
+        },
+        { 
+          name: "--icons-icon-on-dark", 
+          hex: "#FCFCFC", 
+          rgb: "rgb(252, 252, 252)",
+          darkHex: "#FCFCFC",
+          darkRgb: "rgb(252, 252, 252)"
+        },
+        { 
+          name: "--icons-icon-on-bright", 
+          hex: "#FCFCFC", 
+          rgb: "rgb(252, 252, 252)",
+          darkHex: "#1A1A1A",
+          darkRgb: "rgb(26, 26, 26)"
+        },
+        { 
+          name: "--icons-icon-subtle", 
+          hex: "#BDBDBD", 
+          rgb: "rgb(189, 189, 189)",
+          darkHex: "#5C5C5C",
+          darkRgb: "rgb(92, 92, 92)"
+        },
+      ]
+    },
+    {
+      title: "Complementary - Strong (1-10)",
+      description: "Vibrant accent colors for emphasis and decoration.",
+      tokens: [
+        { name: "--strong-01", hex: "#FFA354", rgb: "rgb(255, 163, 84)", darkHex: "#FF8A38", darkRgb: "rgb(255, 138, 56)" },
+        { name: "--strong-02", hex: "#FFD98A", rgb: "rgb(255, 217, 138)", darkHex: "#FFC757", darkRgb: "rgb(255, 199, 87)" },
+        { name: "--strong-03", hex: "#70EBAB", rgb: "rgb(112, 235, 171)", darkHex: "#5FD99A", darkRgb: "rgb(95, 217, 154)" },
+        { name: "--strong-04", hex: "#69CCFF", rgb: "rgb(105, 204, 255)", darkHex: "#52BAED", darkRgb: "rgb(82, 186, 237)" },
+        { name: "--strong-05", hex: "#D4B3F7", rgb: "rgb(212, 179, 247)", darkHex: "#BF9EE0", darkRgb: "rgb(191, 158, 224)" },
+        { name: "--strong-06", hex: "#FF94C4", rgb: "rgb(255, 148, 196)", darkHex: "#ED7AB0", darkRgb: "rgb(237, 122, 176)" },
+        { name: "--strong-07", hex: "#FF8787", rgb: "rgb(255, 135, 135)", darkHex: "#ED6B6B", darkRgb: "rgb(237, 107, 107)" },
+        { name: "--strong-08", hex: "#B8A6F7", rgb: "rgb(184, 166, 247)", darkHex: "#9F8AE0", darkRgb: "rgb(159, 138, 224)" },
+        { name: "--strong-09", hex: "#4FE0C9", rgb: "rgb(79, 224, 201)", darkHex: "#3DCCB5", darkRgb: "rgb(61, 204, 181)" },
+        { name: "--strong-10", hex: "#FF8AB5", rgb: "rgb(255, 138, 181)", darkHex: "#ED70A0", darkRgb: "rgb(237, 112, 160)" },
+      ]
+    },
+    {
+      title: "Complementary - Strong (11-20)",
+      description: "Additional vibrant accent colors.",
+      tokens: [
+        { name: "--strong-11", hex: "#BDABA3", rgb: "rgb(189, 171, 163)", darkHex: "#9E8A82", darkRgb: "rgb(158, 138, 130)" },
+        { name: "--strong-12", hex: "#B3C7A6", rgb: "rgb(179, 199, 166)", darkHex: "#9AB08D", darkRgb: "rgb(154, 176, 141)" },
+        { name: "--strong-13", hex: "#E6F57D", rgb: "rgb(230, 245, 125)", darkHex: "#D4E066", darkRgb: "rgb(212, 224, 102)" },
+        { name: "--strong-14", hex: "#45E0F5", rgb: "rgb(69, 224, 245)", darkHex: "#33CCE0", darkRgb: "rgb(51, 204, 224)" },
+        { name: "--strong-15", hex: "#FF9C73", rgb: "rgb(255, 156, 115)", darkHex: "#ED8257", darkRgb: "rgb(237, 130, 87)" },
+        { name: "--strong-16", hex: "#FFF061", rgb: "rgb(255, 240, 97)", darkHex: "#E6D94D", darkRgb: "rgb(230, 217, 77)" },
+        { name: "--strong-17", hex: "#73E88A", rgb: "rgb(115, 232, 138)", darkHex: "#5FD470", darkRgb: "rgb(95, 212, 112)" },
+        { name: "--strong-18", hex: "#4AB8F7", rgb: "rgb(74, 184, 247)", darkHex: "#38A6E0", darkRgb: "rgb(56, 166, 224)" },
+        { name: "--strong-19", hex: "#E05291", rgb: "rgb(224, 82, 145)", darkHex: "#CC3D7A", darkRgb: "rgb(204, 61, 122)" },
+        { name: "--strong-20", hex: "#E8B5FF", rgb: "rgb(232, 181, 255)", darkHex: "#D49EED", darkRgb: "rgb(212, 158, 237)" },
+      ]
+    },
+    {
+      title: "Complementary - Subtle (1-10)",
+      description: "Soft, muted accent colors for backgrounds.",
+      tokens: [
+        { name: "--subtle-01", hex: "#FFEDDB", rgb: "rgb(255, 237, 219)", darkHex: "#4D3426", darkRgb: "rgb(77, 52, 38)" },
+        { name: "--subtle-02", hex: "#FFF5DE", rgb: "rgb(255, 245, 222)", darkHex: "#4D4229", darkRgb: "rgb(77, 66, 41)" },
+        { name: "--subtle-03", hex: "#E0FAED", rgb: "rgb(224, 250, 237)", darkHex: "#1F4D33", darkRgb: "rgb(31, 77, 51)" },
+        { name: "--subtle-04", hex: "#E0F5FF", rgb: "rgb(224, 245, 255)", darkHex: "#1F3D4D", darkRgb: "rgb(31, 61, 77)" },
+        { name: "--subtle-05", hex: "#F5F0FF", rgb: "rgb(245, 240, 255)", darkHex: "#332D4D", darkRgb: "rgb(51, 45, 77)" },
+        { name: "--subtle-06", hex: "#FFEDF5", rgb: "rgb(255, 237, 245)", darkHex: "#4D2638", darkRgb: "rgb(77, 38, 56)" },
+        { name: "--subtle-07", hex: "#FFEBEB", rgb: "rgb(255, 235, 235)", darkHex: "#4D2626", darkRgb: "rgb(77, 38, 38)" },
+        { name: "--subtle-08", hex: "#F2EDFF", rgb: "rgb(242, 237, 255)", darkHex: "#2E294D", darkRgb: "rgb(46, 41, 77)" },
+        { name: "--subtle-09", hex: "#E6FAF7", rgb: "rgb(230, 250, 247)", darkHex: "#1F4D45", darkRgb: "rgb(31, 77, 69)" },
+        { name: "--subtle-10", hex: "#FFF0F5", rgb: "rgb(255, 240, 245)", darkHex: "#4D2938", darkRgb: "rgb(77, 41, 56)" },
+      ]
+    },
+    {
+      title: "Complementary - Subtle (11-20)",
+      description: "Additional soft accent colors.",
+      tokens: [
+        { name: "--subtle-11", hex: "#F5F2F2", rgb: "rgb(245, 242, 242)", darkHex: "#383333", darkRgb: "rgb(56, 51, 51)" },
+        { name: "--subtle-12", hex: "#F2F5F2", rgb: "rgb(242, 245, 242)", darkHex: "#333833", darkRgb: "rgb(51, 56, 51)" },
+        { name: "--subtle-13", hex: "#FAFCEB", rgb: "rgb(250, 252, 235)", darkHex: "#3D4026", darkRgb: "rgb(61, 64, 38)" },
+        { name: "--subtle-14", hex: "#E6FAFF", rgb: "rgb(230, 250, 255)", darkHex: "#1F404D", darkRgb: "rgb(31, 64, 77)" },
+        { name: "--subtle-15", hex: "#FFF2EB", rgb: "rgb(255, 242, 235)", darkHex: "#4D3626", darkRgb: "rgb(77, 54, 38)" },
+        { name: "--subtle-16", hex: "#FFFFED", rgb: "rgb(255, 255, 237)", darkHex: "#4D4D29", darkRgb: "rgb(77, 77, 41)" },
+        { name: "--subtle-17", hex: "#E8FAF0", rgb: "rgb(232, 250, 240)", darkHex: "#26402E", darkRgb: "rgb(38, 64, 46)" },
+        { name: "--subtle-18", hex: "#E6F5FF", rgb: "rgb(230, 245, 255)", darkHex: "#1F3D4D", darkRgb: "rgb(31, 61, 77)" },
+        { name: "--subtle-19", hex: "#FCEDF2", rgb: "rgb(252, 237, 242)", darkHex: "#402933", darkRgb: "rgb(64, 41, 51)" },
+        { name: "--subtle-20", hex: "#FAF2FF", rgb: "rgb(250, 242, 255)", darkHex: "#332D40", darkRgb: "rgb(51, 45, 64)" },
+      ]
+    },
+    {
+      title: "Complementary - Dark",
+      description: "Dark accent colors for contrast.",
+      tokens: [
+        { name: "--dark-02", hex: "#A86B00", rgb: "rgb(168, 107, 0)", darkHex: "#D18A00", darkRgb: "rgb(209, 138, 0)" },
+        { name: "--dark-04", hex: "#00669C", rgb: "rgb(0, 102, 156)", darkHex: "#0080C7", darkRgb: "rgb(0, 128, 199)" },
+        { name: "--dark-05", hex: "#573D96", rgb: "rgb(87, 61, 150)", darkHex: "#6E4DBF", darkRgb: "rgb(110, 77, 191)" },
+        { name: "--dark-06", hex: "#C44580", rgb: "rgb(196, 69, 128)", darkHex: "#ED5AA0", darkRgb: "rgb(237, 90, 160)" },
+      ]
+    },
+  ]
+};
