@@ -263,7 +263,6 @@ const AbleIconsGuide = () => {
             key={groupName}
             title={groupName}
             description={groupData.description}
-            icon="grid"
             className={index > 0 ? "mt-6" : ""}
           >
             <CollapsibleSection
