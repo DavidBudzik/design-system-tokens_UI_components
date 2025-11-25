@@ -22,7 +22,103 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Checkbox } from './ui/checkbox';
 import { Switch } from './ui/switch';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
+import { Zap, Columns, Eraser, Bookmark, Send } from 'lucide-react';
+import { Textarea } from './ui/textarea';
+
+// Chat Input Interface Component
+function ChatInputInterface({ mode = 'explore' }: { mode?: 'explore' | 'general' }) {
+  const [message, setMessage] = useState('');
+  
+  const placeholderText = mode === 'explore' 
+    ? 'Reply or ask anything...' 
+    : 'Start a new research in this folder...';
+
+  return (
+    <div 
+      className="w-full max-w-2xl border rounded-lg overflow-hidden"
+      style={{
+        backgroundColor: 'var(--surface-surface-input-default, #F8F8F8)',
+        borderColor: 'var(--border-border-default, #E0E0E0)'
+      }}
+    >
+      {/* Text Input Area */}
+      <div className="p-4 min-h-[80px]">
+        <Textarea
+          placeholder={placeholderText}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="w-full bg-transparent border-none resize-none focus:ring-0 focus-visible:ring-0 p-0 text-sm"
+          style={{
+            color: message ? 'var(--text-text-default, #242424)' : 'var(--text-text-subtle, #A0A0A0)'
+          }}
+          rows={2}
+        />
+      </div>
+      
+      {/* Bottom Actions Bar */}
+      <div className="flex items-center justify-between px-3 py-2">
+        {/* Left Actions */}
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            style={{ color: 'var(--text-text-muted, #5A5A5A)' }}
+          >
+            <Zap className="h-5 w-5" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            style={{ color: 'var(--text-text-muted, #5A5A5A)' }}
+          >
+            <Columns className="h-5 w-5" />
+          </Button>
+        </div>
+        
+        {/* Right Actions */}
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            style={{ color: 'var(--text-text-muted, #5A5A5A)' }}
+          >
+            <Eraser className="h-5 w-5" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 gap-2 px-3"
+            style={{
+              backgroundColor: 'var(--surface-surface-input-default, #F8F8F8)',
+              borderColor: 'var(--border-border-default, #E0E0E0)',
+              color: 'var(--text-text-muted, #5A5A5A)'
+            }}
+          >
+            <Bookmark className="h-4 w-4" />
+            <span className="text-xs">Library</span>
+          </Button>
+          <Button
+            size="sm"
+            className="h-7 w-7 p-0 rounded-full"
+            style={{
+              backgroundColor: message 
+                ? 'var(--cta-cta-default, #E03500)' 
+                : 'var(--cta-cta-disabled, #FFD3C2)',
+              color: 'white'
+            }}
+            disabled={!message}
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // Search Input Demo Component
 function SearchInputDemo() {
@@ -923,6 +1019,295 @@ function IconButtons() {
       >
         <Search className="w-5 h-5" />
       </Button>
+    </div>
+  );
+}`
+                }}
+              />
+            </div>
+          </CollapsibleSection>
+        </CollapsibleGroup>
+
+        {/* Chat Input Interface Section */}
+        <CollapsibleGroup
+          title="Chat Input Interface"
+          description="AI-powered chat input components for research and exploration."
+          icon="message-square"
+          className="mt-12 pt-8 border-t-2 border-border"
+        >
+          <CollapsibleSection
+            id="chat-input-explore"
+            title="Explore Mode Chat Input"
+            description="Chat input for exploration context with quick actions"
+            hint="Click to view chat input examples"
+            defaultOpen={true}
+          >
+            <div className="space-y-6">
+              <ComponentShowcase
+                title="Chat Input - Explore Mode"
+                description="Interactive chat input with workflow, columns, erase, and library actions"
+                tokens={['--surface-surface-input-default', '--border-border-default', '--cta-cta-default', '--text-text-subtle']}
+                preview={
+                  <ChatInputInterface mode="explore" />
+                }
+                code={{
+                  html: `<div class="chat-input-container">
+  <div class="chat-input-text-area">
+    <textarea placeholder="Reply or ask anything..."></textarea>
+  </div>
+  <div class="chat-input-actions">
+    <div class="actions-left">
+      <button class="icon-btn" aria-label="Workflow"><svg>...</svg></button>
+      <button class="icon-btn" aria-label="Columns"><svg>...</svg></button>
+    </div>
+    <div class="actions-right">
+      <button class="icon-btn" aria-label="Erase"><svg>...</svg></button>
+      <button class="btn-library">
+        <svg>...</svg>
+        <span>Library</span>
+      </button>
+      <button class="btn-send" aria-label="Send"><svg>...</svg></button>
+    </div>
+  </div>
+</div>`,
+                  css: `.chat-input-container {
+  background-color: var(--surface-surface-input-default);
+  border: 1px solid var(--border-border-default);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.chat-input-text-area {
+  padding: 16px;
+  min-height: 80px;
+}
+
+.chat-input-text-area textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  resize: none;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-text-default);
+}
+
+.chat-input-text-area textarea::placeholder {
+  color: var(--text-text-subtle);
+}
+
+.chat-input-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+}
+
+.actions-left,
+.actions-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-text-muted);
+  cursor: pointer;
+}
+
+.btn-library {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  background-color: var(--surface-surface-input-default);
+  border: 1px solid var(--border-border-default);
+  color: var(--text-text-muted);
+  font-size: 12px;
+}
+
+.btn-send {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--cta-cta-default);
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-send:disabled {
+  background-color: var(--cta-cta-disabled);
+  cursor: not-allowed;
+}`,
+                  react: `import { useState } from 'react';
+import { Button } from './ui/button';
+import { Textarea } from './ui/textarea';
+import { Zap, Columns, Eraser, Bookmark, Send } from 'lucide-react';
+
+function ChatInputInterface({ mode = 'explore' }) {
+  const [message, setMessage] = useState('');
+  
+  return (
+    <div 
+      className="w-full max-w-2xl border rounded-lg overflow-hidden"
+      style={{
+        backgroundColor: 'var(--surface-surface-input-default)',
+        borderColor: 'var(--border-border-default)'
+      }}
+    >
+      <div className="p-4 min-h-[80px]">
+        <Textarea
+          placeholder="Reply or ask anything..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="w-full bg-transparent border-none resize-none"
+          rows={2}
+        />
+      </div>
+      
+      <div className="flex items-center justify-between px-3 py-2">
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+            <Zap className="h-5 w-5" />
+          </Button>
+          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+            <Columns className="h-5 w-5" />
+          </Button>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+            <Eraser className="h-5 w-5" />
+          </Button>
+          <Button variant="outline" size="sm" className="h-8 gap-2 px-3">
+            <Bookmark className="h-4 w-4" />
+            <span className="text-xs">Library</span>
+          </Button>
+          <Button
+            size="sm"
+            className="h-7 w-7 p-0 rounded-full"
+            style={{
+              backgroundColor: message 
+                ? 'var(--cta-cta-default)' 
+                : 'var(--cta-cta-disabled)',
+              color: 'white'
+            }}
+            disabled={!message}
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}`
+                }}
+              />
+            </div>
+          </CollapsibleSection>
+
+          <CollapsibleSection
+            id="chat-input-general"
+            title="General Mode Chat Input"
+            description="Chat input for starting new research in a folder"
+            hint="Click to view general mode input"
+            defaultOpen={false}
+          >
+            <div className="space-y-6">
+              <ComponentShowcase
+                title="Chat Input - General Mode"
+                description="Larger input area for starting new research queries"
+                tokens={['--surface-surface-input-default', '--border-border-default', '--cta-cta-disabled']}
+                preview={
+                  <ChatInputInterface mode="general" />
+                }
+                code={{
+                  html: `<div class="chat-input-general">
+  <div class="text-container">
+    <textarea placeholder="Start a new research in this folder..."></textarea>
+  </div>
+  <div class="button-container">
+    <button class="btn-send disabled" aria-label="Send">
+      <svg>...</svg>
+    </button>
+  </div>
+</div>`,
+                  css: `.chat-input-general {
+  background-color: var(--surface-surface-input-default);
+  border: 1px solid var(--border-border-default);
+  border-radius: 8px;
+  min-height: 144px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.text-container {
+  flex: 1;
+  padding: 16px;
+}
+
+.text-container textarea {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  resize: none;
+  font-size: 14px;
+  color: var(--text-text-default);
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px;
+}`,
+                  react: `function GeneralChatInput() {
+  const [message, setMessage] = useState('');
+  
+  return (
+    <div 
+      className="w-full border rounded-lg min-h-[144px] flex flex-col"
+      style={{
+        backgroundColor: 'var(--surface-surface-input-default)',
+        borderColor: 'var(--border-border-default)'
+      }}
+    >
+      <div className="flex-1 p-4">
+        <Textarea
+          placeholder="Start a new research in this folder..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="w-full h-full bg-transparent border-none resize-none"
+        />
+      </div>
+      
+      <div className="flex justify-end p-3">
+        <Button
+          size="sm"
+          className="h-7 w-7 p-0 rounded-full"
+          style={{
+            backgroundColor: message 
+              ? 'var(--cta-cta-default)' 
+              : 'var(--cta-cta-disabled)',
+            color: 'white'
+          }}
+          disabled={!message}
+        >
+          <Send className="h-4 w-4" />
+        </Button>
+      </div>
     </div>
   );
 }`
@@ -3160,3 +3545,6 @@ function MultiSelectExample() {
     </div>
   );
 }
+
+
+export default ComponentsPage;

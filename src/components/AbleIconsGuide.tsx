@@ -1,20 +1,16 @@
-import React, { useState, useMemo } from 'react';
 import * as LucideIcons from 'lucide-react';
-import { Search, Filter, X, Copy } from 'lucide-react';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
+import type { LucideIcon } from 'lucide-react';
+import { Copy } from 'lucide-react';
 import { CollapsibleGroup } from './CollapsibleGroup';
 import { CollapsibleSection } from './CollapsibleSection';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
 
 const AbleIconsGuide = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [activeFilter, setActiveFilter] = useState('all');
 
   // Map Able icon names to Lucide icons
-  const iconMapping: Record<string, React.ComponentType<{ size?: number | string; color?: string; className?: string; strokeWidth?: number }>> = {
+  const iconMapping: Record<string, LucideIcon> = {
     // Core Actions
     'Add': LucideIcons.Plus,
     'Add-small': LucideIcons.Plus,
@@ -68,7 +64,7 @@ const AbleIconsGuide = () => {
 
     // Research & Analysis
     'Query': LucideIcons.Search,
-    'Query Added': LucideIcons.SearchPlus,
+    'Query Added': LucideIcons.SearchCheck,
     'Added by Able': LucideIcons.Bot,
     'Running research': LucideIcons.Activity,
     'Deep dive': LucideIcons.TrendingDown,
@@ -202,28 +198,6 @@ const AbleIconsGuide = () => {
     }
   };
 
-  const filteredGroups = useMemo(() => {
-    const filtered: Record<string, typeof iconGroups['Core Actions']> = {};
-    Object.entries(iconGroups).forEach(([groupName, groupData]) => {
-      const filteredIcons = groupData.icons.filter(icon =>
-        icon.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        groupName.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-
-      if (filteredIcons.length > 0) {
-        if (activeFilter === 'all' || 
-            (activeFilter === 'core' && groupName === 'Core Actions') ||
-            (activeFilter === 'navigation' && groupName === 'Navigation') ||
-            (activeFilter === 'research' && groupName === 'Research & Analysis') ||
-            (activeFilter === 'data' && groupName.includes('Data')) ||
-            (activeFilter === 'collab' && groupName === 'Collaboration & Users')) {
-          filtered[groupName] = { ...groupData, icons: filteredIcons };
-        }
-      }
-    });
-    return filtered;
-  }, [searchTerm, activeFilter]);
-
   const handleIconClick = (iconName: string) => {
     const IconComponent = iconMapping[iconName] || LucideIcons.HelpCircle;
     
@@ -279,108 +253,53 @@ const AbleIconsGuide = () => {
     copyToClipboard(svgString);
   };
 
-  const totalIcons = Object.values(iconGroups).reduce((sum, group) => sum + group.icons.length, 0);
-
   return (
     <div className="w-full px-6 py-6 max-w-none">
       <div className="space-y-6">
-        
-        {/* Search and Filter Section */}
-        <div className="bg-card border-2 border-border/60 rounded-xl p-6 space-y-4 shadow-sm">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder="Search icons by name or group..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-            {searchTerm && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
-                onClick={() => setSearchTerm('')}
-              >
-                <X className="w-4 h-4" />
-              </Button>
-            )}
-          </div>
 
-          <div className="flex flex-wrap gap-2">
-            {[
-              { id: 'all', label: 'All Icons' },
-              { id: 'core', label: 'Core Actions' },
-              { id: 'navigation', label: 'Navigation' },
-              { id: 'research', label: 'Research' },
-              { id: 'data', label: 'Data & Files' },
-              { id: 'collab', label: 'Collaboration' },
-            ].map(filter => (
-              <Button
-                key={filter.id}
-                variant={activeFilter === filter.id ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActiveFilter(filter.id)}
-                className="text-xs"
-              >
-                {filter.label}
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        {/* Icons Grid */}
-        <CollapsibleGroup
-          title="Icon Library"
-          description={`Browse and search ${totalIcons} vector icons from the Able Design System.`}
-          icon="layout-grid"
-        >
-          {Object.keys(filteredGroups).length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground bg-card border-2 border-border/60 rounded-xl">
-              <Search className="w-8 h-8 mx-auto mb-3 opacity-50" />
-              <h3 className="text-lg font-semibold mb-1">No icons found</h3>
-              <p>Try adjusting your search terms or filters</p>
-            </div>
-          ) : (
-            Object.entries(filteredGroups).map(([groupName, groupData], index) => (
-              <CollapsibleSection
-                key={groupName}
-                id={groupName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                title={groupName}
-                description={groupData.description}
-                hint={`${groupData.icons.length} icons`}
-                defaultOpen={searchTerm.length > 0 || index < 2}
-              >
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-                  {groupData.icons.map(iconName => {
-                    const IconComponent = iconMapping[iconName] || LucideIcons.HelpCircle;
-                    
-                    return (
-                      <div
-                        key={iconName}
-                        onClick={() => handleIconClick(iconName)}
-                        className="group relative flex flex-col items-center justify-start p-4 rounded-lg bg-background hover:bg-accent transition-all cursor-pointer h-32"
-                      >
-                        <div className="mb-3">
-                          {/* @ts-ignore */}
-                          <IconComponent size={24} strokeWidth={1} className="text-foreground" />
-                        </div>
-                        <span className="text-xs text-muted-foreground text-center break-words w-full group-hover:text-foreground transition-colors line-clamp-2">
-                          {iconName}
-                        </span>
-                        
-                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Copy className="w-3 h-3 text-muted-foreground" />
-                        </div>
+        {/* Icons by Category */}
+        {Object.entries(iconGroups).map(([groupName, groupData], index) => (
+          <CollapsibleGroup
+            key={groupName}
+            title={groupName}
+            description={groupData.description}
+            className={index > 0 ? "mt-6" : ""}
+          >
+            <CollapsibleSection
+              id={groupName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+              title={groupName}
+              description={groupData.description}
+              hint={`${groupData.icons.length} icons`}
+              defaultOpen={index < 2}
+            >
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+                {groupData.icons.map(iconName => {
+                  const IconComponent = iconMapping[iconName] || LucideIcons.HelpCircle;
+                  
+                  return (
+                    <div
+                      key={iconName}
+                      onClick={() => handleIconClick(iconName)}
+                      className="group relative flex flex-col items-center justify-start p-4 rounded-lg bg-background hover:bg-accent transition-all cursor-pointer h-32 border border-transparent hover:border-border"
+                    >
+                      <div className="mb-3">
+                        {/* @ts-ignore */}
+                        <IconComponent size={24} strokeWidth={1} className="text-foreground" />
                       </div>
-                    );
-                  })}
-                </div>
-              </CollapsibleSection>
-            ))
-          )}
-        </CollapsibleGroup>
+                      <span className="text-xs text-muted-foreground text-center break-words w-full group-hover:text-foreground transition-colors line-clamp-2">
+                        {iconName}
+                      </span>
+                      
+                      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Copy className="w-3 h-3 text-muted-foreground" />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CollapsibleSection>
+          </CollapsibleGroup>
+        ))}
       </div>
     </div>
   );
