@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronRight, Menu, X, Circle, Pencil, Menu as MenuIcon, CheckSquare, Calendar, AlertTriangle, Bell, Zap, Palette } from 'lucide-react';
+import { ChevronRight, Menu, X, Circle, Pencil, Menu as MenuIcon, CheckSquare, Calendar, AlertTriangle, Bell, Zap, Palette, MessageSquare, Grid } from 'lucide-react';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
 
@@ -25,6 +25,8 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   'bell': Bell,
   'zap': Zap,
   'palette': Palette,
+  'message-square': MessageSquare,
+  'grid': Grid,
 };
 
 interface SideNavProps {

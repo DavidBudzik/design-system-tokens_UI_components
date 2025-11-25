@@ -51,22 +51,22 @@ export function CodeSnippetDialog({ componentName, description, code }: CodeSnip
           View Code
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl min-w-[600px] max-h-[80vh] overflow-hidden flex flex-col">
+      <DialogContent className="max-w-3xl min-w-[600px] h-[500px] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>{componentName}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         
-        <Tabs defaultValue={availableTabs[0]?.[0] || 'react'} className="flex-1 overflow-hidden flex flex-col">
-          <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${availableTabs.length}, 1fr)` }}>
+        <Tabs defaultValue={availableTabs[0]?.[0] || 'react'} className="flex-1 overflow-hidden flex flex-col min-h-0">
+          <TabsList className="grid w-full flex-shrink-0" style={{ gridTemplateColumns: `repeat(${availableTabs.length}, 1fr)` }}>
             {code.react && <TabsTrigger value="react">React</TabsTrigger>}
             {code.html && <TabsTrigger value="html">HTML</TabsTrigger>}
             {code.css && <TabsTrigger value="css">CSS</TabsTrigger>}
           </TabsList>
           
           {code.react && (
-            <TabsContent value="react" className="flex-1 overflow-hidden flex flex-col mt-4">
-              <div className="flex justify-between items-center mb-2">
+            <TabsContent value="react" className="flex-1 overflow-hidden flex flex-col mt-4 data-[state=active]:flex data-[state=inactive]:hidden">
+              <div className="flex justify-between items-center mb-2 flex-shrink-0">
                 <span className="text-sm text-muted-foreground">React Component</span>
                 <Button
                   variant="ghost"
@@ -96,8 +96,8 @@ export function CodeSnippetDialog({ componentName, description, code }: CodeSnip
           )}
           
           {code.html && (
-            <TabsContent value="html" className="flex-1 overflow-hidden flex flex-col mt-4">
-              <div className="flex justify-between items-center mb-2">
+            <TabsContent value="html" className="flex-1 overflow-hidden flex flex-col mt-4 data-[state=active]:flex data-[state=inactive]:hidden">
+              <div className="flex justify-between items-center mb-2 flex-shrink-0">
                 <span className="text-sm text-muted-foreground">HTML Markup</span>
                 <Button
                   variant="ghost"
@@ -127,8 +127,8 @@ export function CodeSnippetDialog({ componentName, description, code }: CodeSnip
           )}
           
           {code.css && (
-            <TabsContent value="css" className="flex-1 overflow-hidden flex flex-col mt-4">
-              <div className="flex justify-between items-center mb-2">
+            <TabsContent value="css" className="flex-1 overflow-hidden flex flex-col mt-4 data-[state=active]:flex data-[state=inactive]:hidden">
+              <div className="flex justify-between items-center mb-2 flex-shrink-0">
                 <span className="text-sm text-muted-foreground">CSS Styles</span>
                 <Button
                   variant="ghost"

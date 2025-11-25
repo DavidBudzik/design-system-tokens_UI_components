@@ -13,6 +13,7 @@ import { typographyData } from './data/typographyData';
 import { ComponentLoadingSkeleton } from './components/LoadingState';
 
 const ComponentsPage = lazy(() => import('./components/ComponentsPage'));
+const AbleIconsGuide = lazy(() => import('./components/AbleIconsGuide').then(m => ({ default: m.default })));
 
 const oldDesignSystemData = {
   sections: [
@@ -286,6 +287,14 @@ export default function App() {
       ]
     },
     {
+      title: 'Chat Input Interface',
+      icon: 'message-square',
+      items: [
+        { id: 'chat-input-explore', label: 'Explore Mode' },
+        { id: 'chat-input-general', label: 'General Mode' }
+      ]
+    },
+    {
       title: 'Form Inputs',
       icon: 'pencil',
       items: [
@@ -341,7 +350,30 @@ export default function App() {
     }
   ];
 
-  const currentNavGroups = activeTab === 'tokens' ? tokensNavGroups : componentsNavGroups;
+  // Navigation structure for icons page
+  const iconsNavGroups = [
+    {
+      title: 'Icon Categories',
+      icon: 'grid',
+      items: [
+        { id: 'core-actions', label: 'Core Actions' },
+        { id: 'navigation', label: 'Navigation' },
+        { id: 'file---data-management', label: 'File & Data Management' },
+        { id: 'research---analysis', label: 'Research & Analysis' },
+        { id: 'content-types', label: 'Content Types' },
+        { id: 'status---feedback', label: 'Status & Feedback' },
+        { id: 'collaboration---users', label: 'Collaboration & Users' },
+        { id: 'data-sources', label: 'Data Sources' },
+        { id: 'specialized-tools', label: 'Specialized Tools' }
+      ]
+    }
+  ];
+
+  const currentNavGroups = activeTab === 'tokens' 
+    ? tokensNavGroups 
+    : activeTab === 'components' 
+    ? componentsNavGroups 
+    : iconsNavGroups;
 
   return (
     <>
@@ -358,13 +390,16 @@ export default function App() {
                   <TabsList className="h-9">
                     <TabsTrigger value="tokens" className="px-4">Tokens</TabsTrigger>
                     <TabsTrigger value="components" className="px-4">Components</TabsTrigger>
+                    <TabsTrigger value="icons" className="px-4">Icons</TabsTrigger>
                   </TabsList>
                 </Tabs>
               </div>
               <p className="text-muted-foreground">
                 {activeTab === 'tokens' 
                   ? 'Complete color palette with interactive states, surfaces, and complementary colors.'
-                  : 'UI component examples with design tokens applied and code snippets.'}
+                  : activeTab === 'components'
+                  ? 'UI component examples with design tokens applied and code snippets.'
+                  : 'Icon library with Able-to-Lucide mapping and usage guidelines.'}
               </p>
             </div>
             <div className="flex items-center gap-3">
@@ -538,9 +573,13 @@ export default function App() {
           </CollapsibleGroup>
         </div>
             </div>
-          ) : (
+          ) : activeTab === 'components' ? (
             <Suspense fallback={<ComponentLoadingSkeleton />}>
               <ComponentsPage />
+            </Suspense>
+          ) : (
+            <Suspense fallback={<ComponentLoadingSkeleton />}>
+              <AbleIconsGuide />
             </Suspense>
           )}
         </main>

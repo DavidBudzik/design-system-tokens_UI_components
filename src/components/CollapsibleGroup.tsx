@@ -1,5 +1,5 @@
 import { ReactNode, useState, useEffect } from 'react';
-import { ChevronUp, Circle, Pencil, Menu, CheckSquare, Calendar, AlertTriangle, Bell, Zap, Palette } from 'lucide-react';
+import { ChevronUp, Circle, Pencil, Menu, CheckSquare, Calendar, AlertTriangle, Bell, Zap, Palette, MessageSquare, Grid } from 'lucide-react';
 import { Button } from './ui/button';
 
 interface CollapsibleGroupProps {
@@ -20,6 +20,8 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   'bell': Bell,
   'zap': Zap,
   'palette': Palette,
+  'message-square': MessageSquare,
+  'grid': Grid,
 };
 
 export function CollapsibleGroup({ 
