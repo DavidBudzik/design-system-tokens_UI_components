@@ -3160,3 +3160,6 @@ function MultiSelectExample() {
     </div>
   );
 }
+
+
+export default ComponentsPage;
