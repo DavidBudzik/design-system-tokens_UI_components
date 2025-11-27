@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Copy, Check, Info } from 'lucide-react';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './ui/dialog';
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from './ui/sheet';
 import { Button } from './ui/button';
 import { copyToClipboard } from '../utils/clipboard';
 import { toast } from 'sonner@2.0.3';
@@ -49,26 +49,26 @@ export function TypographyDetailsDialog({
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <Sheet>
+      <SheetTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <Info className="w-4 h-4" />
           Details
         </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-2xl min-w-[600px]">
-        <DialogHeader>
-          <DialogTitle>Typography Token Details</DialogTitle>
-          <DialogDescription>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-[800px] sm:max-w-[800px] overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle>Typography Token Details</SheetTitle>
+          <SheetDescription>
             Complete specifications and usage information for this typography token.
-          </DialogDescription>
-        </DialogHeader>
+          </SheetDescription>
+        </SheetHeader>
         
-        <div className="space-y-6 py-4">
+        <div className="space-y-6 px-6 py-6">
           {/* Preview */}
           <div className="space-y-3">
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Preview</p>
-            <div className="bg-muted/30 border border-border p-6 flex items-center justify-center">
+            <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Preview</p>
+            <div className="bg-muted/30 border border-border p-8 flex items-center justify-center rounded-lg">
               <p style={{
                 fontFamily,
                 fontSize,
@@ -146,7 +146,7 @@ export function TypographyDetailsDialog({
             </Button>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 }
