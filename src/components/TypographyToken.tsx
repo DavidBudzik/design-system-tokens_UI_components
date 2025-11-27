@@ -25,12 +25,13 @@ export function TypographyToken({
 }: TypographyTokenProps) {
 
   return (
-    <div className="flex flex-col gap-3 border-b border-border pb-4">
-      <div className="relative group transition-all duration-200 hover:bg-accent/30 rounded-lg px-[0px] py-[24px]">
-        {/* Main content */}
-        <div className="flex items-baseline justify-between gap-6">
-          {/* Text sample */}
-          <div className="flex-1 max-w-[840px]">
+    <div className="border-b border-border last:border-b-0">
+      <div className="relative group transition-all duration-200 hover:bg-accent/30 rounded-lg px-4 py-6">
+        {/* Grid Layout */}
+        <div className="grid grid-cols-12 gap-4 items-start">
+          
+          {/* Text Sample - Takes up most space */}
+          <div className="col-span-5">
             <p style={{
               fontSize,
               lineHeight,
@@ -44,35 +45,35 @@ export function TypographyToken({
           </div>
 
           {/* Token name badge */}
-          <div className="shrink-0 bg-[#181818] px-4 py-1 rounded">
-            <p className="text-white text-sm whitespace-nowrap">{tokenName}</p>
-          </div>
-
-          {/* Font Family */}
-          <div className="w-[180px] shrink-0">
-            <p className="text-xs text-muted-foreground font-mono">{fontFamily.split(',')[0]}</p>
+          <div className="col-span-2 flex justify-center items-start pt-1">
+            <div className="bg-[#181818] dark:bg-[#282828] px-3 py-1.5 rounded">
+              <p className="text-white text-xs font-mono whitespace-nowrap">{tokenName}</p>
+            </div>
           </div>
 
           {/* Description */}
-          <div className="w-[280px] shrink-0">
-            <p className="text-sm text-muted-foreground">{description}</p>
+          <div className="col-span-3">
+            <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
           </div>
 
           {/* Specifications */}
-          <div className="w-[240px] shrink-0 flex items-center gap-2">
-            <p className="text-sm text-muted-foreground flex-1">
-              {fontSize} / {lineHeight}
-            </p>
-            <TypographyDetailsDialog
-              label={label}
-              tokenName={tokenName}
-              description={description}
-              fontSize={fontSize}
-              lineHeight={lineHeight}
-              letterSpacing={letterSpacing}
-              fontWeight={fontWeight}
-              fontFamily={fontFamily}
-            />
+          <div className="col-span-2 flex flex-col gap-2">
+            <div className="text-xs text-muted-foreground space-y-1">
+              <p className="font-medium text-foreground">{fontSize} / {lineHeight}</p>
+              <p className="font-mono">{fontFamily.split(',')[0]}</p>
+            </div>
+            <div className="mt-2">
+              <TypographyDetailsDialog
+                label={label}
+                tokenName={tokenName}
+                description={description}
+                fontSize={fontSize}
+                lineHeight={lineHeight}
+                letterSpacing={letterSpacing}
+                fontWeight={fontWeight}
+                fontFamily={fontFamily}
+              />
+            </div>
           </div>
         </div>
       </div>

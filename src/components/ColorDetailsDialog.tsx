@@ -69,7 +69,7 @@ export function ColorDetailsDialog({ name, hex, rgb, darkHex, darkRgb }: ColorDe
           Details
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full sm:max-w-2xl overflow-y-auto">
+      <SheetContent side="right" className="w-[800px] sm:max-w-[800px] overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Color Token Details</SheetTitle>
           <SheetDescription>

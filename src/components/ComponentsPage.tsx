@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { ChevronDown, MoreVertical, Download, Trash2, Check, Plus, ArrowRight, Search, Settings, User, LogOut, CreditCard, Users, FileText, Copy, Edit, Mail, Bell, Filter, X, Calendar as CalendarIcon, AlertTriangle, Info } from 'lucide-react';
+import { ChevronDown, MoreVertical, Download, Trash2, Check, Plus, ArrowRight, Search, Settings, User, LogOut, CreditCard, Users, FileText, Copy, Edit, Mail, Bell, Filter, X, Calendar as CalendarIcon, AlertTriangle, Info, Bookmark } from 'lucide-react';
 import { useState } from 'react';
 import { Calendar } from './ui/calendar';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from './ui/alert-dialog';
@@ -23,16 +23,234 @@ import { Checkbox } from './ui/checkbox';
 import { Switch } from './ui/switch';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { toast } from 'sonner';
-import { Zap, Columns, Eraser, Bookmark, Send } from 'lucide-react';
+import { Zap, Columns, Eraser, Send } from 'lucide-react';
 import { Textarea } from './ui/textarea';
 
+// Custom Icons for Chat Input
+const AddCompaniesIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fillRule="evenodd" clipRule="evenodd" d="M3.33334 5C3.33334 4.07953 4.07954 3.33334 5.00001 3.33334H11.6667C12.5872 3.33334 13.3333 4.07953 13.3333 5V6.66667H15C15.9205 6.66667 16.6667 7.41287 16.6667 8.33334V15C16.6667 15.9205 15.9205 16.6667 15 16.6667H8.33334C7.41287 16.6667 6.66668 15.9205 6.66668 15V13.3333H5.00001C4.07954 13.3333 3.33334 12.5872 3.33334 11.6667V5ZM8.33334 13.3333V15H15V8.33334H13.3333V11.6667C13.3333 12.5872 12.5872 13.3333 11.6667 13.3333H8.33334ZM11.6667 11.6667V5H5.00001V11.6667H11.6667Z" fill="currentColor"/>
+  </svg>
+);
+
+const CloseSmallIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fillRule="evenodd" clipRule="evenodd" d="M8.46447 8.46447C8.66 8.26894 8.97658 8.26894 9.17212 8.46447L12 11.2924L14.8279 8.46447C15.0234 8.26894 15.34 8.26894 15.5355 8.46447C15.7311 8.66 15.7311 8.97658 15.5355 9.17212L12.7076 12L15.5355 14.8279C15.7311 15.0234 15.7311 15.34 15.5355 15.5355C15.34 15.7311 15.0234 15.7311 14.8279 15.5355L12 12.7076L9.17212 15.5355C8.97658 15.7311 8.66 15.7311 8.46447 15.5355C8.26894 15.34 8.26894 15.0234 8.46447 14.8279L11.2924 12L8.46447 9.17212C8.26894 8.97658 8.26894 8.66 8.46447 8.46447Z" fill="currentColor"/>
+  </svg>
+);
+
+const SaveToLibraryIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fillRule="evenodd" clipRule="evenodd" d="M5.83334 3.33334C5.37311 3.33334 5.00001 3.70644 5.00001 4.16667V15.8333C5.00001 16.2936 5.37311 16.6667 5.83334 16.6667H14.1667C14.6269 16.6667 15 16.2936 15 15.8333V7.5L11.6667 4.16667V7.5H8.33334V4.16667H5.83334ZM6.66668 8.33334V15H13.3333V8.33334H6.66668ZM10 4.16667V5.83334H6.66668V4.16667C6.66668 4.16667 7.08334 3.33334 7.5 3.33334H12.5C12.9167 3.33334 13.3333 4.16667 13.3333 4.16667V6.66667H10V4.16667Z" fill="currentColor"/>
+  </svg>
+);
+
+const ActionsIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13 3L4 14H12L11 21L20 10H12L13 3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const SlashCommandIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M14 8L10 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
+
+const SettingsIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" fill="currentColor"/>
+    <path fillRule="evenodd" clipRule="evenodd" d="M10.7 4.09998C10.83 3.46998 11.38 3 12 3C12.62 3 13.17 3.46998 13.3 4.09998L13.56 5.30998C14.05 5.46998 14.51 5.69998 14.94 5.97998L16.08 5.51998C16.66 5.28998 17.32 5.49998 17.66 6.02998L18.34 7.20998C18.68 7.73998 18.58 8.41998 18.12 8.82998L17.2 9.62998C17.24 9.94998 17.26 10.28 17.26 10.6C17.26 10.92 17.24 11.25 17.2 11.57L18.12 12.37C18.58 12.78 18.68 13.46 18.34 13.99L17.66 15.17C17.32 15.7 16.66 15.91 16.08 15.68L14.94 15.22C14.51 15.5 14.05 15.73 13.56 15.89L13.3 17.1C13.17 17.73 12.62 18.2 12 18.2C11.38 18.2 10.83 17.73 10.7 17.1L10.44 15.89C9.95001 15.73 9.49001 15.5 9.06001 15.22L7.92001 15.68C7.34001 15.91 6.68001 15.7 6.34001 15.17L5.66001 13.99C5.32001 13.46 5.42001 12.78 5.88001 12.37L6.80001 11.57C6.76001 11.25 6.74001 10.92 6.74001 10.6C6.74001 10.28 6.76001 9.94998 6.80001 9.62998L5.88001 8.82998C5.42001 8.41998 5.32001 7.73998 5.66001 7.20998L6.34001 6.02998C6.68001 5.49998 7.34001 5.28998 7.92001 5.51998L9.06001 5.97998C9.49001 5.69998 9.95001 5.46998 10.44 5.30998L10.7 4.09998Z" fill="currentColor"/>
+  </svg>
+);
+
+const MenuDotsIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
+    <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+    <circle cx="12" cy="18" r="1.5" fill="currentColor"/>
+  </svg>
+);
+
+const SendIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fillRule="evenodd" clipRule="evenodd" d="M3.40918 3.40918C3.57033 3.24803 3.79904 3.17235 4.02523 3.20499L16.5252 4.99832C16.7249 5.02718 16.8998 5.14277 17.0025 5.31412C17.1053 5.48548 17.1252 5.69422 17.0568 5.88236L12.6401 17.2157C12.5624 17.4302 12.3799 17.5885 12.157 17.6361C11.934 17.6837 11.7024 17.614 11.5413 17.4528L8.33337 14.2449L5.2549 16.6593C5.06233 16.8109 4.80071 16.8498 4.57141 16.7614C4.34211 16.6729 4.18218 16.4711 4.1476 16.229L3.20091 9.17568L3.20033 9.17137L3.08426 8.38339L3.08423 8.38324C3.00217 7.82556 2.99879 7.59573 3.00033 7.50033C3.00107 7.45409 3.00148 7.42856 3.00425 7.42001C3.00609 7.41433 3.01033 7.40377 3.01879 7.39203L3.2009 4.02506C3.19912 4.01305 3.19823 4.00089 3.19824 3.98862L3.20087 3.98848L3.20499 3.82483C3.21277 3.67584 3.28516 3.53706 3.40918 3.40918ZM4.51174 5.05627L4.38759 7.37231L4.50867 8.19421L4.50879 8.19506L4.93337 11.3577L5.74551 10.7201C5.97437 10.5405 6.29313 10.5555 6.5049 10.756L9.50004 13.592L11.5419 6.72727L4.51174 5.05627ZM12.6934 6.9728L10.0319 14.8125L12.6934 6.9728ZM10.259 15.1024L12.6934 6.9728L5.43282 5.24482L10.259 15.1024ZM6.59337 12.6737L5.29764 15.0437L5.05263 13.2266L6.59337 12.6737Z" fill="currentColor"/>
+  </svg>
+);
+
 // Chat Input Interface Component
-function ChatInputInterface({ mode = 'explore' }: { mode?: 'explore' | 'general' }) {
+function ChatInputInterface({ mode = 'explore', onClose }: { mode?: 'explore' | 'general' | 'explore-add-companies', onClose?: () => void }) {
   const [message, setMessage] = useState('');
   
-  const placeholderText = mode === 'explore' 
+  const placeholderText = mode === 'explore' || mode === 'explore-add-companies'
     ? 'Reply or ask anything...' 
     : 'Start a new research in this folder...';
+
+  // Explore Add Companies Mode - matches Figma design
+  if (mode === 'explore-add-companies') {
+    return (
+      <div 
+        className="w-full max-w-2xl border overflow-hidden"
+        style={{
+          backgroundColor: 'var(--surface-surface-input-default, #F8F8F8)',
+          borderColor: 'var(--border-border-default, #E0E0E0)',
+          borderRadius: '2px'
+        }}
+      >
+        {/* Action Header */}
+        <div 
+          className="flex flex-col gap-2.5 w-full"
+          style={{
+            backgroundColor: 'var(--secondary-secondary-default, #EDEDED)',
+            padding: '4px 8px 8px 12px',
+            borderTopLeftRadius: '2px',
+            borderTopRightRadius: '2px'
+          }}
+        >
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-2">
+              <div style={{ color: 'var(--text-text-secondary, #4F4F4F)' }}>
+                <AddCompaniesIcon />
+              </div>
+              <span 
+                className="text-xs leading-5"
+                style={{ 
+                  fontFamily: 'Inter, sans-serif',
+                  color: 'var(--text-text-primary, #171717)'
+                }}
+              >
+                Add companies by description
+              </span>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 w-6 p-1 rounded"
+              style={{ color: 'var(--text-text-secondary, #4F4F4F)' }}
+              onClick={onClose}
+            >
+              <CloseSmallIcon />
+            </Button>
+          </div>
+        </div>
+
+        {/* Main Container */}
+        <div 
+          className="flex flex-col justify-between w-full"
+          style={{ 
+            height: '144px',
+            padding: '12px'
+          }}
+        >
+          {/* Text Input Area */}
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-1">
+              <span 
+                className="text-sm leading-5"
+                style={{ 
+                  fontFamily: 'Inter, sans-serif',
+                  color: 'var(--text-text-subtle, #A0A0A0)'
+                }}
+              >
+                {placeholderText}
+              </span>
+            </div>
+          </div>
+
+          {/* Bottom Actions Bar */}
+          <div className="flex items-end justify-between w-full">
+            {/* Left Actions */}
+            <div className="flex items-center gap-2 flex-grow">
+              {/* Library Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-auto gap-2 px-2 py-1"
+                style={{
+                  backgroundColor: 'var(--surface-surface-input-default, #F8F8F8)',
+                  borderColor: 'var(--border-border-default, #E0E0E0)',
+                  color: 'var(--text-text-muted, #5A5A5A)'
+                }}
+              >
+                <SaveToLibraryIcon />
+                <span 
+                  className="text-xs leading-5"
+                  style={{ 
+                    fontFamily: 'Inter, sans-serif',
+                    color: 'var(--text-text-muted, #5A5A5A)'
+                  }}
+                >
+                  Library
+                </span>
+              </Button>
+
+              {/* Actions Icon */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 w-7 p-0.5"
+                style={{ color: 'var(--text-text-secondary, #4F4F4F)' }}
+              >
+                <ActionsIcon />
+              </Button>
+
+              {/* Slash Command Icon */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 w-7 p-0.5"
+                style={{ color: 'var(--text-text-secondary, #4F4F4F)' }}
+              >
+                <SlashCommandIcon />
+              </Button>
+
+              {/* Divider */}
+              <div 
+                className="h-[27px] w-px"
+                style={{ backgroundColor: 'var(--border-border-default, #E0E0E0)' }}
+              />
+
+              {/* Settings Icon */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 w-7 p-0.5"
+                style={{ color: 'var(--text-text-secondary, #4F4F4F)' }}
+              >
+                <SettingsIcon />
+              </Button>
+            </div>
+
+            {/* Right Actions */}
+            <div className="flex items-end gap-4">
+              {/* Menu Icon */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 w-7 p-0.5"
+                style={{ color: 'var(--text-text-secondary, #4F4F4F)' }}
+              >
+                <MenuDotsIcon />
+              </Button>
+
+              {/* Send Button */}
+              <Button
+                size="sm"
+                className="h-7 w-7 p-1 rounded-full"
+                style={{
+                  backgroundColor: 'var(--cta-cta-default, #E03500)',
+                  color: 'white'
+                }}
+              >
+                <SendIcon />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div 
@@ -1307,6 +1525,295 @@ function ChatInputInterface({ mode = 'explore' }) {
         >
           <Send className="h-4 w-4" />
         </Button>
+      </div>
+    </div>
+  );
+}`
+                }}
+              />
+            </div>
+          </CollapsibleSection>
+
+          <CollapsibleSection
+            id="chat-input-add-companies"
+            title="Add Companies Mode Chat Input"
+            description="Chat input with action header for adding companies by description"
+            hint="Click to view add companies mode input"
+            defaultOpen={false}
+          >
+            <div className="space-y-6">
+              <ComponentShowcase
+                title="Chat Input - Add Companies by Description"
+                description="Chat input with contextual header showing current action mode with Library, Actions, Slash commands, and Settings"
+                tokens={['--surface-surface-input-default', '--border-border-default', '--secondary-secondary-default', '--cta-cta-default', '--text-text-primary', '--text-text-subtle', '--text-text-muted']}
+                preview={
+                  <ChatInputInterface mode="explore-add-companies" onClose={() => toast.info('Close action triggered')} />
+                }
+                code={{
+                  html: `<div class="chat-input-add-companies">
+  <!-- Action Header -->
+  <div class="action-header">
+    <div class="header-content">
+      <div class="header-left">
+        <svg class="icon"><!-- Add companies icon --></svg>
+        <span class="header-text">Add companies by description</span>
+      </div>
+      <button class="close-btn" aria-label="Close">
+        <svg><!-- Close icon --></svg>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-container">
+    <div class="input-area">
+      <span class="placeholder">Reply or ask anything...</span>
+    </div>
+    
+    <div class="actions-bar">
+      <div class="actions-left">
+        <button class="btn-library">
+          <svg><!-- Library icon --></svg>
+          <span>Library</span>
+        </button>
+        <button class="icon-btn" aria-label="Actions">
+          <svg><!-- Actions icon --></svg>
+        </button>
+        <button class="icon-btn" aria-label="Slash commands">
+          <svg><!-- Slash icon --></svg>
+        </button>
+        <div class="divider"></div>
+        <button class="icon-btn" aria-label="Settings">
+          <svg><!-- Settings icon --></svg>
+        </button>
+      </div>
+      <div class="actions-right">
+        <button class="icon-btn" aria-label="More options">
+          <svg><!-- Menu dots icon --></svg>
+        </button>
+        <button class="btn-send" aria-label="Send">
+          <svg><!-- Send icon --></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>`,
+                  css: `.chat-input-add-companies {
+  background-color: var(--surface-surface-input-default);
+  border: 1px solid var(--border-border-default);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.action-header {
+  background-color: var(--secondary-secondary-default);
+  padding: 4px 8px 8px 12px;
+  border-radius: 2px 2px 0 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-left .icon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-text-secondary);
+}
+
+.header-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--text-text-primary);
+}
+
+.close-btn {
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  border: none;
+  background: transparent;
+  color: var(--text-text-secondary);
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.main-container {
+  height: 144px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.placeholder {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-text-subtle);
+}
+
+.actions-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.actions-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.btn-library {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background-color: var(--surface-surface-input-default);
+  border: 1px solid var(--border-border-default);
+  color: var(--text-text-muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-text-secondary);
+  cursor: pointer;
+}
+
+.divider {
+  width: 1px;
+  height: 27px;
+  background-color: var(--border-border-default);
+}
+
+.actions-right {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.btn-send {
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--cta-cta-default);
+  border: none;
+  color: white;
+  cursor: pointer;
+}`,
+                  react: `import { useState } from 'react';
+import { Button } from './ui/button';
+
+// Custom Icons (defined separately)
+const AddCompaniesIcon = () => (/* SVG icon */);
+const CloseSmallIcon = () => (/* SVG icon */);
+const SaveToLibraryIcon = () => (/* SVG icon */);
+const ActionsIcon = () => (/* SVG icon */);
+const SlashCommandIcon = () => (/* SVG icon */);
+const SettingsIcon = () => (/* SVG icon */);
+const MenuDotsIcon = () => (/* SVG icon */);
+const SendIcon = () => (/* SVG icon */);
+
+function ChatInputAddCompanies({ onClose }) {
+  return (
+    <div 
+      className="w-full max-w-2xl border overflow-hidden"
+      style={{
+        backgroundColor: 'var(--surface-surface-input-default)',
+        borderColor: 'var(--border-border-default)',
+        borderRadius: '2px'
+      }}
+    >
+      {/* Action Header */}
+      <div 
+        className="flex flex-col gap-2.5 w-full"
+        style={{
+          backgroundColor: 'var(--secondary-secondary-default)',
+          padding: '4px 8px 8px 12px',
+          borderTopLeftRadius: '2px',
+          borderTopRightRadius: '2px'
+        }}
+      >
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-2">
+            <AddCompaniesIcon />
+            <span className="text-xs leading-5">Add companies by description</span>
+          </div>
+          <Button variant="ghost" size="sm" className="h-6 w-6 p-1" onClick={onClose}>
+            <CloseSmallIcon />
+          </Button>
+        </div>
+      </div>
+
+      {/* Main Container */}
+      <div className="flex flex-col justify-between w-full" style={{ height: '144px', padding: '12px' }}>
+        <div className="flex flex-col gap-1">
+          <span className="text-sm" style={{ color: 'var(--text-text-subtle)' }}>
+            Reply or ask anything...
+          </span>
+        </div>
+
+        {/* Actions Bar */}
+        <div className="flex items-end justify-between w-full">
+          <div className="flex items-center gap-2 flex-grow">
+            <Button variant="outline" size="sm" className="h-auto gap-2 px-2 py-1">
+              <SaveToLibraryIcon />
+              <span className="text-xs">Library</span>
+            </Button>
+            <Button variant="ghost" size="sm" className="h-7 w-7 p-0.5">
+              <ActionsIcon />
+            </Button>
+            <Button variant="ghost" size="sm" className="h-7 w-7 p-0.5">
+              <SlashCommandIcon />
+            </Button>
+            <div className="h-[27px] w-px" style={{ backgroundColor: 'var(--border-border-default)' }} />
+            <Button variant="ghost" size="sm" className="h-7 w-7 p-0.5">
+              <SettingsIcon />
+            </Button>
+          </div>
+          <div className="flex items-end gap-4">
+            <Button variant="ghost" size="sm" className="h-7 w-7 p-0.5">
+              <MenuDotsIcon />
+            </Button>
+            <Button 
+              size="sm" 
+              className="h-7 w-7 p-1 rounded-full"
+              style={{ backgroundColor: 'var(--cta-cta-default)', color: 'white' }}
+            >
+              <SendIcon />
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

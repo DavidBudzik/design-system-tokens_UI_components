@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { Copy, Check, Code, AlertCircle } from 'lucide-react';
+import { Copy, Check, Code } from 'lucide-react';
 import { Button } from './ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './ui/dialog';
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from './ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { copyToClipboard as copyToClipboardUtil } from '../utils/clipboard';
 import { toast } from 'sonner@2.0.3';
@@ -44,20 +44,20 @@ export function CodeSnippetDialog({ componentName, description, code }: CodeSnip
   const availableTabs = Object.entries(code).filter(([_, value]) => value);
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <Sheet>
+      <SheetTrigger asChild>
         <Button variant="outline" size="sm" className="gap-2">
           <Code className="w-4 h-4" />
           View Code
         </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-3xl min-w-[600px] h-[500px] overflow-hidden flex flex-col">
-        <DialogHeader>
-          <DialogTitle>{componentName}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
-        </DialogHeader>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-[800px] sm:max-w-[800px] flex flex-col">
+        <SheetHeader>
+          <SheetTitle>{componentName}</SheetTitle>
+          <SheetDescription>{description}</SheetDescription>
+        </SheetHeader>
         
-        <Tabs defaultValue={availableTabs[0]?.[0] || 'react'} className="flex-1 overflow-hidden flex flex-col min-h-0">
+        <Tabs defaultValue={availableTabs[0]?.[0] || 'react'} className="flex-1 overflow-hidden flex flex-col min-h-0 px-4 pb-4">
           <TabsList className="grid w-full flex-shrink-0" style={{ gridTemplateColumns: `repeat(${availableTabs.length}, 1fr)` }}>
             {code.react && <TabsTrigger value="react">React</TabsTrigger>}
             {code.html && <TabsTrigger value="html">HTML</TabsTrigger>}
@@ -157,7 +157,7 @@ export function CodeSnippetDialog({ componentName, description, code }: CodeSnip
             </TabsContent>
           )}
         </Tabs>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 }

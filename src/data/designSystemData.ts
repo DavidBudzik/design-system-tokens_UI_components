@@ -553,3 +553,24 @@ export const designSystemData: { sections: Section[] } = {
     },
   ]
 };
+
+// Validation: Check for missing dark mode colors
+if (import.meta.env.DEV) {
+  import('../utils/colorValidation').then(({ validateDesignSystem }) => {
+    const validation = validateDesignSystem(designSystemData.sections);
+    
+    if (validation.warnings.length > 0) {
+      console.warn('⚠️ Design System Color Validation Warnings:');
+      validation.warnings.forEach(warning => console.warn(`  - ${warning}`));
+    }
+    
+    if (validation.errors.length > 0) {
+      console.error('❌ Design System Color Validation Errors:');
+      validation.errors.forEach(error => console.error(`  - ${error}`));
+    }
+    
+    if (validation.isValid && validation.warnings.length === 0) {
+      console.log('✅ All color tokens have both light and dark mode variants');
+    }
+  });
+}
