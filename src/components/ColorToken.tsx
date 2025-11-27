@@ -34,9 +34,9 @@ export function ColorToken({ name, hex, rgb, darkHex, darkRgb }: ColorTokenProps
   const currentRgb = isDark && darkRgb ? darkRgb : rgb;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <div
-        className="w-[240px] h-[240px] shadow-sm border border-border/50 relative group transition-all duration-200 hover:shadow-lg hover:scale-[1.02] hover:border-primary/30"
+        className="w-full aspect-square shadow-sm border border-border/50 relative group transition-all duration-200 hover:shadow-lg hover:scale-[1.02] hover:border-primary/30 rounded-lg"
         style={{ backgroundColor: currentHex }}
       >
         {/* Details button - appears on hover */}
@@ -49,13 +49,13 @@ export function ColorToken({ name, hex, rgb, darkHex, darkRgb }: ColorTokenProps
         />
       </div>
       
-      <div className="flex flex-col gap-1 w-[240px]">
-        <p className="text-sm text-muted-foreground break-all">{name}</p>
-        <p className="text-xs text-muted-foreground/80">{currentHex}</p>
-        <p className="text-xs text-muted-foreground/60">{currentRgb}</p>
+      <div className="flex flex-col gap-0.5 px-1">
+        <p className="text-xs font-medium text-foreground truncate" title={name}>{name}</p>
+        <p className="text-xs text-muted-foreground">{currentHex}</p>
+        <p className="text-[10px] text-muted-foreground/60 truncate">{currentRgb}</p>
         {darkHex && (
-          <p className="text-xs text-muted-foreground/40 italic">
-            {isDark ? 'Dark mode' : 'Light mode'}
+          <p className="text-[10px] text-muted-foreground/40 italic">
+            {isDark ? 'Dark' : 'Light'}
           </p>
         )}
       </div>

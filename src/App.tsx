@@ -794,6 +794,7 @@ export default function App() {
             title="Color Tokens"
             description="Interactive color tokens with states, surfaces, and complementary palettes."
             icon="palette"
+            twoColumnLayout={true}
           >
             {designSystemData.sections.map((section: { title: string; description: string; tokens: { name: string; hex: string; rgb: string; darkHex?: string; darkRgb?: string }[] }, index: number) => {
               const sectionId = section.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -886,6 +887,7 @@ export default function App() {
             description="Spacing, border radius, and border width design tokens."
             icon="zap"
             className="mt-12 pt-8 border-t-2 border-border"
+            twoColumnLayout={true}
           >
             <CollapsibleSection
               id="spacing-tokens"

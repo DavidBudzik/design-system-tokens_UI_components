@@ -1,6 +1,5 @@
-import { ReactNode, useState, useEffect } from 'react';
-import { ChevronUp, Circle, Pencil, Menu, CheckSquare, Calendar, AlertTriangle, Bell, Zap, Palette, MessageSquare, Grid } from 'lucide-react';
-import { Button } from './ui/button';
+import { ReactNode } from 'react';
+import { Circle, Pencil, Menu, CheckSquare, Calendar, AlertTriangle, Bell, Zap, Palette, MessageSquare, Grid } from 'lucide-react';
 
 interface CollapsibleGroupProps {
   title: string;
@@ -8,6 +7,7 @@ interface CollapsibleGroupProps {
   icon?: string;
   children: ReactNode;
   className?: string;
+  twoColumnLayout?: boolean;
 }
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -29,47 +29,14 @@ export function CollapsibleGroup({
   description, 
   icon,
   children,
-  className = ''
+  className = '',
+  twoColumnLayout = false
 }: CollapsibleGroupProps) {
-  const [openSections, setOpenSections] = useState<Set<string>>(new Set());
-  const [hasAnySectionOpen, setHasAnySectionOpen] = useState(false);
   const IconComponent = icon ? iconMap[icon] : null;
-
-  useEffect(() => {
-    // Check if any sections are open
-    setHasAnySectionOpen(openSections.size > 0);
-  }, [openSections]);
-
-  // Listen for accordion state changes
-  useEffect(() => {
-    const handleAccordionChange = (e: CustomEvent) => {
-      const { sectionId, isOpen } = e.detail;
-      setOpenSections(prev => {
-        const newSet = new Set(prev);
-        if (isOpen) {
-          newSet.add(sectionId);
-        } else {
-          newSet.delete(sectionId);
-        }
-        return newSet;
-      });
-    };
-
-    window.addEventListener('accordionStateChange' as any, handleAccordionChange);
-    return () => {
-      window.removeEventListener('accordionStateChange' as any, handleAccordionChange);
-    };
-  }, []);
-
-  const handleCollapseAll = () => {
-    // Dispatch event to collapse all sections
-    window.dispatchEvent(new CustomEvent('collapseAllSections'));
-    setOpenSections(new Set());
-  };
 
   return (
     <div className={`space-y-4 ${className}`}>
-      <div className="mb-6 flex items-start justify-between gap-4">
+      <div className="mb-6">
         <div>
           <h2 className="mb-2 flex items-center gap-2">
             {IconComponent && <IconComponent className="w-5 h-5" />}
@@ -79,20 +46,9 @@ export function CollapsibleGroup({
             {description}
           </p>
         </div>
-        {hasAnySectionOpen && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleCollapseAll}
-            className="gap-2 shrink-0"
-          >
-            <ChevronUp className="w-4 h-4" />
-            Collapse All
-          </Button>
-        )}
       </div>
       
-      <div className="space-y-4">
+      <div className={twoColumnLayout ? "grid grid-cols-1 xl:grid-cols-2 gap-4" : "space-y-4"}>
         {children}
       </div>
     </div>
