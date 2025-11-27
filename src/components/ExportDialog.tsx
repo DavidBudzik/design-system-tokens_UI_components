@@ -75,16 +75,17 @@ export function ExportDialog({ sections }: ExportDialogProps) {
           Export Tokens
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[800px] sm:max-w-[800px]">
-        <SheetHeader>
+      <SheetContent side="right" className="w-[800px] sm:max-w-[800px] flex flex-col h-full p-0 overflow-hidden">
+        <SheetHeader className="px-6 pt-6 pb-4 shrink-0">
           <SheetTitle>Export Design Tokens</SheetTitle>
           <SheetDescription>
             Choose a format to export your design system tokens. Select the format that matches your tech stack or design tools.
           </SheetDescription>
         </SheetHeader>
         
-        <ScrollArea className="h-[500px] pr-4">
-          <div className="space-y-6">
+        <div className="flex-1 overflow-hidden">
+          <ScrollArea className="h-full px-6 pb-6">
+            <div className="space-y-6 pr-4">
             {/* Web Formats */}
             <div>
               <h4 className="mb-3 flex items-center gap-2">
@@ -191,6 +192,7 @@ export function ExportDialog({ sections }: ExportDialogProps) {
             </div>
           </div>
         </ScrollArea>
+        </div>
       </SheetContent>
     </Sheet>
   );
