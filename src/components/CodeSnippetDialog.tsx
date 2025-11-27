@@ -51,7 +51,7 @@ export function CodeSnippetDialog({ componentName, description, code }: CodeSnip
           View Code
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[500px] sm:max-w-[500px] flex flex-col">
+      <SheetContent side="right" className="w-[800px] sm:max-w-[800px] flex flex-col">
         <SheetHeader>
           <SheetTitle>{componentName}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>

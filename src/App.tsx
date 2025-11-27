@@ -276,7 +276,7 @@ const generateThemeFromBaseColors = (baseColors: BaseColors, theme: 'light' | 'd
 
   const newSections = JSON.parse(JSON.stringify(staticDesignSystemData.sections));
 
-  const updateTokens = (sectionTitle: string, newColors: { [key: string]: string }) => {
+  const updateTokens = (sectionTitle: string, newColors: { [key: string]: string }, darkColors?: { [key: string]: string }) => {
     const section = newSections.find((s: any) => s.title.includes(sectionTitle));
     if (section) {
       section.tokens.forEach((token: any) => {
@@ -285,6 +285,20 @@ const generateThemeFromBaseColors = (baseColors: BaseColors, theme: 'light' | 'd
           const color = tinycolor(newColors[state]);
           token.hex = color.toHexString();
           token.rgb = color.toRgbString();
+          
+          // Always set dark mode colors too
+          if (darkColors && darkColors[state]) {
+            const darkColor = tinycolor(darkColors[state]);
+            token.darkHex = darkColor.toHexString();
+            token.darkRgb = darkColor.toRgbString();
+          } else {
+            // If dark colors not explicitly provided, generate them
+            // For light colors, make them lighter; for dark colors, make them darker
+            const isDarkColor = color.isDark();
+            const darkColor = isDarkColor ? color.clone().lighten(15) : color.clone().darken(5);
+            token.darkHex = darkColor.toHexString();
+            token.darkRgb = darkColor.toRgbString();
+          }
         }
       });
     }
