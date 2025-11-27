@@ -1,16 +1,23 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense, useMemo } from 'react';
+import tinycolor from 'tinycolor2';
+import { Palette, Sun, Moon, ChevronDown, Pipette } from 'lucide-react';
 import { TokenSection } from './components/TokenSection';
 import { ExportDialog } from './components/ExportDialog';
 import { TypographySection } from './components/TypographySection';
 import { CollapsibleSection } from './components/CollapsibleSection';
 import { CollapsibleGroup } from './components/CollapsibleGroup';
 import { SideNav } from './components/SideNav';
-import { ThemeToggle } from './components/ThemeToggle';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Toaster } from './components/ui/sonner';
-import { designSystemData } from './data/designSystemData';
+import { designSystemData as staticDesignSystemData } from './data/designSystemData';
 import { typographyData } from './data/typographyData';
+import { defaultOtherTokens, OtherTokens } from './data/otherTokensData';
+import { OtherTokenSection } from './components/OtherToken';
 import { ComponentLoadingSkeleton } from './components/LoadingState';
+import { themes as premadeThemes, BaseColors, ThemePalette } from './data/themePalettes';
+import { Popover, PopoverContent, PopoverTrigger } from './components/ui/popover';
+import { Button } from './components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip';
 
 const ComponentsPage = lazy(() => import('./components/ComponentsPage'));
 const AbleIconsGuide = lazy(() => import('./components/AbleIconsGuide').then(m => ({ default: m.default })));
@@ -227,10 +234,188 @@ const oldDesignSystemData = {
   ]
 };
 
+/**
+ * Ensures that the contrast between a text color and its background meets WCAG AA standards.
+ * @param textColor The initial text color.
+ * @param backgroundColor The background color.
+ * @returns A new text color that meets the contrast requirement.
+ */
+const ensureContrast = (textColor: tinycolor.Instance, backgroundColor: tinycolor.Instance): tinycolor.Instance => {
+  const a11yTextColor = textColor.clone();
+  // Check if the contrast is sufficient. We check for small text size for the most stringent requirement.
+  if (tinycolor.isReadable(a11yTextColor, backgroundColor, { level: "AA", size: "small" })) {
+    return a11yTextColor;
+  }
+
+  // If not, determine if we need to lighten or darken the text.
+  const shouldLighten = backgroundColor.isDark();
+  let i = 0;
+  while (!tinycolor.isReadable(a11yTextColor, backgroundColor, { level: "AA", size: "small" }) && i < 100) {
+    if (shouldLighten) {
+      a11yTextColor.lighten(2);
+    } else {
+      a11yTextColor.darken(2);
+    }
+    i++;
+  }
+  return a11yTextColor;
+};
+
+const generateThemeFromBaseColors = (baseColors: BaseColors, theme: 'light' | 'dark') => {
+  const cta = tinycolor(baseColors.cta);
+  const primary = tinycolor(baseColors.primary);
+  const danger = tinycolor(baseColors.danger);
+  const success = tinycolor(baseColors.success);
+  const warning = tinycolor(baseColors.warning);
+  const link = tinycolor(baseColors.link);
+  const isDark = theme === 'dark';
+
+  // Grayscale palette generation
+  const background = isDark ? tinycolor(baseColors.foreground) : tinycolor(baseColors.background);
+  const foreground = isDark ? tinycolor(baseColors.background) : tinycolor(baseColors.foreground);
+
+  const newSections = JSON.parse(JSON.stringify(staticDesignSystemData.sections));
+
+  const updateTokens = (sectionTitle: string, newColors: { [key: string]: string }) => {
+    const section = newSections.find((s: any) => s.title.includes(sectionTitle));
+    if (section) {
+      section.tokens.forEach((token: any) => {
+        const state = token.name.split('-').pop();
+        if (state && newColors[state]) {
+          const color = tinycolor(newColors[state]);
+          token.hex = color.toHexString();
+          token.rgb = color.toRgbString();
+        }
+      });
+    }
+  };
+
+  updateTokens("Call-to-Action", {
+    default: cta.toHexString(),
+    hover: cta.clone().lighten(10).toHexString(),
+    active: cta.clone().darken(10).toHexString(),
+    disabled: cta.clone().lighten(35).desaturate(30).toHexString(),
+  });
+
+  updateTokens("Primary", {
+    default: primary.toHexString(),
+    hover: primary.clone().lighten(20).toHexString(),
+    active: primary.clone().lighten(10).toHexString(),
+    disabled: primary.clone().lighten(40).desaturate(10).toHexString(),
+  });
+  
+  updateTokens("Danger", {
+    default: danger.toHexString(),
+    hover: danger.clone().lighten(10).toHexString(),
+    active: danger.clone().darken(10).toHexString(),
+    disabled: danger.clone().lighten(30).desaturate(40).toHexString(),
+  });
+
+  updateTokens("Success", {
+    default: success.toHexString(),
+    hover: success.clone().lighten(10).toHexString(),
+    active: success.clone().darken(10).toHexString(),
+    disabled: success.clone().lighten(30).desaturate(40).toHexString(),
+  });
+
+  updateTokens("Warning", {
+    default: warning.toHexString(),
+    hover: warning.clone().lighten(10).toHexString(),
+    active: warning.clone().darken(10).toHexString(),
+    disabled: warning.clone().lighten(25).desaturate(30).toHexString(),
+  });
+
+  updateTokens("Link", {
+    default: link.toHexString(),
+    hover: link.clone().lighten(10).toHexString(),
+    active: link.clone().darken(5).toHexString(),
+    visited: link.clone().darken(20).toHexString(),
+  });
+
+  // Generate and apply grayscale palette
+  const textOnDefaultSurface = ensureContrast(foreground, background);
+
+  updateTokens("Text", {
+    primary: textOnDefaultSurface.toHexString(),
+    inverted: background.toHexString(),
+    "on-dark": background.toHexString(),
+    muted: ensureContrast(tinycolor.mix(foreground, background, 60), background).toHexString(),
+    subtle: ensureContrast(tinycolor.mix(foreground, background, 75), background).toHexString(),
+    disabled: ensureContrast(tinycolor.mix(foreground, background, 85), background).toHexString(),
+  });
+
+  updateTokens("Surface", {
+    default: background.toHexString(),
+    light: isDark ? background.clone().lighten(2).toHexString() : tinycolor.mix(background, foreground, 2).toHexString(),
+    muted: isDark ? background.clone().lighten(4).toHexString() : tinycolor.mix(background, foreground, 4).toHexString(),
+    subtle: isDark ? background.clone().lighten(6).toHexString() : tinycolor.mix(background, foreground, 6).toHexString(),
+    elevated: isDark ? background.clone().lighten(10).toHexString() : tinycolor.mix(background, foreground, 10).toHexString(),
+  });
+
+  updateTokens("Surface - Input", {
+    default: tinycolor.mix(background, foreground, 3).toHexString(),
+    hover: tinycolor.mix(background, foreground, 8).toHexString(),
+    active: tinycolor.mix(background, foreground, 5).toHexString(),
+    disabled: tinycolor.mix(background, foreground, 3).toHexString(),
+  });
+
+  updateTokens("Background", {
+    default: background.toHexString(),
+    inverted: foreground.toHexString(),
+  });
+
+  updateTokens("Border", {
+    default: tinycolor.mix(background, foreground, 12).toHexString(),
+    hover: tinycolor.mix(background, foreground, 25).toHexString(),
+    active: tinycolor.mix(background, foreground, 40).toHexString(),
+    disabled: tinycolor.mix(background, foreground, 15).toHexString(),
+    error: danger.toHexString(),
+  });
+
+  updateTokens("Icons", {
+    default: tinycolor.mix(foreground, background, 45).toHexString(),
+    disabled: tinycolor.mix(foreground, background, 80).toHexString(),
+    "on-dark": tinycolor.mix(background, foreground, 5).toHexString(),
+    "on-bright": tinycolor.mix(background, foreground, 5).toHexString(),
+    subtle: tinycolor.mix(foreground, background, 80).toHexString(),
+  });
+
+  // Note: Complementary colors are not derived from base colors in this logic.
+  // They are meant to be distinct accent palettes.
+
+  return { sections: newSections };
+};
+
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('tokens');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [baseColors, setBaseColors] = useState<BaseColors>(premadeThemes[0].baseColors);
+  const [otherTokens, setOtherTokens] = useState<OtherTokens>(defaultOtherTokens);
 
+  const designSystemData = useMemo(() => generateThemeFromBaseColors(baseColors, theme), [baseColors, theme]);
+
+  const handleThemeSelect = (themeName: string) => {
+    const selectedTheme = premadeThemes.find((t: ThemePalette) => t.name === themeName);
+    if (selectedTheme) {
+      setBaseColors(selectedTheme.baseColors);
+    }
+  };
+
+  const handleColorChange = (colorName: keyof BaseColors, value: string) => {
+    setBaseColors((prev: BaseColors) => ({ ...prev, [colorName]: value }));
+  };
+
+  // Handler for updating other tokens (spacing, radius, border, shadow)
+  const handleOtherTokenUpdate = (category: keyof OtherTokens, name: string, value: string) => {
+    setOtherTokens((prev: OtherTokens) => ({
+      ...prev,
+      [category]: prev[category].map((token) =>
+        token.name === name ? { ...token, value } : token
+      ),
+    }));
+  };
+  
   // Apply theme to document
   useEffect(() => {
     if (theme === 'dark') {
@@ -238,7 +423,54 @@ export default function App() {
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, [theme]);
+    
+    // Apply dynamic colors as CSS variables
+    const root = document.documentElement;
+    designSystemData.sections.forEach((section: { tokens: { name: string; hex: string }[] }) => {
+      section.tokens.forEach((token: { name: string; hex: string }) => {
+        root.style.setProperty(token.name, token.hex);
+        
+        // Also update shorthand variables for Tailwind utilities
+        if (token.name === '--cta-cta-default') {
+          root.style.setProperty('--cta', token.hex);
+        }
+        if (token.name === '--danger-danger-default') {
+          root.style.setProperty('--danger', token.hex);
+        }
+        if (token.name === '--success-success-default') {
+          root.style.setProperty('--success', token.hex);
+        }
+        if (token.name === '--warning-warning-default') {
+          root.style.setProperty('--warning', token.hex);
+        }
+        if (token.name === '--primary-primary-default') {
+          root.style.setProperty('--primary', token.hex);
+        }
+      });
+    });
+
+    // Apply other tokens (spacing, radius, border, shadow) as CSS variables
+    Object.values(otherTokens).flat().forEach((token) => {
+      root.style.setProperty(token.cssVar, token.value);
+    });
+
+    // This is a cleanup function to remove the styles when the component unmounts
+    return () => {
+      designSystemData.sections.forEach((section: { tokens: { name: string }[] }) => {
+        section.tokens.forEach((token: { name: string }) => root.style.removeProperty(token.name));
+      });
+      // Clean up other tokens
+      Object.values(otherTokens).flat().forEach((token) => {
+        root.style.removeProperty(token.cssVar);
+      });
+      // Clean up shorthand variables
+      root.style.removeProperty('--cta');
+      root.style.removeProperty('--danger');
+      root.style.removeProperty('--success');
+      root.style.removeProperty('--warning');
+      root.style.removeProperty('--primary');
+    };
+  }, [theme, designSystemData, otherTokens]);
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
@@ -249,7 +481,7 @@ export default function App() {
     {
       title: 'Colors',
       icon: 'palette',
-      items: designSystemData.sections.map(section => ({
+      items: designSystemData.sections.map((section: { title: string }) => ({
         id: section.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
         label: section.title.replace(/^[^\s]+ /, '') // Remove emoji
       }))
@@ -269,7 +501,10 @@ export default function App() {
       title: 'Other Tokens',
       icon: 'zap',
       items: [
-        { id: 'non-color-tokens', label: 'Spacing, Border & More' }
+        { id: 'spacing-tokens', label: 'Spacing Scale' },
+        { id: 'radius-tokens', label: 'Border Radius' },
+        { id: 'border-width-tokens', label: 'Border Width' },
+        { id: 'shadow-tokens', label: 'Shadows' }
       ]
     }
   ];
@@ -383,29 +618,149 @@ export default function App() {
       <header className="fixed top-0 left-0 right-0 bg-background border-b border-border z-50 shadow-sm h-28">
         <div className="w-full px-6 py-4 h-full">
           <div className="flex items-start justify-between gap-4 h-full">
-            <div className="space-y-1 flex-1">
+            <div className="space-y-2 flex-1">
               <div className="flex items-center gap-4">
-                <h1>Able Design System</h1>
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="inline-block">
-                  <TabsList className="h-9">
-                    <TabsTrigger value="tokens" className="px-4">Tokens</TabsTrigger>
-                    <TabsTrigger value="components" className="px-4">Components</TabsTrigger>
-                    <TabsTrigger value="icons" className="px-4">Icons</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                {/* Logo Placeholder */}
+                <div 
+                  className="w-10 h-10 rounded bg-muted border border-border flex items-center justify-center flex-shrink-0"
+                  aria-label="Logo placeholder"
+                >
+                  <span className="text-xs text-muted-foreground">Logo</span>
+                </div>
+                <h1>Design Book</h1>
               </div>
-              <p className="text-muted-foreground">
-                {activeTab === 'tokens' 
-                  ? 'Complete color palette with interactive states, surfaces, and complementary colors.'
-                  : activeTab === 'components'
-                  ? 'UI component examples with design tokens applied and code snippets.'
-                  : 'Icon library with Able-to-Lucide mapping and usage guidelines.'}
-              </p>
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="inline-block">
+                <TabsList className="h-9">
+                  <TabsTrigger value="tokens" className="px-4">Tokens</TabsTrigger>
+                  <TabsTrigger value="components" className="px-4">Components</TabsTrigger>
+                  <TabsTrigger value="icons" className="px-4">Icons</TabsTrigger>
+                </TabsList>
+              </Tabs>
             </div>
-            <div className="flex items-center gap-3">
-              <ThemeToggle theme={theme} onToggle={toggleTheme} />
-              {activeTab === 'tokens' && <ExportDialog sections={designSystemData.sections} />}
-            </div>
+            
+            {/* Actions Toolbar - Unified compact design */}
+            <TooltipProvider delayDuration={300}>
+              <div className="flex items-center gap-1 p-1 rounded-lg bg-muted/50 border border-border">
+                {/* Theme Palette Selector */}
+                <Popover>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <PopoverTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-9 gap-2 px-3">
+                          <Palette className="h-4 w-4" />
+                          <span className="hidden sm:inline text-sm">{premadeThemes.find((t: ThemePalette) => 
+                            t.baseColors.cta === baseColors.cta && 
+                            t.baseColors.primary === baseColors.primary
+                          )?.name || 'Custom'}</span>
+                          <ChevronDown className="h-3 w-3 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      <p>Theme palette</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <PopoverContent className="w-56 p-2" align="end">
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground px-2 py-1">Pre-made Palettes</p>
+                      {premadeThemes.map((t: ThemePalette) => (
+                        <button
+                          key={t.name}
+                          onClick={() => handleThemeSelect(t.name)}
+                          className="flex items-center gap-3 w-full px-2 py-2 rounded-md hover:bg-accent text-sm transition-colors"
+                        >
+                          <div className="flex gap-0.5">
+                            <div 
+                              className="w-4 h-4 rounded-l-sm" 
+                              style={{ backgroundColor: t.baseColors.cta }} 
+                            />
+                            <div 
+                              className="w-4 h-4" 
+                              style={{ backgroundColor: t.baseColors.primary }} 
+                            />
+                            <div 
+                              className="w-4 h-4 rounded-r-sm" 
+                              style={{ backgroundColor: t.baseColors.success }} 
+                            />
+                          </div>
+                          <span>{t.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+
+                {/* Divider */}
+                <div className="w-px h-6 bg-border" />
+
+                {/* CTA Color Picker */}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="relative">
+                      <Button variant="ghost" size="sm" className="h-9 gap-2 px-3">
+                        <Pipette className="h-4 w-4" />
+                        <div 
+                          className="w-5 h-5 rounded border border-border shadow-sm" 
+                          style={{ backgroundColor: baseColors.cta }}
+                        />
+                      </Button>
+                      <input
+                        type="color"
+                        value={baseColors.cta}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleColorChange('cta', e.target.value)}
+                        className="absolute inset-0 opacity-0 cursor-pointer"
+                        aria-label="Pick CTA color"
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">
+                    <p>CTA color</p>
+                  </TooltipContent>
+                </Tooltip>
+
+                {/* Divider */}
+                <div className="w-px h-6 bg-border" />
+
+                {/* Light/Dark Mode Toggle */}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-9 w-9 p-0"
+                      onClick={toggleTheme}
+                      aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+                    >
+                      {theme === 'light' ? (
+                        <Moon className="h-4 w-4" />
+                      ) : (
+                        <Sun className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">
+                    <p>{theme === 'light' ? 'Dark mode' : 'Light mode'}</p>
+                  </TooltipContent>
+                </Tooltip>
+
+                {/* Export Button - only on tokens tab */}
+                {activeTab === 'tokens' && (
+                  <>
+                    <div className="w-px h-6 bg-border" />
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <ExportDialog sections={designSystemData.sections} />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom">
+                        <p>Export tokens</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </>
+                )}
+              </div>
+            </TooltipProvider>
           </div>
         </div>
       </header>
@@ -426,7 +781,7 @@ export default function App() {
             description="Interactive color tokens with states, surfaces, and complementary palettes."
             icon="palette"
           >
-            {designSystemData.sections.map((section, index) => {
+            {designSystemData.sections.map((section: { title: string; description: string; tokens: { name: string; hex: string; rgb: string; darkHex?: string; darkRgb?: string }[] }, index: number) => {
               const sectionId = section.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
               return (
                 <CollapsibleSection
@@ -519,56 +874,63 @@ export default function App() {
             className="mt-12 pt-8 border-t-2 border-border"
           >
             <CollapsibleSection
-              id="non-color-tokens"
-              title="Non-Color Tokens"
-              description="Spacing scale, border radius, and border width tokens"
-              hint="Click to view spacing scale (11), border radius (8), and border width (6) tokens"
+              id="spacing-tokens"
+              title="Spacing Scale"
+              description="Consistent spacing tokens for margins, padding, and gaps"
+              hint={`Click to view ${otherTokens.spacing.length} spacing tokens`}
+              defaultOpen={true}
+            >
+              <OtherTokenSection
+                title="Spacing"
+                tokens={otherTokens.spacing}
+                type="spacing"
+                onUpdate={(name, value) => handleOtherTokenUpdate('spacing', name, value)}
+              />
+            </CollapsibleSection>
+
+            <CollapsibleSection
+              id="radius-tokens"
+              title="Border Radius"
+              description="Corner radius tokens for rounded elements"
+              hint={`Click to view ${otherTokens.radius.length} radius tokens`}
               defaultOpen={false}
             >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-3">
-                  <h4>Spacing Scale</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between"><span className="text-muted-foreground">--spacing-0</span><span>0</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--spacing-1</span><span>2px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--spacing-2</span><span>4px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--spacing-3</span><span>8px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--spacing-4</span><span>12px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--spacing-5</span><span>16px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--spacing-6</span><span>20px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--spacing-7</span><span>24px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--spacing-8</span><span>28px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--spacing-9</span><span>32px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--spacing-10</span><span>40px</span></div>
-                  </div>
-                </div>
+              <OtherTokenSection
+                title="Border Radius"
+                tokens={otherTokens.radius}
+                type="radius"
+                onUpdate={(name, value) => handleOtherTokenUpdate('radius', name, value)}
+              />
+            </CollapsibleSection>
 
-                <div className="space-y-3">
-                  <h4>Border Radius</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between"><span className="text-muted-foreground">--radius-none</span><span>0</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--radius-xs</span><span>2px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--radius-sm</span><span>4px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--radius-md</span><span>8px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--radius-lg</span><span>16px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--radius-xl</span><span>24px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--radius-2xl</span><span>32px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--radius-full</span><span>9999px</span></div>
-                  </div>
-                </div>
+            <CollapsibleSection
+              id="border-width-tokens"
+              title="Border Width"
+              description="Border thickness tokens for outlines and dividers"
+              hint={`Click to view ${otherTokens.borderWidth.length} border width tokens`}
+              defaultOpen={false}
+            >
+              <OtherTokenSection
+                title="Border Width"
+                tokens={otherTokens.borderWidth}
+                type="borderWidth"
+                onUpdate={(name, value) => handleOtherTokenUpdate('borderWidth', name, value)}
+              />
+            </CollapsibleSection>
 
-                <div className="space-y-3">
-                  <h4>Border Width</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between"><span className="text-muted-foreground">--border-none</span><span>0</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--border-thin</span><span>1px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--border-base</span><span>1.5px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--border-md</span><span>2px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--border-lg</span><span>3px</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">--border-xl</span><span>4px</span></div>
-                  </div>
-                </div>
-              </div>
+            <CollapsibleSection
+              id="shadow-tokens"
+              title="Shadows"
+              description="Box shadow tokens for elevation and depth"
+              hint={`Click to view ${otherTokens.shadow.length} shadow tokens`}
+              defaultOpen={false}
+            >
+              <OtherTokenSection
+                title="Shadows"
+                tokens={otherTokens.shadow}
+                type="shadow"
+                onUpdate={(name, value) => handleOtherTokenUpdate('shadow', name, value)}
+              />
             </CollapsibleSection>
           </CollapsibleGroup>
         </div>
