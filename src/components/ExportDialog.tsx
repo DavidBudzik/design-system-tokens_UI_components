@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Download, FileCode, FileJson, FileText, Smartphone, Monitor } from 'lucide-react';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './ui/dialog';
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from './ui/sheet';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
 import { exportFormats, ExportFormat } from '../utils/exportFormats';
@@ -68,20 +68,20 @@ export function ExportDialog({ sections }: ExportDialogProps) {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <Sheet>
+      <SheetTrigger asChild>
         <Button size="lg" className="gap-2 bg-cta hover:bg-cta/90 text-cta-foreground">
           <Download className="w-5 h-5" />
           Export Tokens
         </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-3xl min-w-[600px]">
-        <DialogHeader>
-          <DialogTitle>Export Design Tokens</DialogTitle>
-          <DialogDescription>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-[800px] sm:max-w-[800px]">
+        <SheetHeader>
+          <SheetTitle>Export Design Tokens</SheetTitle>
+          <SheetDescription>
             Choose a format to export your design system tokens. Select the format that matches your tech stack or design tools.
-          </DialogDescription>
-        </DialogHeader>
+          </SheetDescription>
+        </SheetHeader>
         
         <ScrollArea className="h-[500px] pr-4">
           <div className="space-y-6">
@@ -191,7 +191,7 @@ export function ExportDialog({ sections }: ExportDialogProps) {
             </div>
           </div>
         </ScrollArea>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 }
