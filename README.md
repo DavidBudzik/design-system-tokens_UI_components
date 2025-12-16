@@ -176,7 +176,28 @@ npm run dev
 
 ## Deployment
 
-The project deploys automatically to GitHub Pages via GitHub Actions on push to `main` branch.
+### GitHub Pages
+
+The application is automatically deployed to GitHub Pages on every push to the `main` branch.
+
+**Live URL:** [https://davidbudzik.github.io/design-system-tokens_UI_components/](https://davidbudzik.github.io/design-system-tokens_UI_components/)
+
+#### How It Works
+
+1. **Automatic Deployment**: The `.github/workflows/deploy.yml` workflow triggers on push to `main`
+2. **Build Process**: 
+   - Installs dependencies with `npm ci`
+   - Builds the project with `npm run build`
+   - Uploads the `dist` folder as a GitHub Pages artifact
+3. **Deployment**: Uses GitHub's official `actions/deploy-pages@v4` action to deploy to GitHub Pages
+4. **Base Path**: Vite is configured with `base: '/design-system-tokens_UI_components/'` to ensure all assets load correctly
+
+#### Initial Setup
+
+After merging changes, ensure GitHub Pages is configured:
+1. Go to repository Settings → Pages
+2. Set Source to "GitHub Actions"
+3. The app will automatically deploy on the next push to main
 
 ### Manual Deployment
 

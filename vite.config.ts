@@ -5,7 +5,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import type { PluginOption } from 'vite';
 
 export default defineConfig(({ mode }) => ({
-  base: '/',
+  base: '/design-system-tokens_UI_components/',
   plugins: [
     react(),
     mode === 'analyze' &&
