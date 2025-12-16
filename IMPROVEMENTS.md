@@ -1,5 +1,15 @@
 # Improvements Summary
 
+> **⚠️ NOTICE: This file has been moved and expanded to [`docs/ROADMAP.md`](./docs/ROADMAP.md)**
+> 
+> This file remains here for backward compatibility. Please update your bookmarks and references to point to the new location.
+> 
+> **New Location:** [`docs/ROADMAP.md`](./docs/ROADMAP.md)
+> 
+> The new roadmap includes all completed improvements from this file plus in-progress work, planned features, future considerations, and contribution opportunities.
+
+---
+
 This document summarizes all the improvements made to the Design Book application.
 
 ## Configuration & Tooling Setup ✅

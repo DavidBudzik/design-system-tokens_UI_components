@@ -1,12 +1,6 @@
 # Design Book - Development Guidelines
 
-> **⚠️ NOTICE: This file has been moved to [`docs/GUIDELINES.md`](./docs/GUIDELINES.md)**
-> 
-> This file remains here for backward compatibility. Please update your bookmarks and references to point to the new location.
-> 
-> **New Location:** [`docs/GUIDELINES.md`](./docs/GUIDELINES.md)
-
----
+> **Note**: This file has been moved to `/docs/GUIDELINES.md` for better organization. All content has been preserved and enhanced.
 
 This document outlines the development guidelines, best practices, and standards for contributing to Design Book.
 
@@ -464,6 +458,185 @@ function convertToNewFormat(tokens: Token[]): string {
 }
 ```
 
+## Best Practices
+
+### Code Organization
+
+1. **Keep Components Small**: Components should be < 200 lines
+2. **Single Responsibility**: Each function/component does one thing well
+3. **DRY Principle**: Don't repeat yourself - extract reusable logic
+4. **Clear Naming**: Use descriptive names that explain purpose
+
+### Error Handling
+
+```typescript
+// Good - Graceful error handling
+try {
+  const result = await exportTokens(format);
+  showSuccessMessage('Tokens exported successfully');
+} catch (error) {
+  console.error('Export failed:', error);
+  showErrorMessage('Failed to export tokens. Please try again.');
+}
+
+// Avoid - Silent failures
+await exportTokens(format).catch(() => {});
+```
+
+### Performance Tips
+
+1. **Avoid Unnecessary Re-renders**
+   - Use React.memo for pure components
+   - Use useMemo for expensive calculations
+   - Use useCallback for stable function references
+
+2. **Optimize Bundle Size**
+   - Lazy load large components
+   - Import only what you need: `import { Button } from './ui/button'`
+   - Avoid importing entire libraries
+
+3. **Efficient Data Structures**
+   - Use Maps for O(1) lookups
+   - Cache computed values
+   - Debounce/throttle event handlers
+
+### Security Best Practices
+
+1. **Input Validation**: Always validate and sanitize user inputs
+2. **No Eval**: Never use `eval()` or `Function()` constructor
+3. **XSS Prevention**: Sanitize HTML content
+4. **Dependency Updates**: Keep dependencies up to date
+
+### Accessibility Checklist
+
+Before submitting a PR, verify:
+
+- [ ] All interactive elements are keyboard accessible
+- [ ] Focus indicators are visible
+- [ ] ARIA labels are provided where needed
+- [ ] Color contrast meets WCAG AA standards
+- [ ] Screen readers can navigate the content
+- [ ] Forms have proper labels
+- [ ] Error messages are accessible
+
+### Code Review Tips
+
+When reviewing code:
+
+1. **Check for Correctness**: Does it work as intended?
+2. **Check for Edge Cases**: What if data is empty/null/invalid?
+3. **Check for Performance**: Are there obvious bottlenecks?
+4. **Check for Accessibility**: Is it accessible?
+5. **Check for Tests**: Are there adequate tests?
+6. **Check for Documentation**: Is it well-documented?
+
+### Visual Examples
+
+#### Good Component Structure
+
+```typescript
+// ColorToken.tsx - Well-structured component
+import { cn } from '@/utils';
+import { Button } from '@/components/ui/button';
+import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
+
+interface ColorTokenProps {
+  name: string;
+  value: string;
+  theme?: 'light' | 'dark';
+  className?: string;
+}
+
+export function ColorToken({
+  name,
+  value,
+  theme = 'light',
+  className
+}: ColorTokenProps) {
+  const { copy, copied } = useCopyToClipboard();
+
+  return (
+    <div className={cn('token-card', className)}>
+      <div 
+        className="token-swatch" 
+        style={{ backgroundColor: value }}
+        aria-label={`Color swatch for ${name}`}
+      />
+      <div className="token-info">
+        <span className="token-name">{name}</span>
+        <span className="token-value">{value}</span>
+      </div>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => copy(value)}
+        aria-label={`Copy ${name} value`}
+      >
+        {copied ? 'Copied!' : 'Copy'}
+      </Button>
+    </div>
+  );
+}
+```
+
+#### Common Patterns
+
+**Pattern: Controlled Component**
+```typescript
+function SearchInput({ value, onChange }) {
+  return (
+    <input
+      type="text"
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      placeholder="Search tokens..."
+    />
+  );
+}
+```
+
+**Pattern: Custom Hook**
+```typescript
+function useTokenFilter(tokens: Token[], query: string) {
+  return useMemo(() => {
+    if (!query) return tokens;
+    return tokens.filter(token =>
+      token.name.toLowerCase().includes(query.toLowerCase())
+    );
+  }, [tokens, query]);
+}
+```
+
+**Pattern: Error Boundary**
+```typescript
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Error caught:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <ErrorFallback />;
+    }
+    return this.props.children;
+  }
+}
+```
+
 ## Questions or Suggestions?
 
 If you have questions about these guidelines or suggestions for improvements, please open an issue or contact the design system team.
+
+---
+
+**Related Documentation:**
+- [Getting Started Guide](./GETTING_STARTED.md)
+- [Architecture Overview](./ARCHITECTURE.md)
+- [Contributing Guide](./CONTRIBUTING.md)
+- [Troubleshooting](./TROUBLESHOOTING.md)
