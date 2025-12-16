@@ -3,21 +3,40 @@ import { BaseColors } from '../data/themePalettes';
 
 interface LogoProps {
   baseColors: BaseColors;
+  theme?: 'light' | 'dark';
   className?: string;
 }
 
-export function Logo({ baseColors, className = '' }: LogoProps) {
-  // Create a gradient effect using the primary color and its variations
-  // Original colors: #9E97FF (light), #4CBFFF (medium), #4A3AFF (dark)
-  // Top layer uses CTA color, other layers use primary color variations
+export function Logo({ baseColors, theme = 'light', className = '' }: LogoProps) {
+  const isDark = theme === 'dark';
   const primaryColor = tinycolor(baseColors.primary);
   const ctaColor = tinycolor(baseColors.cta);
   
-  // Create three shades: light (saturated/lighter), medium (primary), top (CTA)
-  // Path order: first = bottom layer, second = middle layer, third = top layer
-  const color1 = primaryColor.clone().saturate(20).lighten(15).toHexString(); // Bottom layer - lightest
-  const color2 = primaryColor.toHexString(); // Middle layer - base primary
-  const color3 = ctaColor.toHexString(); // Top layer - CTA color
+  // Adjust colors based on theme for optimal visibility
+  let color1: string;
+  let color2: string;
+  let color3: string;
+  
+  if (isDark) {
+    // Dark mode: Lighten and saturate colors for better visibility on dark backgrounds
+    // Ensure colors are bright enough to stand out
+    const primaryLight = primaryColor.isDark() 
+      ? primaryColor.clone().lighten(40).saturate(30)
+      : primaryColor.clone().lighten(20).saturate(20);
+    
+    const ctaLight = ctaColor.isDark()
+      ? ctaColor.clone().lighten(30).saturate(20)
+      : ctaColor.clone().lighten(15).saturate(10);
+    
+    color1 = primaryLight.clone().lighten(10).toHexString(); // Bottom layer - lightest
+    color2 = primaryLight.toHexString(); // Middle layer
+    color3 = ctaLight.toHexString(); // Top layer - CTA color
+  } else {
+    // Light mode: Use original color scheme
+    color1 = primaryColor.clone().saturate(20).lighten(15).toHexString(); // Bottom layer - lightest
+    color2 = primaryColor.toHexString(); // Middle layer - base primary
+    color3 = ctaColor.toHexString(); // Top layer - CTA color
+  }
 
   return (
     <svg 
