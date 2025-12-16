@@ -15,7 +15,7 @@ interface Section {
 // Helper to convert hex to RGB values
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
+  return result && result[1] && result[2] && result[3]
     ? {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),
@@ -30,7 +30,7 @@ export const exportFormats = {
     extension: ".css",
     description: "CSS custom properties for modern web projects. Works with vanilla CSS, React, Vue, and any web framework.",
     generate: (sections: Section[]) => {
-      let output = "/* Able Design System - Color Tokens */\n";
+      let output = "/* Design Book - Color Tokens */\n";
       output += "/* Generated CSS Variables with Light & Dark Modes */\n\n";
       
       // Light mode
@@ -66,7 +66,7 @@ export const exportFormats = {
     extension: ".scss",
     description: "SCSS/SASS variables for projects using Sass preprocessor. Compatible with Bootstrap, Foundation, and custom SCSS builds.",
     generate: (sections: Section[]) => {
-      let output = "// Able Design System - Color Tokens\n";
+      let output = "// Design Book - Color Tokens\n";
       output += "// Generated SCSS Variables with Light & Dark Modes\n\n";
       
       // Light mode
@@ -130,7 +130,7 @@ export const exportFormats = {
     extension: ".js",
     description: "ES6 module exports for JavaScript projects. Works with React, Vue, Node.js, and modern JavaScript applications.",
     generate: (sections: Section[]) => {
-      let output = "// Able Design System - Color Tokens\n";
+      let output = "// Design Book - Color Tokens\n";
       output += "// Generated JavaScript/ES6 Module\n\n";
       output += "export const colors = {\n";
       
@@ -160,7 +160,7 @@ export const exportFormats = {
     extension: ".ts",
     description: "TypeScript module with type definitions. Perfect for TypeScript projects with full IntelliSense support.",
     generate: (sections: Section[]) => {
-      let output = "// Able Design System - Color Tokens\n";
+      let output = "// Design Book - Color Tokens\n";
       output += "// Generated TypeScript Module\n\n";
       output += "export interface ColorTokens {\n";
       
@@ -200,7 +200,7 @@ export const exportFormats = {
     extension: ".js",
     description: "Tailwind CSS configuration for extending your color palette. Merge with tailwind.config.js to use custom colors.",
     generate: (sections: Section[]) => {
-      let output = "// Able Design System - Color Tokens\n";
+      let output = "// Design Book - Color Tokens\n";
       output += "// Tailwind CSS Configuration\n\n";
       output += "module.exports = {\n";
       output += "  theme: {\n";
@@ -215,10 +215,12 @@ export const exportFormats = {
           const category = parts[0];
           const name = parts.slice(1).join("-");
           
-          if (!categories[category]) {
-            categories[category] = {};
+          if (category && name) {
+            if (!categories[category]) {
+              categories[category] = {};
+            }
+            categories[category][name] = token.hex;
           }
-          categories[category][name] = token.hex;
         });
       });
       
@@ -243,7 +245,7 @@ export const exportFormats = {
     extension: ".swift",
     description: "Swift color extensions for iOS/macOS development. Use with UIKit or SwiftUI for native Apple applications.",
     generate: (sections: Section[]) => {
-      let output = "// Able Design System - Color Tokens\n";
+      let output = "// Design Book - Color Tokens\n";
       output += "// Generated Swift Color Extensions\n\n";
       output += "import UIKit\n\n";
       output += "extension UIColor {\n";
@@ -268,11 +270,11 @@ export const exportFormats = {
     extension: ".kt",
     description: "Kotlin color definitions for Android development. Use with Jetpack Compose or traditional Android Views.",
     generate: (sections: Section[]) => {
-      let output = "// Able Design System - Color Tokens\n";
+      let output = "// Design Book - Color Tokens\n";
       output += "// Generated Kotlin Color Definitions\n\n";
       output += "package com.yourapp.design\n\n";
       output += "import androidx.compose.ui.graphics.Color\n\n";
-      output += "object AbleColors {\n";
+      output += "object DesignBookColors {\n";
       
       sections.forEach((section) => {
         output += `    // ${section.title}\n`;
@@ -295,7 +297,7 @@ export const exportFormats = {
     description: "Android colors.xml resource file. Place in res/values/ folder for traditional Android projects.",
     generate: (sections: Section[]) => {
       let output = '<?xml version="1.0" encoding="utf-8"?>\n';
-      output += "<!-- Able Design System - Color Tokens -->\n";
+      output += "<!-- Design Book - Color Tokens -->\n";
       output += "<!-- Generated Android Color Resources -->\n";
       output += "<resources>\n";
       
@@ -318,7 +320,7 @@ export const exportFormats = {
     extension: ".less",
     description: "LESS preprocessor variables. Compatible with projects using LESS for styling.",
     generate: (sections: Section[]) => {
-      let output = "// Able Design System - Color Tokens\n";
+      let output = "// Design Book - Color Tokens\n";
       output += "// Generated LESS Variables\n\n";
       
       sections.forEach((section) => {
@@ -347,11 +349,13 @@ export const exportFormats = {
         
         section.tokens.forEach((token) => {
           const cleanName = token.name.replace(/^--/, "").split("-").pop() || "default";
-          tokenObj[categoryName][cleanName] = {
-            value: token.hex,
-            type: "color",
-            description: section.description,
-          };
+          if (cleanName) {
+            tokenObj[categoryName][cleanName] = {
+              value: token.hex,
+              type: "color",
+              description: section.description,
+            };
+          }
         });
       });
       

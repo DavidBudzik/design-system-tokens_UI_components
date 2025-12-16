@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { ChevronDown, MoreVertical, Download, Trash2, Check, Plus, ArrowRight, Search, Settings, User, LogOut, CreditCard, Users, FileText, Copy, Edit, Mail, Bell, Filter, X, Calendar as CalendarIcon, AlertTriangle, Info, Bookmark } from 'lucide-react';
+import { ChevronDown, MoreVertical, Download, Trash2, Check, Plus, ArrowRight, Search, Settings, User, LogOut, CreditCard, Users, FileText, Copy, Edit, Mail, Bell, Filter, X, AlertTriangle, Info, Bookmark } from 'lucide-react';
 import { useState } from 'react';
 import { Calendar } from './ui/calendar';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from './ui/alert-dialog';
@@ -3812,7 +3812,6 @@ function ToastDemo() {
 
         {/* Bulk Action Panel Section */}
         <CollapsibleGroup
-          id="bulk-actions"
           title="Bulk Action Panel"
           description="Interactive panel for managing bulk selections and actions"
           icon="zap"

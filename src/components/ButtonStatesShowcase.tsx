@@ -350,10 +350,10 @@ export function ButtonStatesShowcase() {
               size="lg"
               style={
                 interactiveButtonState === 'default'
-                  ? buttonVariants[0].states.default.style
+                  ? buttonVariants[0]?.states.default.style || {}
                   : interactiveButtonState === 'hover'
-                  ? buttonVariants[0].states.hover.style
-                  : buttonVariants[0].states.active.style
+                  ? buttonVariants[0]?.states.hover.style || {}
+                  : buttonVariants[0]?.states.active.style || {}
               }
               onMouseEnter={() => setInteractiveButtonState('hover')}
               onMouseLeave={() => setInteractiveButtonState('default')}
@@ -424,7 +424,7 @@ export function ButtonStatesShowcase() {
               <Badge variant="outline" className="text-xs">Small</Badge>
               <Button
                 size="sm"
-                style={buttonVariants[0].states.default.style}
+                style={buttonVariants[0]?.states.default.style || {}}
               >
                 Small
               </Button>
@@ -433,7 +433,7 @@ export function ButtonStatesShowcase() {
               <Badge variant="outline" className="text-xs">Default</Badge>
               <Button
                 size="default"
-                style={buttonVariants[0].states.default.style}
+                style={buttonVariants[0]?.states.default.style || {}}
               >
                 Default
               </Button>
@@ -442,7 +442,7 @@ export function ButtonStatesShowcase() {
               <Badge variant="outline" className="text-xs">Large</Badge>
               <Button
                 size="lg"
-                style={buttonVariants[0].states.default.style}
+                style={buttonVariants[0]?.states.default.style || {}}
               >
                 Large
               </Button>
@@ -451,7 +451,7 @@ export function ButtonStatesShowcase() {
               <Badge variant="outline" className="text-xs">Icon</Badge>
               <Button
                 size="icon"
-                style={buttonVariants[0].states.default.style}
+                style={buttonVariants[0]?.states.default.style || {}}
               >
                 <Plus className="w-4 h-4" />
               </Button>
@@ -469,28 +469,28 @@ export function ButtonStatesShowcase() {
         <div className="p-6">
           <div className="flex flex-wrap gap-4">
             <Button
-              style={buttonVariants[0].states.default.style}
+                    style={buttonVariants[0]?.states.default.style || {}}
               className="gap-2"
             >
               <Download className="w-4 h-4" />
               Download
             </Button>
             <Button
-              style={buttonVariants[2].states.default.style}
+              style={buttonVariants[2]?.states.default.style || {}}
               className="gap-2"
             >
               <Trash2 className="w-4 h-4" />
               Delete
             </Button>
             <Button
-              style={buttonVariants[3].states.default.style}
+              style={buttonVariants[3]?.states.default.style || {}}
               className="gap-2"
             >
               <Check className="w-4 h-4" />
               Confirm
             </Button>
             <Button
-              style={buttonVariants[1].states.default.style}
+              style={buttonVariants[1]?.states.default.style || {}}
               className="gap-2"
             >
               <Search className="w-4 h-4" />
@@ -509,21 +509,21 @@ export function ButtonStatesShowcase() {
         <div className="p-6">
           <div className="flex flex-wrap gap-4">
             <Button
-              style={buttonVariants[0].states.default.style}
+                    style={buttonVariants[0]?.states.default.style || {}}
               className="gap-2"
             >
               Continue
               <ArrowRight className="w-4 h-4" />
             </Button>
             <Button
-              style={buttonVariants[1].states.default.style}
+              style={buttonVariants[1]?.states.default.style || {}}
               className="gap-2"
             >
               View More
               <ChevronRight className="w-4 h-4" />
             </Button>
             <Button
-              style={buttonVariants[5].states.default.style}
+              style={buttonVariants[5]?.states.default.style || {}}
               className="gap-2"
             >
               Settings
@@ -542,7 +542,7 @@ export function ButtonStatesShowcase() {
         <div className="p-6">
           <div className="flex flex-wrap gap-4">
             <Button
-              style={buttonVariants[0].states.default.style}
+                    style={buttonVariants[0]?.states.default.style || {}}
               className="gap-2"
             >
               <Download className="w-4 h-4" />
@@ -550,7 +550,7 @@ export function ButtonStatesShowcase() {
               <ArrowRight className="w-4 h-4" />
             </Button>
             <Button
-              style={buttonVariants[3].states.default.style}
+              style={buttonVariants[3]?.states.default.style || {}}
               className="gap-2"
             >
               <Check className="w-4 h-4" />
@@ -558,7 +558,7 @@ export function ButtonStatesShowcase() {
               <ChevronRight className="w-4 h-4" />
             </Button>
             <Button
-              style={buttonVariants[1].states.default.style}
+              style={buttonVariants[1]?.states.default.style || {}}
               className="gap-2"
             >
               <Search className="w-4 h-4" />
@@ -585,7 +585,7 @@ export function ButtonStatesShowcase() {
                   <Badge variant="outline" className="text-xs">Small</Badge>
                   <Button
                     size="sm"
-                    style={buttonVariants[0].states.default.style}
+                    style={buttonVariants[0]?.states.default.style || {}}
                     className="w-8 h-8 p-0"
                   >
                     <Plus className="w-3.5 h-3.5" />
@@ -595,7 +595,7 @@ export function ButtonStatesShowcase() {
                   <Badge variant="outline" className="text-xs">Default</Badge>
                   <Button
                     size="icon"
-                    style={buttonVariants[0].states.default.style}
+                    style={buttonVariants[0]?.states.default.style || {}}
                   >
                     <Plus className="w-4 h-4" />
                   </Button>
@@ -604,7 +604,7 @@ export function ButtonStatesShowcase() {
                   <Badge variant="outline" className="text-xs">Large</Badge>
                   <Button
                     size="lg"
-                    style={buttonVariants[0].states.default.style}
+                    style={buttonVariants[0]?.states.default.style || {}}
                     className="w-12 h-12 p-0"
                   >
                     <Plus className="w-5 h-5" />
@@ -619,49 +619,49 @@ export function ButtonStatesShowcase() {
               <div className="flex flex-wrap gap-3">
                 <Button
                   size="icon"
-                  style={buttonVariants[0].states.default.style}
+                  style={buttonVariants[0]?.states.default.style || {}}
                   title="Download"
                 >
                   <Download className="w-4 h-4" />
                 </Button>
                 <Button
                   size="icon"
-                  style={buttonVariants[1].states.default.style}
+                  style={buttonVariants[1]?.states.default.style || {}}
                   title="Search"
                 >
                   <Search className="w-4 h-4" />
                 </Button>
                 <Button
                   size="icon"
-                  style={buttonVariants[2].states.default.style}
+                  style={buttonVariants[2]?.states.default.style || {}}
                   title="Delete"
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
                 <Button
                   size="icon"
-                  style={buttonVariants[3].states.default.style}
+                  style={buttonVariants[3]?.states.default.style || {}}
                   title="Confirm"
                 >
                   <Check className="w-4 h-4" />
                 </Button>
                 <Button
                   size="icon"
-                  style={buttonVariants[4].states.default.style}
+                  style={buttonVariants[4]?.states.default.style || {}}
                   title="Warning"
                 >
                   <AlertCircle className="w-4 h-4" />
                 </Button>
                 <Button
                   size="icon"
-                  style={buttonVariants[5].states.default.style}
+                  style={buttonVariants[5]?.states.default.style || {}}
                   title="Settings"
                 >
                   <Settings className="w-4 h-4" />
                 </Button>
                 <Button
                   size="icon"
-                  style={buttonVariants[5].states.default.style}
+                  style={buttonVariants[5]?.states.default.style || {}}
                   title="Close"
                 >
                   <X className="w-4 h-4" />
@@ -677,7 +677,7 @@ export function ButtonStatesShowcase() {
                   <Badge variant="outline" className="text-xs">Default</Badge>
                   <Button
                     size="icon"
-                    style={buttonVariants[0].states.default.style}
+                    style={buttonVariants[0]?.states.default.style || {}}
                   >
                     <Plus className="w-4 h-4" />
                   </Button>
@@ -686,7 +686,7 @@ export function ButtonStatesShowcase() {
                   <Badge variant="outline" className="text-xs">Hover</Badge>
                   <Button
                     size="icon"
-                    style={buttonVariants[0].states.hover.style}
+                    style={buttonVariants[0]?.states.hover.style || {}}
                     className="pointer-events-none"
                   >
                     <Plus className="w-4 h-4" />
@@ -696,7 +696,7 @@ export function ButtonStatesShowcase() {
                   <Badge variant="outline" className="text-xs">Active</Badge>
                   <Button
                     size="icon"
-                    style={buttonVariants[0].states.active.style}
+                    style={buttonVariants[0]?.states.active.style || {}}
                     className="pointer-events-none"
                   >
                     <Plus className="w-4 h-4" />
@@ -706,7 +706,7 @@ export function ButtonStatesShowcase() {
                   <Badge variant="outline" className="text-xs">Disabled</Badge>
                   <Button
                     size="icon"
-                    style={buttonVariants[0].states.disabled.style}
+                    style={buttonVariants[0]?.states.disabled.style || {}}
                     disabled
                   >
                     <Plus className="w-4 h-4" />

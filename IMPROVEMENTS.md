@@ -1,6 +1,6 @@
 # Improvements Summary
 
-This document summarizes all the improvements made to the Able Design System application.
+This document summarizes all the improvements made to the Design Book application.
 
 ## Configuration & Tooling Setup ✅
 

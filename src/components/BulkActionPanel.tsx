@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Play, ListPlus, Trash2, X } from 'lucide-react';
 import { Button } from './ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import svgPaths from '../imports/svg-bulk-actions';
@@ -124,7 +123,7 @@ export function BulkActionPanel({
                 onMouseEnter={() => setIsTooltipOpen(true)}
                 onMouseLeave={() => setIsTooltipOpen(false)}
               >
-                {displayedCompanies.map((company, index) => (
+                {displayedCompanies.map((company) => (
                   <div
                     key={company.id}
                     className="bg-white overflow-hidden relative shrink-0 size-5"

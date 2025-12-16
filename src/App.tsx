@@ -22,6 +22,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './comp
 const ComponentsPage = lazy(() => import('./components/ComponentsPage'));
 const AbleIconsGuide = lazy(() => import('./components/AbleIconsGuide').then(m => ({ default: m.default })));
 
+// Unused - kept for reference
+// @ts-expect-error - Kept for reference, intentionally unused
 const oldDesignSystemData = {
   sections: [
     {
@@ -404,7 +406,22 @@ const generateThemeFromBaseColors = (baseColors: BaseColors, theme: 'light' | 'd
 export default function App() {
   const [activeTab, setActiveTab] = useState('tokens');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [baseColors, setBaseColors] = useState<BaseColors>(premadeThemes[0].baseColors);
+  const [baseColors, setBaseColors] = useState<BaseColors>(() => {
+    if (premadeThemes[0]?.baseColors) {
+      return premadeThemes[0].baseColors;
+    }
+    return {
+      cta: '#E03600',
+      primary: '#242424',
+      secondary: '#EDEDED',
+      danger: '#E03636',
+      success: '#1CD166',
+      warning: '#FFB529',
+      link: '#308FED',
+      background: '#FFFFFF',
+      foreground: '#171717',
+    };
+  });
   const [otherTokens, setOtherTokens] = useState<OtherTokens>(defaultOtherTokens);
 
   const designSystemData = useMemo(() => generateThemeFromBaseColors(baseColors, theme), [baseColors, theme]);
@@ -460,6 +477,9 @@ export default function App() {
         if (token.name === '--primary-primary-default') {
           root.style.setProperty('--primary', token.hex);
         }
+        if (token.name === '--link-link-default') {
+          root.style.setProperty('--link', token.hex);
+        }
       });
     });
 
@@ -483,6 +503,7 @@ export default function App() {
       root.style.removeProperty('--success');
       root.style.removeProperty('--warning');
       root.style.removeProperty('--primary');
+      root.style.removeProperty('--link');
     };
   }, [theme, designSystemData, otherTokens]);
 
@@ -629,11 +650,11 @@ export default function App() {
       <Toaster position="top-right" />
       <div className="h-screen bg-background flex flex-col overflow-hidden">
         {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 bg-background border-b border-border z-50 shadow-sm h-28">
-        <div className="w-full px-6 py-4 h-full">
+      <header className="fixed top-0 left-0 right-0 bg-background border-b border-border z-50 shadow-sm h-fit">
+        <div className="w-full px-6 pt-4 h-[120px]">
           <div className="flex items-start justify-between gap-4 h-full">
-            <div className="space-y-2 flex-1">
-              <div className="flex items-center gap-4">
+            <div className="space-y-2 flex-1 h-full flex flex-col">
+              <div className="flex items-center gap-4 h-[50px]">
                 {/* Logo Placeholder */}
                 <div 
                   className="w-10 h-10 rounded bg-muted border border-border flex items-center justify-center flex-shrink-0"
@@ -955,11 +976,11 @@ export default function App() {
             <Suspense fallback={<ComponentLoadingSkeleton />}>
               <ComponentsPage />
             </Suspense>
-          ) : (
+          ) : activeTab === 'icons' ? (
             <Suspense fallback={<ComponentLoadingSkeleton />}>
               <AbleIconsGuide />
             </Suspense>
-          )}
+          ) : null}
         </main>
       </div>
       </div>

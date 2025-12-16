@@ -1,6 +1,6 @@
-# Able Design System - Development Guidelines
+# Design Book - Development Guidelines
 
-This document outlines the development guidelines, best practices, and standards for contributing to the Able Design System.
+This document outlines the development guidelines, best practices, and standards for contributing to Design Book.
 
 ## Table of Contents
 

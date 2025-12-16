@@ -10,7 +10,7 @@ import {
 } from './ui/sheet';
 import { Button } from './ui/button';
 import { copyToClipboard } from '../utils/clipboard';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface ColorDetailsDialogProps {
   name: string;
@@ -43,7 +43,7 @@ export function ColorDetailsDialog({ name, hex, rgb, darkHex, darkRgb }: ColorDe
   // Calculate if the color is light or dark for text contrast
   const hexToRgb = (hex: string) => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
+    return result && result[1] && result[2] && result[3]
       ? {
           r: parseInt(result[1], 16),
           g: parseInt(result[2], 16),

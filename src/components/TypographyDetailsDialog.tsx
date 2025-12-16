@@ -10,7 +10,7 @@ import {
 } from './ui/sheet';
 import { Button } from './ui/button';
 import { copyToClipboard } from '../utils/clipboard';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface TypographyDetailsDialogProps {
   label: string;

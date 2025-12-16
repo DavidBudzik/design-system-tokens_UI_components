@@ -1,61 +1,6 @@
 // Syntax highlighter for code snippets
 // Returns JSX with syntax-highlighted code
 
-interface HighlightedToken {
-  type: 'keyword' | 'string' | 'number' | 'comment' | 'property' | 'function' | 'operator' | 'tag' | 'attribute' | 'plain';
-  value: string;
-}
-
-// Language-specific patterns
-const patterns = {
-  react: {
-    keywords: /\b(import|from|export|default|const|let|var|function|return|if|else|for|while|class|extends|interface|type|as|async|await|new|this|super|typeof|instanceof)\b/g,
-    strings: /(["'`])(?:(?=(\\?))\2.)*?\1/g,
-    comments: /\/\/.*$|\/\*[\s\S]*?\*\//gm,
-    properties: /\b([a-zA-Z_$][\w$]*)\s*:/g,
-    functions: /\b([a-zA-Z_$][\w$]*)\s*(?=\()/g,
-    jsx: /<\/?[\w.]+(?:\s+[\w-]+(?:=(?:{[^}]*}|"[^"]*"|'[^']*'))?)*\s*\/?>/g,
-    numbers: /\b\d+\.?\d*\b/g,
-  },
-  html: {
-    tags: /<\/?[\w-]+|\/?>|<!--|-->/g,
-    attributes: /\b[\w-]+(?==)/g,
-    strings: /(["'])(?:(?=(\\?))\2.)*?\1/g,
-    comments: /<!--[\s\S]*?-->/g,
-  },
-  css: {
-    selectors: /^[^{]+(?={)/gm,
-    properties: /\b[\w-]+(?=\s*:)/g,
-    values: /:\s*([^;{]+)/g,
-    strings: /(["'])(?:(?=(\\?))\2.)*?\1/g,
-    comments: /\/\*[\s\S]*?\*\//gm,
-    numbers: /\b\d+\.?\d*(px|em|rem|%|vh|vw|s|ms)?\b/g,
-  },
-  json: {
-    properties: /"([^"]+)"\s*:/g,
-    strings: /:\s*"([^"]*)"/g,
-    numbers: /:\s*(-?\d+\.?\d*)/g,
-    booleans: /:\s*(true|false|null)/g,
-  },
-  javascript: {
-    keywords: /\b(const|let|var|function|return|if|else|for|while|class|extends|import|from|export|default|async|await|new|this|typeof|instanceof)\b/g,
-    strings: /(["'`])(?:(?=(\\?))\2.)*?\1/g,
-    comments: /\/\/.*$|\/\*[\s\S]*?\*\//gm,
-    properties: /\b([a-zA-Z_$][\w$]*)\s*:/g,
-    functions: /\b([a-zA-Z_$][\w$]*)\s*(?=\()/g,
-    numbers: /\b\d+\.?\d*\b/g,
-  },
-  typescript: {
-    keywords: /\b(import|from|export|default|const|let|var|function|return|if|else|for|while|class|extends|interface|type|as|async|await|new|this|super|typeof|instanceof|enum|namespace|declare|readonly|private|public|protected)\b/g,
-    strings: /(["'`])(?:(?=(\\?))\2.)*?\1/g,
-    comments: /\/\/.*$|\/\*[\s\S]*?\*\//gm,
-    properties: /\b([a-zA-Z_$][\w$]*)\s*:/g,
-    functions: /\b([a-zA-Z_$][\w$]*)\s*(?=\()/g,
-    numbers: /\b\d+\.?\d*\b/g,
-    types: /:\s*([A-Z][\w<>[\],\s|&]*)/g,
-  },
-};
-
 export function highlightCode(code: string, language: 'react' | 'html' | 'css' | 'json' | 'javascript' | 'typescript' = 'react') {
   // Split code into lines for proper rendering
   const lines = code.split('\n');

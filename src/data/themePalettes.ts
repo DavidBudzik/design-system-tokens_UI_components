@@ -19,7 +19,7 @@ export interface ThemePalette {
 
 export const themes: ThemePalette[] = [
   {
-    name: "Default (Able)",
+    name: "Default",
     baseColors: {
       cta: "#E03600",
       primary: "#242424",

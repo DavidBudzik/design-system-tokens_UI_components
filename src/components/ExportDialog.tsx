@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Download, FileCode, FileJson, FileText, Smartphone, Monitor } from 'lucide-react';
 import {
   Sheet,
@@ -49,7 +48,6 @@ const formatCategories = {
 };
 
 export function ExportDialog({ sections }: ExportDialogProps) {
-  const [selectedFormat, setSelectedFormat] = useState<ExportFormat | null>(null);
 
   const handleExport = (format: ExportFormat) => {
     const formatConfig = exportFormats[format];
@@ -60,7 +58,7 @@ export function ExportDialog({ sections }: ExportDialogProps) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `able-design-tokens${formatConfig.extension}`;
+    a.download = `design-book${formatConfig.extension}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

@@ -1,4 +1,4 @@
-# Able Design System - Tokens & UI Components
+# Design Book - Tokens & UI Components
 
 A comprehensive design system documentation and token management web application built with React, TypeScript, and Vite. This tool bridges the gap between design (Figma) and development by providing an interactive showcase for design tokens and UI components with multi-format export capabilities.
 

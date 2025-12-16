@@ -11,7 +11,7 @@ import {
 } from './ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { copyToClipboard as copyToClipboardUtil } from '../utils/clipboard';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { highlightCode } from '../utils/syntaxHighlight';
 
 interface CodeSnippet {
