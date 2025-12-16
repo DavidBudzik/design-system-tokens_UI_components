@@ -1,5 +1,15 @@
 # Build Fixes Applied
 
+> **⚠️ NOTICE: This file has been moved and expanded to [`docs/TROUBLESHOOTING.md`](./docs/TROUBLESHOOTING.md)**
+> 
+> This file remains here for backward compatibility. Please update your bookmarks and references to point to the new location.
+> 
+> **New Location:** [`docs/TROUBLESHOOTING.md`](./docs/TROUBLESHOOTING.md)
+> 
+> The new troubleshooting guide includes all content from this file plus additional sections for runtime errors, development issues, deployment issues, testing issues, and FAQs.
+
+---
+
 ## Issues Fixed
 
 ### 1. Missing typographyData Import

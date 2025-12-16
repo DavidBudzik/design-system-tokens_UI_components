@@ -1,5 +1,13 @@
 # Design Book - Development Guidelines
 
+> **⚠️ NOTICE: This file has been moved to [`docs/GUIDELINES.md`](./docs/GUIDELINES.md)**
+> 
+> This file remains here for backward compatibility. Please update your bookmarks and references to point to the new location.
+> 
+> **New Location:** [`docs/GUIDELINES.md`](./docs/GUIDELINES.md)
+
+---
+
 This document outlines the development guidelines, best practices, and standards for contributing to Design Book.
 
 ## Table of Contents
