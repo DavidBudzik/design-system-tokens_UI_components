@@ -143,7 +143,7 @@ Ready to contribute code? Great!
 
 ```bash
 # Fork the repository on GitHub
-# Clone your fork
+# Clone your fork (replace YOUR_USERNAME with your GitHub username)
 git clone https://github.com/YOUR_USERNAME/design-system-tokens_UI_components.git
 cd design-system-tokens_UI_components
 

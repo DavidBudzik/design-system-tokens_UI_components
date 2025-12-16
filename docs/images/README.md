@@ -63,7 +63,7 @@ npm run build
 npm run preview
 ```
 
-The application will open at `http://localhost:3000`
+The application will open at `http://localhost:3000` (or the port shown in your terminal).
 
 ### Step 2: Navigate to the Page
 

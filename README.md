@@ -25,20 +25,7 @@ Design Book bridges the gap between design (Figma) and development by providing 
 
 ## 📸 Screenshots
 
-> **Note:** Screenshots coming soon! See [docs/images/README.md](./docs/images/README.md) for instructions on adding screenshots.
-
-<!-- Uncomment when screenshots are available
-### Token Palette
-![Design Book Token Palette - Light Mode](./docs/images/token-palette-light.png)
-*Design tokens in light mode*
-
-![Design Book Token Palette - Dark Mode](./docs/images/token-palette-dark.png)
-*Design tokens in dark mode*
-
-### Component Showcase
-![Component Library](./docs/images/components-showcase.png)
-*60+ accessible UI components*
--->
+> **Note:** Screenshots coming soon! Contributors can add screenshots by following the instructions in [docs/images/README.md](./docs/images/README.md).
 
 ## 🔗 Quick Links
 
