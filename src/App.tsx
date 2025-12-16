@@ -1,6 +1,6 @@
 import { useState, useEffect, lazy, Suspense, useMemo } from 'react';
 import tinycolor from 'tinycolor2';
-import { Palette, Sun, Moon, ChevronDown, Pipette } from 'lucide-react';
+import { Palette, Sun, Moon, ChevronDown, Pipette, Check } from 'lucide-react';
 import { TokenSection } from './components/TokenSection';
 import { ExportDialog } from './components/ExportDialog';
 import { TypographySection } from './components/TypographySection';
@@ -18,6 +18,7 @@ import { themes as premadeThemes, BaseColors, ThemePalette } from './data/themeP
 import { Popover, PopoverContent, PopoverTrigger } from './components/ui/popover';
 import { Button } from './components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip';
+import { Logo } from './components/Logo';
 
 const ComponentsPage = lazy(() => import('./components/ComponentsPage'));
 const AbleIconsGuide = lazy(() => import('./components/AbleIconsGuide').then(m => ({ default: m.default })));
@@ -426,6 +427,19 @@ export default function App() {
 
   const designSystemData = useMemo(() => generateThemeFromBaseColors(baseColors, theme), [baseColors, theme]);
 
+  // Helper function to check if a theme is currently selected
+  const isThemeSelected = (themePalette: ThemePalette): boolean => {
+    return (
+      themePalette.baseColors.cta === baseColors.cta &&
+      themePalette.baseColors.primary === baseColors.primary &&
+      themePalette.baseColors.secondary === baseColors.secondary &&
+      themePalette.baseColors.danger === baseColors.danger &&
+      themePalette.baseColors.success === baseColors.success &&
+      themePalette.baseColors.warning === baseColors.warning &&
+      themePalette.baseColors.link === baseColors.link
+    );
+  };
+
   const handleThemeSelect = (themeName: string) => {
     const selectedTheme = premadeThemes.find((t: ThemePalette) => t.name === themeName);
     if (selectedTheme) {
@@ -655,12 +669,9 @@ export default function App() {
           <div className="flex items-start justify-between gap-4 h-full">
             <div className="space-y-2 flex-1 h-full flex flex-col">
               <div className="flex items-center gap-4 h-[50px]">
-                {/* Logo Placeholder */}
-                <div 
-                  className="w-10 h-10 rounded bg-muted border border-border flex items-center justify-center flex-shrink-0"
-                  aria-label="Logo placeholder"
-                >
-                  <span className="text-xs text-muted-foreground">Logo</span>
+                {/* Logo */}
+                <div className="flex-shrink-0">
+                  <Logo baseColors={baseColors} className="w-10 h-10" />
                 </div>
                 <h1>Design Book</h1>
               </div>
@@ -698,29 +709,39 @@ export default function App() {
                   <PopoverContent className="w-56 p-2" align="end">
                     <div className="space-y-1">
                       <p className="text-xs font-medium text-muted-foreground px-2 py-1">Pre-made Palettes</p>
-                      {premadeThemes.map((t: ThemePalette) => (
-                        <button
-                          key={t.name}
-                          onClick={() => handleThemeSelect(t.name)}
-                          className="flex items-center gap-3 w-full px-2 py-2 rounded-md hover:bg-accent text-sm transition-colors"
-                        >
-                          <div className="flex gap-0.5">
-                            <div 
-                              className="w-4 h-4 rounded-l-sm" 
-                              style={{ backgroundColor: t.baseColors.cta }} 
-                            />
-                            <div 
-                              className="w-4 h-4" 
-                              style={{ backgroundColor: t.baseColors.primary }} 
-                            />
-                            <div 
-                              className="w-4 h-4 rounded-r-sm" 
-                              style={{ backgroundColor: t.baseColors.success }} 
-                            />
-                          </div>
-                          <span>{t.name}</span>
-                        </button>
-                      ))}
+                      {premadeThemes.map((t: ThemePalette) => {
+                        const isSelected = isThemeSelected(t);
+                        return (
+                          <button
+                            key={t.name}
+                            onClick={() => handleThemeSelect(t.name)}
+                            className={`flex items-center justify-between gap-3 w-full px-2 py-2 rounded-md hover:bg-accent text-sm transition-colors ${
+                              isSelected ? 'bg-accent' : ''
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="flex gap-0.5">
+                                <div 
+                                  className="w-4 h-4 rounded-l-sm" 
+                                  style={{ backgroundColor: t.baseColors.cta }} 
+                                />
+                                <div 
+                                  className="w-4 h-4" 
+                                  style={{ backgroundColor: t.baseColors.primary }} 
+                                />
+                                <div 
+                                  className="w-4 h-4 rounded-r-sm" 
+                                  style={{ backgroundColor: t.baseColors.success }} 
+                                />
+                              </div>
+                              <span>{t.name}</span>
+                            </div>
+                            {isSelected && (
+                              <Check className="h-4 w-4 text-primary flex-shrink-0" />
+                            )}
+                          </button>
+                        );
+                      })}
                     </div>
                   </PopoverContent>
                 </Popover>
