@@ -23,20 +23,48 @@ export function TypographyToken({
   fontFamily = 'Inter, system-ui, -apple-system, sans-serif',
   style = {}
 }: TypographyTokenProps) {
+  // Consistent preview box height for all typography sizes
+  const previewHeight = '100px';
+  const gridTemplateRows = '100px auto 60px 80px auto';
+
+  // Check if this is a link token and apply link color from design system
+  const isLink = tokenName.startsWith('link_');
+  const isHover = tokenName.includes('hover');
+  
+  // Get link color from CSS variable
+  const linkColor = isHover 
+    ? 'var(--link-link-hover, var(--link, #308FED))'
+    : 'var(--link-link-default, var(--link, #308FED))';
+
+  // Determine if this is a heading token (use center alignment and line-clamp)
+  const isHeading = tokenName.startsWith('heading_');
+  const containerClasses = isHeading 
+    ? "flex items-center overflow-hidden" 
+    : "flex items-start";
+  const textClasses = isHeading 
+    ? "break-words line-clamp-3" 
+    : "break-words";
 
   return (
-    <div className="relative group transition-all duration-200 hover:bg-accent/30 p-6 grid" style={{ gridTemplateRows: '160px auto 60px 80px auto' }}>
-      {/* Text Sample - Large and prominent - FIXED HEIGHT */}
-      <div className="flex items-center overflow-hidden">
+    <div className="relative group transition-all duration-200 hover:bg-accent/30 p-6 grid" style={{ gridTemplateRows }}>
+      {/* Text Sample - Fixed height for all sizes, aligned to top to prevent clipping */}
+      <div 
+        className={containerClasses} 
+        style={isHeading 
+          ? { height: previewHeight, overflow: 'hidden' }
+          : { minHeight: previewHeight, overflow: 'hidden' }
+        }
+      >
         <p style={{
           fontSize,
           lineHeight,
           letterSpacing,
           fontWeight,
           fontFamily,
+          color: isLink ? linkColor : undefined,
           ...style
         }}
-        className="break-words line-clamp-3"
+        className={textClasses}
         >
           {label}
         </p>

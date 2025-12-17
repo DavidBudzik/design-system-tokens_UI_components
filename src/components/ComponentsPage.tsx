@@ -356,7 +356,9 @@ function SearchInputDemo() {
     <div className="w-full max-w-md space-y-2">
       <Label htmlFor="search">Search</Label>
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <div className="absolute left-3 top-0 bottom-0 flex items-center pointer-events-none">
+          <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+        </div>
         <Input
           id="search"
           type="search"

@@ -103,3 +103,6 @@ export const themes: ThemePalette[] = [
     }
   }
 ];
+
+// Export alias for backward compatibility
+export const premadeThemes = themes;

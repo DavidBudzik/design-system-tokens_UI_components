@@ -1,242 +1,29 @@
 import { useState, useEffect, lazy, Suspense, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import tinycolor from 'tinycolor2';
-import { useNavigate } from 'react-router-dom';
-import { Palette, Sun, Moon, ChevronDown, Pipette, Check, ArrowRight } from 'lucide-react';
-import { TokenSection } from './components/TokenSection';
-import { ExportDialog } from './components/ExportDialog';
-import { TypographySection } from './components/TypographySection';
-import { CollapsibleSection } from './components/CollapsibleSection';
-import { CollapsibleGroup } from './components/CollapsibleGroup';
-import { SideNav } from './components/SideNav';
-import { Tabs, TabsList, TabsTrigger } from './components/ui/tabs';
-import { Toaster } from './components/ui/sonner';
-import { designSystemData as staticDesignSystemData } from './data/designSystemData';
-import { typographyData } from './data/typographyData';
-import { defaultOtherTokens, OtherTokens } from './data/otherTokensData';
-import { OtherTokenSection } from './components/OtherToken';
-import { ComponentLoadingSkeleton } from './components/LoadingState';
-import { themes as premadeThemes, BaseColors, ThemePalette } from './data/themePalettes';
-import { Popover, PopoverContent, PopoverTrigger } from './components/ui/popover';
-import { Button } from './components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip';
-import { Logo } from './components/Logo';
+import { Palette, Sun, Moon, ChevronDown, Pipette, Check, ArrowLeft, BookOpen } from 'lucide-react';
+import { TokenSection } from './TokenSection';
+import { ExportDialog } from './ExportDialog';
+import { TypographySection } from './TypographySection';
+import { CollapsibleSection } from './CollapsibleSection';
+import { CollapsibleGroup } from './CollapsibleGroup';
+import { SideNav } from './SideNav';
+import { Tabs, TabsList, TabsTrigger } from './ui/tabs';
+import { Toaster } from './ui/sonner';
+import { designSystemData as staticDesignSystemData } from '../data/designSystemData';
+import { typographyData } from '../data/typographyData';
+import { defaultOtherTokens, OtherTokens } from '../data/otherTokensData';
+import { OtherTokenSection } from './OtherToken';
+import { ComponentLoadingSkeleton } from './LoadingState';
+import { themes as premadeThemes, BaseColors, ThemePalette } from '../data/themePalettes';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Button } from './ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { Logo } from './Logo';
+import { DocumentationViewer } from './DocumentationViewer';
 
-const ComponentsPage = lazy(() => import('./components/ComponentsPage'));
-const AbleIconsGuide = lazy(() => import('./components/AbleIconsGuide').then(m => ({ default: m.default })));
-
-// Unused - kept for reference
-// @ts-expect-error - Kept for reference, intentionally unused
-const oldDesignSystemData = {
-  sections: [
-    {
-      title: "🎯 Call-to-Action (CTA)",
-      description: "Primary action colors with interactive states.",
-      tokens: [
-        { name: "--cta-cta-default", hex: "#E03600", rgb: "rgb(224, 54, 0)" },
-        { name: "--cta-cta-hover", hex: "#FA4D1A", rgb: "rgb(250, 77, 26)" },
-        { name: "--cta-cta-active", hex: "#C22E00", rgb: "rgb(194, 46, 0)" },
-        { name: "--cta-cta-disabled", hex: "#FFD4C2", rgb: "rgb(255, 212, 194)" },
-      ]
-    },
-    {
-      title: "⚫ Primary",
-      description: "Core primary colors for main interface elements.",
-      tokens: [
-        { name: "--primary-primary-default", hex: "#242424", rgb: "rgb(36, 36, 36)" },
-        { name: "--primary-primary-hover", hex: "#616161", rgb: "rgb(97, 97, 97)" },
-        { name: "--primary-primary-active", hex: "#474747", rgb: "rgb(71, 71, 71)" },
-        { name: "--primary-primary-disabled", hex: "#BDBDBD", rgb: "rgb(189, 189, 189)" },
-      ]
-    },
-    {
-      title: "⚪ Secondary",
-      description: "Secondary action and surface colors.",
-      tokens: [
-        { name: "--secondary-secondary-default", hex: "#EDEDED", rgb: "rgb(237, 237, 237)" },
-        { name: "--secondary-secondary-hover", hex: "#DEDEDE", rgb: "rgb(222, 222, 222)" },
-        { name: "--secondary-secondary-active", hex: "#E6E6E6", rgb: "rgb(230, 230, 230)" },
-        { name: "--secondary-secondary-disabled", hex: "#F5F5F5", rgb: "rgb(245, 245, 245)" },
-      ]
-    },
-    {
-      title: "🔴 Danger",
-      description: "Error and destructive action colors.",
-      tokens: [
-        { name: "--danger-danger-default", hex: "#E03636", rgb: "rgb(224, 54, 54)" },
-        { name: "--danger-danger-hover", hex: "#FF5C5C", rgb: "rgb(255, 92, 92)" },
-        { name: "--danger-danger-active", hex: "#AB2424", rgb: "rgb(171, 36, 36)" },
-        { name: "--danger-danger-disabled", hex: "#F7B0B0", rgb: "rgb(247, 176, 176)" },
-      ]
-    },
-    {
-      title: "🟢 Success",
-      description: "Success and positive feedback colors.",
-      tokens: [
-        { name: "--success-success-default", hex: "#1CD166", rgb: "rgb(28, 209, 102)" },
-        { name: "--success-success-hover", hex: "#47E38C", rgb: "rgb(71, 227, 140)" },
-        { name: "--success-success-active", hex: "#12994A", rgb: "rgb(18, 153, 74)" },
-        { name: "--success-success-disabled", hex: "#A6F5CC", rgb: "rgb(166, 245, 204)" },
-      ]
-    },
-    {
-      title: "🟡 Warning",
-      description: "Warning and cautionary colors.",
-      tokens: [
-        { name: "--warning-warning-default", hex: "#FFB529", rgb: "rgb(255, 181, 41)" },
-        { name: "--warning-warning-hover", hex: "#FFD65C", rgb: "rgb(255, 214, 92)" },
-        { name: "--warning-warning-active", hex: "#B87D14", rgb: "rgb(184, 125, 20)" },
-        { name: "--warning-warning-disabled", hex: "#FFF0BF", rgb: "rgb(255, 240, 191)" },
-      ]
-    },
-    {
-      title: "🔗 Link",
-      description: "Hyperlink and navigation colors.",
-      tokens: [
-        { name: "--link-link-default", hex: "#308FED", rgb: "rgb(48, 143, 237)" },
-        { name: "--link-link-hover", hex: "#529EFC", rgb: "rgb(82, 158, 252)" },
-        { name: "--link-link-active", hex: "#267DE0", rgb: "rgb(38, 125, 224)" },
-        { name: "--link-link-visited", hex: "#1C5C9E", rgb: "rgb(28, 92, 158)" },
-      ]
-    },
-    {
-      title: "🎨 Surface",
-      description: "Surface and container background colors.",
-      tokens: [
-        { name: "--surface-surface-default", hex: "#FFFFFF", rgb: "rgb(255, 255, 255)" },
-        { name: "--surface-surface-light", hex: "#FAFAFA", rgb: "rgb(250, 250, 250)" },
-        { name: "--surface-surface-muted", hex: "#F5F5F5", rgb: "rgb(245, 245, 245)" },
-        { name: "--surface-surface-subtle", hex: "#F0F0F0", rgb: "rgb(240, 240, 240)" },
-        { name: "--surface-surface-elevated", hex: "#E0E0E0", rgb: "rgb(224, 224, 224)" },
-      ]
-    },
-    {
-      title: "📄 Surface - Input",
-      description: "Input field surface colors with states.",
-      tokens: [
-        { name: "--surface-surface-input-default", hex: "#F7F7F7", rgb: "rgb(247, 247, 247)" },
-        { name: "--surface-surface-input-hover", hex: "#E8E8E8", rgb: "rgb(232, 232, 232)" },
-        { name: "--surface-surface-input-active", hex: "#F0F0F0", rgb: "rgb(240, 240, 240)" },
-        { name: "--surface-surface-input-disabled", hex: "#F0F0F0", rgb: "rgb(240, 240, 240)" },
-      ]
-    },
-    {
-      title: "🖼️ Background",
-      description: "Page and container backgrounds.",
-      tokens: [
-        { name: "--background-background-default", hex: "#FFFFFF", rgb: "rgb(255, 255, 255)" },
-        { name: "--background-background-inverted", hex: "#171717", rgb: "rgb(23, 23, 23)" },
-      ]
-    },
-    {
-      title: "📐 Border",
-      description: "Border colors with interactive states.",
-      tokens: [
-        { name: "--border-border-default", hex: "#E0E0E0", rgb: "rgb(224, 224, 224)" },
-        { name: "--border-border-hover", hex: "#B8B8B8", rgb: "rgb(184, 184, 184)" },
-        { name: "--border-border-active", hex: "#858585", rgb: "rgb(133, 133, 133)" },
-        { name: "--border-border-disabled", hex: "#C9C9C9", rgb: "rgb(201, 201, 201)" },
-        { name: "--border-border-error", hex: "#E03636", rgb: "rgb(224, 54, 54)" },
-      ]
-    },
-    {
-      title: "📝 Text",
-      description: "Text colors for various contexts.",
-      tokens: [
-        { name: "--text-text-primary", hex: "#171717", rgb: "rgb(23, 23, 23)" },
-        { name: "--text-text-inverted", hex: "#FFFFFF", rgb: "rgb(255, 255, 255)" },
-        { name: "--text-text-on-dark", hex: "#FFFFFF", rgb: "rgb(255, 255, 255)" },
-        { name: "--text-text-muted", hex: "#595959", rgb: "rgb(89, 89, 89)" },
-        { name: "--text-text-subtle", hex: "#A1A1A1", rgb: "rgb(161, 161, 161)" },
-        { name: "--text-text-disabled", hex: "#C9C9C9", rgb: "rgb(201, 201, 201)" },
-      ]
-    },
-    {
-      title: "🎭 Icons",
-      description: "Icon colors for different backgrounds.",
-      tokens: [
-        { name: "--icons-icon-default", hex: "#4F4F4F", rgb: "rgb(79, 79, 79)" },
-        { name: "--icons-icon-disabled", hex: "#BDBDBD", rgb: "rgb(189, 189, 189)" },
-        { name: "--icons-icon-on-dark", hex: "#FCFCFC", rgb: "rgb(252, 252, 252)" },
-        { name: "--icons-icon-on-bright", hex: "#FCFCFC", rgb: "rgb(252, 252, 252)" },
-        { name: "--icons-icon-subtle", hex: "#BDBDBD", rgb: "rgb(189, 189, 189)" },
-      ]
-    },
-    {
-      title: "🌈 Complementary - Strong (1-10)",
-      description: "Vibrant accent colors for emphasis and decoration.",
-      tokens: [
-        { name: "--strong-01", hex: "#FFA354", rgb: "rgb(255, 163, 84)" },
-        { name: "--strong-02", hex: "#FFD98A", rgb: "rgb(255, 217, 138)" },
-        { name: "--strong-03", hex: "#70EBAB", rgb: "rgb(112, 235, 171)" },
-        { name: "--strong-04", hex: "#69CCFF", rgb: "rgb(105, 204, 255)" },
-        { name: "--strong-05", hex: "#D4B3F7", rgb: "rgb(212, 179, 247)" },
-        { name: "--strong-06", hex: "#FF94C4", rgb: "rgb(255, 148, 196)" },
-        { name: "--strong-07", hex: "#FF8787", rgb: "rgb(255, 135, 135)" },
-        { name: "--strong-08", hex: "#B8A6F7", rgb: "rgb(184, 166, 247)" },
-        { name: "--strong-09", hex: "#4FE0C9", rgb: "rgb(79, 224, 201)" },
-        { name: "--strong-10", hex: "#FF8AB5", rgb: "rgb(255, 138, 181)" },
-      ]
-    },
-    {
-      title: "🌈 Complementary - Strong (11-20)",
-      description: "Additional vibrant accent colors.",
-      tokens: [
-        { name: "--strong-11", hex: "#BDABA3", rgb: "rgb(189, 171, 163)" },
-        { name: "--strong-12", hex: "#B3C7A6", rgb: "rgb(179, 199, 166)" },
-        { name: "--strong-13", hex: "#E6F57D", rgb: "rgb(230, 245, 125)" },
-        { name: "--strong-14", hex: "#45E0F5", rgb: "rgb(69, 224, 245)" },
-        { name: "--strong-15", hex: "#FF9C73", rgb: "rgb(255, 156, 115)" },
-        { name: "--strong-16", hex: "#FFF061", rgb: "rgb(255, 240, 97)" },
-        { name: "--strong-17", hex: "#73E88A", rgb: "rgb(115, 232, 138)" },
-        { name: "--strong-18", hex: "#4AB8F7", rgb: "rgb(74, 184, 247)" },
-        { name: "--strong-19", hex: "#E05291", rgb: "rgb(224, 82, 145)" },
-        { name: "--strong-20", hex: "#E8B5FF", rgb: "rgb(232, 181, 255)" },
-      ]
-    },
-    {
-      title: "🎨 Complementary - Subtle (1-10)",
-      description: "Soft, muted accent colors for backgrounds.",
-      tokens: [
-        { name: "--subtle-01", hex: "#FFEDDB", rgb: "rgb(255, 237, 219)" },
-        { name: "--subtle-02", hex: "#FFF5DE", rgb: "rgb(255, 245, 222)" },
-        { name: "--subtle-03", hex: "#E0FAED", rgb: "rgb(224, 250, 237)" },
-        { name: "--subtle-04", hex: "#E0F5FF", rgb: "rgb(224, 245, 255)" },
-        { name: "--subtle-05", hex: "#F5F0FF", rgb: "rgb(245, 240, 255)" },
-        { name: "--subtle-06", hex: "#FFEDF5", rgb: "rgb(255, 237, 245)" },
-        { name: "--subtle-07", hex: "#FFEBEB", rgb: "rgb(255, 235, 235)" },
-        { name: "--subtle-08", hex: "#F2EDFF", rgb: "rgb(242, 237, 255)" },
-        { name: "--subtle-09", hex: "#E6FAF7", rgb: "rgb(230, 250, 247)" },
-        { name: "--subtle-10", hex: "#FFF0F5", rgb: "rgb(255, 240, 245)" },
-      ]
-    },
-    {
-      title: "🎨 Complementary - Subtle (11-20)",
-      description: "Additional soft accent colors.",
-      tokens: [
-        { name: "--subtle-11", hex: "#F5F2F2", rgb: "rgb(245, 242, 242)" },
-        { name: "--subtle-12", hex: "#F2F5F2", rgb: "rgb(242, 245, 242)" },
-        { name: "--subtle-13", hex: "#FAFCEB", rgb: "rgb(250, 252, 235)" },
-        { name: "--subtle-14", hex: "#E6FAFF", rgb: "rgb(230, 250, 255)" },
-        { name: "--subtle-15", hex: "#FFF2EB", rgb: "rgb(255, 242, 235)" },
-        { name: "--subtle-16", hex: "#FFFFED", rgb: "rgb(255, 255, 237)" },
-        { name: "--subtle-17", hex: "#E8FAF0", rgb: "rgb(232, 250, 240)" },
-        { name: "--subtle-18", hex: "#E6F5FF", rgb: "rgb(230, 245, 255)" },
-        { name: "--subtle-19", hex: "#FCEDF2", rgb: "rgb(252, 237, 242)" },
-        { name: "--subtle-20", hex: "#FAF2FF", rgb: "rgb(250, 242, 255)" },
-      ]
-    },
-    {
-      title: "⚫ Complementary - Dark",
-      description: "Dark accent colors for contrast.",
-      tokens: [
-        { name: "--dark-02", hex: "#A86B00", rgb: "rgb(168, 107, 0)" },
-        { name: "--dark-04", hex: "#00669C", rgb: "rgb(0, 102, 156)" },
-        { name: "--dark-05", hex: "#573D96", rgb: "rgb(87, 61, 150)" },
-        { name: "--dark-06", hex: "#C44580", rgb: "rgb(196, 69, 128)" },
-      ]
-    },
-  ]
-};
+const ComponentsPage = lazy(() => import('./ComponentsPage'));
+const AbleIconsGuide = lazy(() => import('./AbleIconsGuide').then(m => ({ default: m.default })));
 
 /**
  * Ensures that the contrast between a text color and its background meets WCAG AA standards.
@@ -405,10 +192,10 @@ const generateThemeFromBaseColors = (baseColors: BaseColors, theme: 'light' | 'd
 };
 
 
-export default function App() {
-  const navigate = useNavigate();
+export default function DesignSystemApp() {
   const [activeTab, setActiveTab] = useState('tokens');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [isDocsOpen, setIsDocsOpen] = useState(false);
   const [baseColors, setBaseColors] = useState<BaseColors>(() => {
     if (premadeThemes[0]?.baseColors) {
       return premadeThemes[0].baseColors;
@@ -676,6 +463,14 @@ export default function App() {
                   <Logo baseColors={baseColors} className="w-10 h-10" />
                 </div>
                 <h1>Design Book</h1>
+                {/* Back to Landing Page Link */}
+                <Link 
+                  to="/" 
+                  className="ml-auto flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span className="hidden sm:inline">Back to Home</span>
+                </Link>
               </div>
               <Tabs value={activeTab} onValueChange={setActiveTab} className="inline-block">
                 <TabsList className="h-9">
@@ -708,7 +503,7 @@ export default function App() {
                       <p>Theme palette</p>
                     </TooltipContent>
                   </Tooltip>
-                  <PopoverContent className="w-56 p-2 shadow-lg" align="end">
+                  <PopoverContent className="w-56 p-2" align="end">
                     <div className="space-y-1">
                       <p className="text-xs font-medium text-muted-foreground px-2 py-1">Pre-made Palettes</p>
                       {premadeThemes.map((t: ThemePalette) => {
@@ -733,7 +528,7 @@ export default function App() {
                                 />
                                 <div 
                                   className="w-4 h-4 rounded-r-sm" 
-                                  style={{ backgroundColor: t.baseColors.secondary }} 
+                                  style={{ backgroundColor: t.baseColors.success }} 
                                 />
                               </div>
                               <span>{t.name}</span>
@@ -801,6 +596,27 @@ export default function App() {
                   </TooltipContent>
                 </Tooltip>
 
+                {/* Divider */}
+                <div className="w-px h-6 bg-border" />
+
+                {/* Documentation Button */}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-9 w-9 p-0"
+                      onClick={() => setIsDocsOpen(true)}
+                      aria-label="Open documentation"
+                    >
+                      <BookOpen className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">
+                    <p>Documentation</p>
+                  </TooltipContent>
+                </Tooltip>
+
                 {/* Export Button - only on tokens tab */}
                 {activeTab === 'tokens' && (
                   <>
@@ -808,27 +624,6 @@ export default function App() {
                     <ExportDialog sections={designSystemData.sections} />
                   </>
                 )}
-
-                {/* Divider */}
-                <div className="w-px h-6 bg-border" />
-
-                {/* Back Button */}
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="h-9 w-9 p-0"
-                      onClick={() => navigate('/')}
-                      aria-label="Back to landing page"
-                    >
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">
-                    <p>Back to landing page</p>
-                  </TooltipContent>
-                </Tooltip>
               </div>
             </TooltipProvider>
           </div>
@@ -1019,6 +814,10 @@ export default function App() {
         </main>
       </div>
       </div>
+
+      {/* Documentation Dialog */}
+      <DocumentationViewer isOpen={isDocsOpen} onClose={() => setIsDocsOpen(false)} />
     </>
   );
 }
+
