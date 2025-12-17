@@ -1,9 +1,11 @@
 import { ArrowUpRight, ArrowRight, Github, Droplet, Box, LayoutTemplate, Check, ArrowRightCircle, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { Logo } from './Logo';
 import { premadeThemes } from '../data/themePalettes';
 
 export default function LandingPage() {
+  const [activeTab, setActiveTab] = useState<'css' | 'json' | 'scss'>('css');
 
   return (
     <div className="bg-white text-neutral-900 antialiased overflow-x-hidden scroll-smooth">
@@ -299,21 +301,84 @@ export default function LandingPage() {
 
               {/* Visual Representation of Exports */}
               <div className="border border-neutral-200 bg-white">
+                {/* Tabs */}
                 <div className="flex border-b border-neutral-200">
-                  <div className="px-4 py-2 border-r border-neutral-200 text-xs font-mono font-bold bg-neutral-50 text-neutral-900">CSS</div>
-                  <div className="px-4 py-2 border-r border-neutral-200 text-xs font-mono text-neutral-400 hover:text-neutral-900 cursor-pointer">Swift</div>
-                  <div className="px-4 py-2 text-xs font-mono text-neutral-400 hover:text-neutral-900 cursor-pointer">Android</div>
+                  <button
+                    onClick={() => setActiveTab('css')}
+                    className={`px-4 py-2 border-r border-neutral-200 text-xs font-mono transition-colors ${
+                      activeTab === 'css'
+                        ? 'bg-neutral-50 text-neutral-900 font-bold'
+                        : 'text-neutral-400 hover:text-neutral-900'
+                    }`}
+                  >
+                    CSS
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('json')}
+                    className={`px-4 py-2 border-r border-neutral-200 text-xs font-mono transition-colors ${
+                      activeTab === 'json'
+                        ? 'bg-neutral-50 text-neutral-900 font-bold'
+                        : 'text-neutral-400 hover:text-neutral-900'
+                    }`}
+                  >
+                    JSON
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('scss')}
+                    className={`px-4 py-2 text-xs font-mono transition-colors ${
+                      activeTab === 'scss'
+                        ? 'bg-neutral-50 text-neutral-900 font-bold'
+                        : 'text-neutral-400 hover:text-neutral-900'
+                    }`}
+                  >
+                    SCSS
+                  </button>
                 </div>
-                <div className="p-6 bg-neutral-900 text-neutral-300 font-mono text-xs overflow-x-auto">
-                  <pre><code>:root {'{'}<br />
+                
+                {/* Code Preview */}
+                <div className="p-6 bg-neutral-900 text-neutral-300 font-mono text-xs overflow-x-auto overflow-y-auto h-64">
+                  {activeTab === 'css' && (
+                    <pre><code><span className="text-neutral-500">/* CSS Custom Properties */</span><br />
+:root {'{'}<br />
   <span className="text-neutral-500">  /* Semantic Colors */</span><br />
-  --color-primary: <span className="text-white">#000000</span>;<br />
+  --color-primary: <span className="text-white">#242424</span>;<br />
   --color-surface: <span className="text-white">#FFFFFF</span>;<br />
+  --color-cta: <span className="text-white">#E03600</span>;<br />
 <br />
   <span className="text-neutral-500">  /* Spacing Scale */</span><br />
   --spacing-unit: <span className="text-white">0.25rem</span>;<br />
   --spacing-md: <span className="text-white">calc(var(--spacing-unit) * 4)</span>;<br />
 {'}'}</code></pre>
+                  )}
+                  
+                  {activeTab === 'json' && (
+                    <pre><code>{'{'}<br />
+  <span className="text-neutral-500">  "color": {'{'}</span><br />
+    <span className="text-neutral-500">    "primary": {'{'}</span><br />
+      <span className="text-neutral-500">      "value": </span><span className="text-white">"#242424"</span>,<br />
+      <span className="text-neutral-500">      "type": </span><span className="text-white">"color"</span><br />
+    <span className="text-neutral-500">    {'}'},</span><br />
+    <span className="text-neutral-500">    "cta": {'{'}</span><br />
+      <span className="text-neutral-500">      "value": </span><span className="text-white">"#E03600"</span>,<br />
+      <span className="text-neutral-500">      "type": </span><span className="text-white">"color"</span><br />
+    <span className="text-neutral-500">    {'}'}</span><br />
+  <span className="text-neutral-500">  {'}'},</span><br />
+  <span className="text-neutral-500">  "spacing": {'{'}</span><br />
+    <span className="text-neutral-500">    "md": {'{'}</span><br />
+      <span className="text-neutral-500">      "value": </span><span className="text-white">16</span>,<br />
+      <span className="text-neutral-500">      "type": </span><span className="text-white">"dimension"</span><br />
+    <span className="text-neutral-500">    {'}'}</span><br />
+  <span className="text-neutral-500">  {'}'}</span><br />
+{'}'}</code></pre>
+                  )}
+                  
+                  {activeTab === 'scss' && (
+                    <pre><code><span className="text-neutral-500">// SCSS Variables</span><br />
+<span className="text-white">$color-primary</span>: <span className="text-white">#242424</span>;<br />
+<span className="text-white">$color-surface</span>: <span className="text-white">#FFFFFF</span>;<br />
+<span className="text-white">$spacing-unit</span>: <span className="text-white">0.25rem</span>;<br />
+<span className="text-white">$spacing-md</span>: <span className="text-white">$spacing-unit * 4</span>;</code></pre>
+                  )}
                 </div>
               </div>
 
