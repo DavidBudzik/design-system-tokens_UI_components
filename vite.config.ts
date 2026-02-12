@@ -5,7 +5,8 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import type { PluginOption } from 'vite';
 
 export default defineConfig(({ mode }) => ({
-  base: '/design-system-tokens_UI_components/',
+  // Use root path for Vercel, GitHub Pages subpath otherwise
+  base: process.env.VERCEL ? '/' : '/design-system-tokens_UI_components/',
   plugins: [
     react(),
     mode === 'analyze' &&
