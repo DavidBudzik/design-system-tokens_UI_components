@@ -1,0 +1,171 @@
+{
+  "global": {
+    "cta": {
+      "default": {
+        "value": "#E03600",
+        "type": "color",
+        "description": "Primary action colors with interactive states."
+      },
+      "hover": {
+        "value": "#FA4D1A",
+        "type": "color",
+        "description": "Primary action colors with interactive states."
+      },
+      "active": {
+        "value": "#C22E00",
+        "type": "color",
+        "description": "Primary action colors with interactive states."
+      },
+      "disabled": {
+        "value": "#FFD4C2",
+        "type": "color",
+        "description": "Primary action colors with interactive states."
+      }
+    },
+    "primary": {
+      "default": {
+        "value": "#0047FF",
+        "type": "color",
+        "description": "Core interface elements with interactive states."
+      },
+      "hover": {
+        "value": "#1A5CFF",
+        "type": "color",
+        "description": "Core interface elements with interactive states."
+      },
+      "active": {
+        "value": "#0038CC",
+        "type": "color",
+        "description": "Core interface elements with interactive states."
+      },
+      "disabled": {
+        "value": "#CCE0FF",
+        "type": "color",
+        "description": "Core interface elements with interactive states."
+      }
+    },
+    "success": {
+      "default": {
+        "value": "#00B341",
+        "type": "color",
+        "description": "Positive feedback and success states."
+      },
+      "hover": {
+        "value": "#1AC759",
+        "type": "color",
+        "description": "Positive feedback and success states."
+      },
+      "active": {
+        "value": "#008F34",
+        "type": "color",
+        "description": "Positive feedback and success states."
+      },
+      "disabled": {
+        "value": "#CCF5DD",
+        "type": "color",
+        "description": "Positive feedback and success states."
+      }
+    },
+    "danger": {
+      "default": {
+        "value": "#FF0000",
+        "type": "color",
+        "description": "Error and destructive action indicators."
+      },
+      "hover": {
+        "value": "#FF1A1A",
+        "type": "color",
+        "description": "Error and destructive action indicators."
+      },
+      "active": {
+        "value": "#CC0000",
+        "type": "color",
+        "description": "Error and destructive action indicators."
+      },
+      "disabled": {
+        "value": "#FFCCCC",
+        "type": "color",
+        "description": "Error and destructive action indicators."
+      }
+    },
+    "warning": {
+      "default": {
+        "value": "#FFAA00",
+        "type": "color",
+        "description": "Cautionary states and attention-grabbing elements."
+      },
+      "hover": {
+        "value": "#FFBB1A",
+        "type": "color",
+        "description": "Cautionary states and attention-grabbing elements."
+      },
+      "active": {
+        "value": "#CC8800",
+        "type": "color",
+        "description": "Cautionary states and attention-grabbing elements."
+      },
+      "disabled": {
+        "value": "#FFF0CC",
+        "type": "color",
+        "description": "Cautionary states and attention-grabbing elements."
+      }
+    },
+    "background": {
+      "default": {
+        "value": "#FFFFFF",
+        "type": "color",
+        "description": "Page and section backgrounds."
+      },
+      "subtle": {
+        "value": "#F5F5F5",
+        "type": "color",
+        "description": "Page and section backgrounds."
+      }
+    },
+    "text": {
+      "primary": {
+        "value": "#1A1A1A",
+        "type": "color",
+        "description": "Text colors for various contexts and hierarchies."
+      },
+      "secondary": {
+        "value": "#666666",
+        "type": "color",
+        "description": "Text colors for various contexts and hierarchies."
+      },
+      "disabled": {
+        "value": "#999999",
+        "type": "color",
+        "description": "Text colors for various contexts and hierarchies."
+      },
+      "inverse": {
+        "value": "#FFFFFF",
+        "type": "color",
+        "description": "Text colors for various contexts and hierarchies."
+      }
+    },
+    "border": {
+      "default": {
+        "value": "#E0E0E0",
+        "type": "color",
+        "description": "Dividers and element borders."
+      },
+      "strong": {
+        "value": "#CCCCCC",
+        "type": "color",
+        "description": "Dividers and element borders."
+      },
+      "subtle": {
+        "value": "#F0F0F0",
+        "type": "color",
+        "description": "Dividers and element borders."
+      }
+    }
+  },
+  "$themes": [],
+  "$metadata": {
+    "tokenSetOrder": [
+      "global"
+    ]
+  }
+}
