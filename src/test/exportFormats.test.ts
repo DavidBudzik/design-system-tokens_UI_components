@@ -51,24 +51,23 @@ describe('Figma Tokens Export Format', () => {
     // The structure should have light and dark token sets
     expect(parsed.light).toBeDefined();
     
-    // Navigate through the structure to find a token
-    // Structure: light -> category -> subcategory -> token
+    // Navigate to a known token path to verify W3C format
+    // Structure: light -> call-to-action-cta -> cta -> default
     const lightTokens = parsed.light;
-    const firstCategory = Object.values(lightTokens)[0] as any;
-    expect(firstCategory).toBeDefined();
+    const ctaCategory = lightTokens['call-to-action-cta'];
+    expect(ctaCategory).toBeDefined();
     
-    // Navigate deeper to find actual token (may be nested)
-    let tokenObj = firstCategory;
-    while (tokenObj && typeof tokenObj === 'object' && !tokenObj.$value) {
-      const keys = Object.keys(tokenObj);
-      if (keys.length === 0) break;
-      tokenObj = tokenObj[keys[0]];
-    }
+    const ctaSubcategory = ctaCategory.cta;
+    expect(ctaSubcategory).toBeDefined();
     
-    // Should have $value and $type keys
-    expect(tokenObj).toHaveProperty('$value');
-    expect(tokenObj).toHaveProperty('$type');
-    expect(tokenObj.$type).toBe('color');
+    const defaultToken = ctaSubcategory.default;
+    expect(defaultToken).toBeDefined();
+    
+    // Should have $value and $type keys with W3C format
+    expect(defaultToken).toHaveProperty('$value');
+    expect(defaultToken).toHaveProperty('$type');
+    expect(defaultToken.$type).toBe('color');
+    expect(defaultToken.$value).toBe('#E03600');
   });
 
   it('should preserve semantic token names (not just last part)', () => {

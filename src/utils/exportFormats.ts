@@ -367,8 +367,9 @@ export const exportFormats = {
           const cleanName = token.name.replace(/^--/, "");
           const parts = cleanName.split("-");
           
-          // Remove redundant category prefix if it appears twice
-          // e.g., "cta-cta-default" -> "cta-default"
+          // Remove redundant category prefix if it appears twice consecutively
+          // This handles the naming pattern where category is repeated: "cta-cta-default" -> "cta-default"
+          // Keeps structure like: "primary-primary-hover" -> "primary-hover"
           let tokenName = cleanName;
           if (parts.length >= 3 && parts[0] === parts[1]) {
             tokenName = parts.slice(1).join("-");
@@ -410,7 +411,8 @@ export const exportFormats = {
               $description: section.description,
             };
           } else {
-            // If no dark variant, use light value
+            // Fallback: Use light mode value for dark mode when no dark variant is defined
+            // This ensures the token exists in both themes but may need adjustment in Figma
             currentDarkLevel[finalName] = {
               $value: token.hex,
               $type: "color",
