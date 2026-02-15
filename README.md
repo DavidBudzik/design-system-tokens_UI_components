@@ -3,7 +3,7 @@
 <div align="center">
 
 ![Project Status](https://img.shields.io/badge/status-active-success.svg)
-![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
+![Version](https://img.shields.io/badge/version-0.1.1-blue.svg)
 ![License](https://img.shields.io/badge/license-private-red.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue.svg)
@@ -40,7 +40,7 @@ Design Book bridges the gap between design (Figma) and development by providing 
 ## 🌟 Project Status
 
 **Current Phase:** Active Development  
-**Latest Release:** v0.1.0  
+**Latest Release:** v0.1.1  
 **Next Milestone:** Enhanced documentation and user experience features
 
 See the [Roadmap](./docs/ROADMAP.md) for detailed project status and planned features.
