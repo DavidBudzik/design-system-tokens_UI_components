@@ -341,25 +341,110 @@ export const exportFormats = {
     extension: ".json",
     description: "Design Tokens format compatible with Figma Tokens plugin. Import directly into Figma for design-dev sync.",
     generate: (sections: Section[]) => {
-      const tokenObj: Record<string, any> = {};
+      // Create separate light and dark token sets following W3C Design Tokens format
+      const lightTokens: Record<string, any> = {};
+      const darkTokens: Record<string, any> = {};
       
       sections.forEach((section) => {
-        const categoryName = section.title.replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-").toLowerCase();
-        tokenObj[categoryName] = {};
+        // Create a clean category name from section title
+        const categoryName = section.title
+          .replace(/[^\w\s-]/g, "")
+          .trim()
+          .replace(/\s+/g, "-")
+          .toLowerCase();
+        
+        // Initialize category objects
+        if (!lightTokens[categoryName]) {
+          lightTokens[categoryName] = {};
+        }
+        if (!darkTokens[categoryName]) {
+          darkTokens[categoryName] = {};
+        }
         
         section.tokens.forEach((token) => {
-          const cleanName = token.name.replace(/^--/, "").split("-").pop() || "default";
-          if (cleanName) {
-            tokenObj[categoryName][cleanName] = {
-              value: token.hex,
-              type: "color",
-              description: section.description,
+          // Preserve semantic token name - remove prefix and keep meaningful parts
+          // --cta-cta-default -> cta-default (remove redundant category prefix)
+          const cleanName = token.name.replace(/^--/, "");
+          const parts = cleanName.split("-");
+          
+          // Remove redundant category prefix if it appears twice consecutively
+          // This handles the naming pattern where category is repeated: "cta-cta-default" -> "cta-default"
+          // Keeps structure like: "primary-primary-hover" -> "primary-hover"
+          let tokenName = cleanName;
+          if (parts.length >= 3 && parts[0] === parts[1]) {
+            tokenName = parts.slice(1).join("-");
+          }
+          
+          // Create nested structure for better organization
+          // Split by first dash to create subcategories
+          const nameParts = tokenName.split("-");
+          let currentLevel = lightTokens[categoryName];
+          let currentDarkLevel = darkTokens[categoryName];
+          
+          // Navigate/create nested structure (all but last part)
+          for (let i = 0; i < nameParts.length - 1; i++) {
+            if (!currentLevel[nameParts[i]]) {
+              currentLevel[nameParts[i]] = {};
+            }
+            if (!currentDarkLevel[nameParts[i]]) {
+              currentDarkLevel[nameParts[i]] = {};
+            }
+            currentLevel = currentLevel[nameParts[i]];
+            currentDarkLevel = currentDarkLevel[nameParts[i]];
+          }
+          
+          // Use the last part as the token name
+          const finalName = nameParts[nameParts.length - 1];
+          
+          // Add light mode token with W3C format ($value, $type, $description)
+          currentLevel[finalName] = {
+            $value: token.hex,
+            $type: "color",
+            $description: section.description,
+          };
+          
+          // Add dark mode token if it exists
+          if (token.darkHex) {
+            currentDarkLevel[finalName] = {
+              $value: token.darkHex,
+              $type: "color",
+              $description: section.description,
+            };
+          } else {
+            // Fallback: Use light mode value for dark mode when no dark variant is defined
+            // This ensures the token exists in both themes but may need adjustment in Figma
+            currentDarkLevel[finalName] = {
+              $value: token.hex,
+              $type: "color",
+              $description: section.description,
             };
           }
         });
       });
       
-      return JSON.stringify(tokenObj, null, 2);
+      // Build final structure with theme configuration
+      const output = {
+        light: lightTokens,
+        dark: darkTokens,
+        $themes: [
+          {
+            id: "light",
+            name: "Light",
+            selectedTokenSets: {
+              light: "enabled",
+            },
+          },
+          {
+            id: "dark",
+            name: "Dark",
+            selectedTokenSets: {
+              dark: "enabled",
+            },
+          },
+        ],
+      };
+      
+      return JSON.stringify(output, null, 2);
     },
   },
 };
