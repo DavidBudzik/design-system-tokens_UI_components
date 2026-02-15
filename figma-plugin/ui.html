@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 20px;
+      background: #ffffff;
+      color: #1a1a1a;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .header {
+      text-align: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: #E03600;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #666666;
+      line-height: 1.5;
+    }
+
+    .info-box {
+      background: #f5f5f5;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .info-title {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: #1a1a1a;
+    }
+
+    .info-list {
+      list-style: none;
+      font-size: 12px;
+      color: #666666;
+      line-height: 1.8;
+    }
+
+    .info-list li::before {
+      content: "✓ ";
+      color: #00B341;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    .status-box {
+      background: #e8f4fd;
+      border: 1px solid #b3d9f2;
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 13px;
+      color: #0047FF;
+      text-align: center;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .status-box.success {
+      background: #e8f9f0;
+      border-color: #b3e6c8;
+      color: #00B341;
+    }
+
+    .status-box.error {
+      background: #ffe8e8;
+      border-color: #ffb3b3;
+      color: #FF0000;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .primary-btn {
+      background: #E03600;
+      color: white;
+    }
+
+    .primary-btn:hover {
+      background: #FA4D1A;
+    }
+
+    .primary-btn:active {
+      background: #C22E00;
+    }
+
+    .primary-btn:disabled {
+      background: #FFD4C2;
+      cursor: not-allowed;
+    }
+
+    .secondary-btn {
+      background: #f5f5f5;
+      color: #1a1a1a;
+      border: 1px solid #e0e0e0;
+    }
+
+    .secondary-btn:hover {
+      background: #ebebeb;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #999999;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .footer a {
+      color: #0047FF;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">🎨 Design Book</div>
+      <div class="subtitle">Import design tokens as Figma Variables</div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-title">What this plugin does:</div>
+      <ul class="info-list">
+        <li>Fetches latest tokens from Design Book</li>
+        <li>Creates Figma Variables for all colors</li>
+        <li>Sets up Light & Dark mode themes</li>
+        <li>Syncs with your live design system</li>
+      </ul>
+    </div>
+
+    <div id="status" class="status-box" style="display: none;">
+      Ready to import...
+    </div>
+
+    <div class="actions">
+      <button id="import" class="primary-btn">
+        Import Tokens
+      </button>
+      <button id="cancel" class="secondary-btn">
+        Cancel
+      </button>
+    </div>
+
+    <div class="footer">
+      View documentation at<br>
+      <a href="https://davidbudzik.github.io/design-system-tokens_UI_components/" target="_blank">
+        Design Book Website
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const importBtn = document.getElementById('import');
+    const cancelBtn = document.getElementById('cancel');
+    const statusBox = document.getElementById('status');
+
+    importBtn.addEventListener('click', () => {
+      importBtn.disabled = true;
+      statusBox.style.display = 'flex';
+      statusBox.className = 'status-box';
+      statusBox.textContent = 'Starting import...';
+
+      parent.postMessage({
+        pluginMessage: { type: 'import-tokens' }
+      }, '*');
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      parent.postMessage({
+        pluginMessage: { type: 'cancel' }
+      }, '*');
+    });
+
+    // Listen for messages from plugin code
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+
+      if (msg.type === 'status') {
+        statusBox.style.display = 'flex';
+        statusBox.className = 'status-box';
+        statusBox.textContent = msg.message;
+      } else if (msg.type === 'success') {
+        statusBox.style.display = 'flex';
+        statusBox.className = 'status-box success';
+        statusBox.textContent = msg.message;
+        importBtn.disabled = false;
+        importBtn.textContent = 'Import Again';
+      } else if (msg.type === 'error') {
+        statusBox.style.display = 'flex';
+        statusBox.className = 'status-box error';
+        statusBox.textContent = msg.message;
+        importBtn.disabled = false;
+      }
+    };
+  </script>
+</body>
+</html>

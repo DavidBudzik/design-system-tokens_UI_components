@@ -1,0 +1,42 @@
+{
+  "core": {
+    "cta": {
+      "default": {
+        "value": "#E03600",
+        "type": "color"
+      },
+      "hover": {
+        "value": "#FA4D1A",
+        "type": "color"
+      },
+      "active": {
+        "value": "#C22E00",
+        "type": "color"
+      }
+    },
+    "primary": {
+      "default": {
+        "value": "#0047FF",
+        "type": "color"
+      },
+      "hover": {
+        "value": "#1A5CFF",
+        "type": "color"
+      },
+      "active": {
+        "value": "#0038CC",
+        "type": "color"
+      }
+    },
+    "success": {
+      "default": {
+        "value": "#00B341",
+        "type": "color"
+      },
+      "hover": {
+        "value": "#1AC759",
+        "type": "color"
+      }
+    }
+  }
+}
