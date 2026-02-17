@@ -1,4 +1,4 @@
-import { run } from 'axe-core';
+import axe from 'axe-core';
 
 export interface A11yViolation {
   id: string;
@@ -30,7 +30,7 @@ export async function runA11yTests(
   element: Element | Document = document,
   options = {}
 ): Promise<A11yResults> {
-  const results = await run(element, options);
+  const results = await axe.run(element, options);
 
   return {
     violations: results.violations as A11yViolation[],

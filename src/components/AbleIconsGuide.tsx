@@ -209,10 +209,10 @@ const AbleIconsGuide = () => {
     // Force synchronous flush to get the HTML immediately
     flushSync(() => {
       root.render(
-        // @ts-ignore
-        <IconComponent 
-          size={24} 
-          color="#000000" 
+        // @ts-expect-error dynamic icon component from lucide-react
+        <IconComponent
+          size={24}
+          color="#000000"
           strokeWidth={1}
         />
       );
@@ -283,7 +283,7 @@ const AbleIconsGuide = () => {
                       className="group relative flex flex-col items-center justify-start p-4 rounded-lg bg-background hover:bg-accent transition-all cursor-pointer h-32 border border-transparent hover:border-border"
                     >
                       <div className="mb-3">
-                        {/* @ts-ignore */}
+                        {/* @ts-expect-error dynamic icon component from lucide-react */}
                         <IconComponent size={24} strokeWidth={1} className="text-foreground" />
                       </div>
                       <span className="text-xs text-muted-foreground text-center break-words w-full group-hover:text-foreground transition-colors line-clamp-2">
