@@ -291,7 +291,19 @@ npm run dev
 
 The application is automatically deployed to GitHub Pages on every push to the `main` branch.
 
-**Live URL:** [https://davidbudzik.github.io/design-system-tokens_UI_components/](https://davidbudzik.github.io/design-system-tokens_UI_components/)
+**🌐 Live URL:** [https://davidbudzik.github.io/design-system-tokens_UI_components/](https://davidbudzik.github.io/design-system-tokens_UI_components/)
+
+#### How to Update the Site
+
+Simply push changes to the `main` branch — GitHub Actions will automatically rebuild and redeploy the site. No manual steps are required.
+
+```bash
+# Make your changes, then:
+git add .
+git commit -m "Your update message"
+git push origin main
+# GitHub Actions will automatically deploy within ~2 minutes
+```
 
 #### How It Works
 
@@ -301,14 +313,16 @@ The application is automatically deployed to GitHub Pages on every push to the `
    - Builds the project with `npm run build`
    - Uploads the `dist` folder as a GitHub Pages artifact
 3. **Deployment**: Uses GitHub's official `actions/deploy-pages@v4` action to deploy to GitHub Pages
-4. **Base Path**: Vite is configured with `base: '/design-system-tokens_UI_components/'` to ensure all assets load correctly
+4. **Base Path**: Vite is configured with `base: '/design-system-tokens_UI_components/'` to ensure all assets load correctly at the GitHub Pages URL
 
-#### Initial Setup
+#### Initial Setup (one-time configuration)
 
-After merging changes, ensure GitHub Pages is configured:
-1. Go to repository Settings → Pages
-2. Set Source to "GitHub Actions"
-3. The app will automatically deploy on the next push to main
+To enable GitHub Pages for this repository:
+1. Go to **repository Settings → Pages**
+2. Under **Build and deployment**, set **Source** to **"GitHub Actions"**
+3. Click **Save** — the site will deploy automatically on the next push to `main`
+
+> **Note:** The source must be set to **"GitHub Actions"** (not "Deploy from a branch") because the React app must be built before serving. The `.github/workflows/deploy.yml` workflow handles the build and deployment automatically.
 
 ### Manual Deployment
 
